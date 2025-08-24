@@ -53,20 +53,19 @@ export const LinkConfig = {
  * @see https://docs.expo.dev/versions/latest/config/app/
  */
 export default {
-  displayName: "Learner Credential Wallet",
+  displayName: 'T3 Digital Credential Wallet',
   expo: {
     runtimeVersion: VERSION_NUMBER,
     version: VERSION_NUMBER,
-    name: "Learner Credential Wallet",
-    slug: "learner-credential-wallet",
-    scheme: "exp+learner-credential-wallet",
-    orientation: "portrait",
-    icon: "./app/assets/icon.png",
-    backgroundColor: "#1F2937",
+    name: 'T3 Digital Credential Wallet',
+    slug: 't3-digital-credential-wallet',
+    orientation: 'portrait',
+    icon: './app/assets/icon.png',
+    backgroundColor: '#909090',
     splash: {
-      image: "./app/assets/splash.png",
-      resizeMode: "contain",
-      backgroundColor: "#1F2937",
+      image: './app/assets/splash.png',
+      resizeMode: 'contain',
+      backgroundColor: '#909090'
     },
     updates: {
       fallbackToCacheTimeout: 0,
@@ -92,8 +91,8 @@ export default {
     android: {
       versionCode: BUILD_NUMBER,
       adaptiveIcon: {
-        foregroundImage: "./app/assets/adaptive-icon.png",
-        backgroundColor: "#1F2937",
+        foregroundImage: './app/assets/adaptive-icon.png',
+        backgroundColor: '#909090'
       },
       intentFilters: [
         {

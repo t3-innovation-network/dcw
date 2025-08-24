@@ -1,21 +1,21 @@
 <img src="https://user-images.githubusercontent.com/7339800/129089107-fa190c95-76fd-4a93-8e36-ff4d3ae5681c.png" alt="icon" width="100px" />
 
-# Learner Credential Wallet
+# T3 Digital Credential Wallet
 
-Learner Credential Wallet is a cross-platform iOS and Android mobile application 
+T3 Digital Credential Wallet is a cross-platform iOS and Android mobile application 
 for storing and sharing digital learner credentials.
 
-Install [Learner Credential Wallet](https://lcw.app/) for your mobile!
+Install [T3 Digital Credential Wallet](https://lcw.app/) for your mobile!
 
-The wallet is based on the [learner credential wallet specification](https://digitalcredentials.mit.edu/docs/Learner-Credential-Wallet-Specification-May-2021.pdf) developed by the [Digital Credentials Consortium](https://digitalcredentials.mit.edu/). The learner credential wallet specification is based on the draft [W3C Universal Wallet interoperability specification](https://w3c-ccg.github.io/universal-wallet-interop-spec/) and the draft [W3C Verifiable Credentials data model](https://w3c.github.io/vc-data-model/).
+The wallet is based on the [T3 Digital Credential Wallet specification](https://digitalcredentials.mit.edu/docs/Learner-Credential-Wallet-Specification-May-2021.pdf) developed by the [Digital Credentials Consortium](https://digitalcredentials.mit.edu/). The T3 Digital Credential Wallet specification is based on the draft [W3C Universal Wallet interoperability specification](https://w3c-ccg.github.io/universal-wallet-interop-spec/) and the draft [W3C Verifiable Credentials data model](https://w3c.github.io/vc-data-model/).
 
 The app has been compiled for iOS and Android and allows users to add and share credentials, as well as manage the wallet.
 
-<img src="https://user-images.githubusercontent.com/20584379/234087398-2a8c2b54-66a3-4a56-8332-0e4bfc089a3b.png" alt="The Learner Credential Wallet startup screen, displaying the choice between quick and custom setup." width="24%" /> <img src="https://user-images.githubusercontent.com/20584379/234087758-f718942b-d9b7-47a6-846a-4ba5f9aea83a.png" alt="The “credential preview” screen, displaying information about an issued credential, including credential name, issuer, issuer date, credential description, criteria, and verification status." width="24%" /> <img src="https://user-images.githubusercontent.com/20584379/234087893-81573b7e-db33-48f5-8d51-23f845fb75a4.png" alt="The “share credential” screen, which allows the user to share their credentials with others through a public link or QR code, and includes the additional options to send the credential link or directly add it to LinkedIn through the app." width="24%" /> <img src="https://user-images.githubusercontent.com/20584379/234087959-4150b63a-c980-472a-bc54-7f8b0a9bbc5f.png" alt="The “verification status” screen, which shows whether the credential has been verified, and includes an additional breakdown of information including the last date verification status was checked, the validity of the credentials digital signature, expiration, and revocation status." width="24%" />
+<img src="https://user-images.githubusercontent.com/20584379/234087398-2a8c2b54-66a3-4a56-8332-0e4bfc089a3b.png" alt="The T3 Digital Credential Wallet startup screen, displaying the choice between quick and custom setup." width="24%" /> <img src="https://user-images.githubusercontent.com/20584379/234087758-f718942b-d9b7-47a6-846a-4ba5f9aea83a.png" alt="The “credential preview” screen, displaying information about an issued credential, including credential name, issuer, issuer date, credential description, criteria, and verification status." width="24%" /> <img src="https://user-images.githubusercontent.com/20584379/234087893-81573b7e-db33-48f5-8d51-23f845fb75a4.png" alt="The “share credential” screen, which allows the user to share their credentials with others through a public link or QR code, and includes the additional options to send the credential link or directly add it to LinkedIn through the app." width="24%" /> <img src="https://user-images.githubusercontent.com/20584379/234087959-4150b63a-c980-472a-bc54-7f8b0a9bbc5f.png" alt="The “verification status” screen, which shows whether the credential has been verified, and includes an additional breakdown of information including the last date verification status was checked, the validity of the credentials digital signature, expiration, and revocation status." width="24%" />
 
 
 ## Goals
-This learner credential wallet includes the features and technical requirements 
+This T3 Digital Credential Wallet includes the features and technical requirements 
 ultimately enabling individuals to curate and present their learning and 
 employment records to others — for example, as applicants to educational programs 
 or to apply for jobs with employers—in an interoperable manner. 
@@ -226,7 +226,7 @@ When contributing to the project, ensure accessibility by:
 ### Accessibility Conformance
 
 We have conducted a Voluntary Product Accessibility Test, please review the
-[Learner Credential Wallet Accessibility Conformance Report, December 2021](https://github.com/digitalcredentials/learner-credential-wallet/blob/769bacbc2bfed381a20e2927f2c32a18a6faacbb/docs/Learner%20Credential%20Wallet%20VPAT2.4Rev508-December%202021.pdf)
+[T3 Digital Credential Wallet Accessibility Conformance Report, December 2021](https://github.com/digitalcredentials/learner-credential-wallet/blob/769bacbc2bfed381a20e2927f2c32a18a6faacbb/docs/Learner%20Credential%20Wallet%20VPAT2.4Rev508-December%202021.pdf)
 
 For more information on accessibility please visit the 
 [MIT Accessibilty](https://accessibility.mit.edu) page.
@@ -235,7 +235,7 @@ For more information on accessibility please visit the
 # LCW App - general info
 
 ## Privacy Policy 
-This Privacy Policy explains how Learner Credential Wallet collects, uses, and 
+This Privacy Policy explains how T3 Digital Credential Wallet collects, uses, and 
 processes personal information about our learners.
 
 ### What Personal Information We Collect
@@ -246,12 +246,12 @@ We may change this Privacy Policy from time to time. If we make any significant
 changes in the way we treat your personal information we will make this clear 
 on our website or by contacting you directly.
 
-The controller for your personal information is the Learner Credential Wallet 
+The controller for your personal information is the T3 Digital Credential Wallet 
 project at MIT. We can be contacted at lcw-support@mit.edu.
 
 ## Terms and Conditions of Use
 
-[Learner Credential Wallet Terms and Conditions of Use](https://lcw.app/terms.html)
+[T3 Digital Credential Wallet Terms and Conditions of Use](https://lcw.app/terms.html)
 
 ## Acknowledgements
 Initial development was supported by the U.S. Department of Education (Contract 

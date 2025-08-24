@@ -1,4 +1,4 @@
-# learner-credential-wallet Changelog
+# T3 Digital Credential Wallet Changelog
 
 ## 2.2.5 - build 95
 ### Added
