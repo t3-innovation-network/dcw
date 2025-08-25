@@ -4,8 +4,8 @@
  */
 const env = process.env
 
-const BUILD_NUMBER = parseInt(env.APP_BUILD_NUMBER) || 103;
-const VERSION_NUMBER = env.APP_VERSION_NUMBER || "2.2.9";
+const BUILD_NUMBER = parseInt(env.APP_BUILD_NUMBER) || 1
+const VERSION_NUMBER = env.APP_VERSION_NUMBER || '1.0.0'
 
 // Used by the 'Create Public Link' functionality
 // If you have forked the LCW and are creating your own wallet app version,
@@ -79,12 +79,14 @@ export default {
       userInterfaceStyle: 'automatic',
       buildNumber: BUILD_NUMBER.toString(),
       supportsTablet: true,
-      bundleIdentifier: 'edu.mit.eduwallet',
+      // bundleIdentifier: 'org.t3.dcw',
       deploymentTarget: '13.0',
       entitlements: {
-        'com.apple.security.application-groups': ['group.edu.mit.eduwallet']
+        'com.apple.security.application-groups': [
+          // 'group.edu.mit.eduwallet'
+        ]
       },
-      associatedDomains: ['applinks:lcw.app/mobile'],
+      // associatedDomains: ['applinks:lcw.app/mobile'],
       infoPlist: {
         CFBundleURLTypes: [
           {
