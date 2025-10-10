@@ -1,5 +1,3 @@
-<img src="https://user-images.githubusercontent.com/7339800/129089107-fa190c95-76fd-4a93-8e36-ff4d3ae5681c.png" alt="icon" width="100px" />
-
 # T3 Digital Credential Wallet
 
 T3 Digital Credential Wallet is a cross-platform iOS and Android mobile application 
