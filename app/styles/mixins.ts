@@ -1,5 +1,6 @@
 import { StyleSheet, ViewStyle } from 'react-native'
 import defaultTheme, { ThemeType } from './theme'
+import { Color } from './colors'
 
 const mixins = (theme: ThemeType) => {
   const sharedMixins = StyleSheet.create({
@@ -100,7 +101,7 @@ const mixins = (theme: ThemeType) => {
     buttonTitle: {
       fontFamily: theme.fontFamily.medium,
       fontSize: theme.fontSize.regular,
-      color: theme.color.backgroundSecondary
+      color: Color.Black
     },
     buttonTitleSecondary: {
       fontFamily: theme.fontFamily.medium,

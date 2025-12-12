@@ -16,7 +16,7 @@ export default createDynamicStyleSheet(({ theme, mixins }) => ({
   title: {
     fontFamily: theme.fontFamily.bold,
     fontSize: theme.fontSize.title,
-    color: theme.color.textPrimary,
+    color: theme.color.textHeader,
     padding: 16,
     textAlign: 'center'
   },
