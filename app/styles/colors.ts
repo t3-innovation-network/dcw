@@ -26,7 +26,12 @@ export enum Color {
   Gray600 = '#4B5563',
   Gray700 = '#374151',
   Gray800 = '#1F2937',
-  Gray900 = '#111827'
+  Gray900 = '#111827',
+
+  // New theme colors
+  BackgroundBlue = '#004F91',
+  TitleGreen = '#ADFF6B',
+  NavBlue = '#001F5C'
 }
 
 /* Gray values follow css guide:
