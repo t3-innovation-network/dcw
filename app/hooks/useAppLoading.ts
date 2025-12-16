@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useState, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import {
-  Rubik_400Regular,
-  Rubik_500Medium,
-  Rubik_700Bold,
-  useFonts
-} from '@expo-google-fonts/rubik'
+  useFonts,
+  PlayfairDisplay_400Regular,
+  PlayfairDisplay_700Bold
+} from '@expo-google-fonts/playfair-display'
+import {
+  SourceSansPro_300Light,
+  SourceSansPro_400Regular,
+  SourceSansPro_700Bold
+} from '@expo-google-fonts/source-sans-pro'
 import { RobotoMono_400Regular } from '@expo-google-fonts/roboto-mono'
 
 import { DidRegistryContext, loadKnownDidRegistries } from '../init/registries'
@@ -48,9 +52,11 @@ export function useAppLoading(): boolean {
 
 function useFontsLoaded() {
   const [fontsLoaded] = useFonts({
-    Rubik_400Regular,
-    Rubik_500Medium,
-    Rubik_700Bold,
+    PlayfairDisplay_400Regular,
+    PlayfairDisplay_700Bold,
+    SourceSansPro_300Light,
+    SourceSansPro_400Regular,
+    SourceSansPro_700Bold,
     RobotoMono_400Regular
   })
 
