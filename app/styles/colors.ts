@@ -1,4 +1,5 @@
 export enum Color {
+  DarkBlue = '#031C32',
   Blue = '#0F7390',
   TransparentBlue = 'rgba(15, 115, 144, 0.3)',
 
