@@ -32,12 +32,15 @@ export const darkTheme: ThemeType = {
     highlightAndroid: Color.TransparentCyan
   },
   fontFamily: {
-    regular: FontFamily.RubikRegular,
-    medium: FontFamily.RubikMedium,
-    bold: FontFamily.RubikBold,
+    TobiasLight: FontFamily.TobiasLight,
+    lighter: FontFamily.GT_AmericaLighter,
+    regular: FontFamily.GT_AmericaRegular,
+    medium: FontFamily.GT_AmericaMedium,
+    bold: FontFamily.GT_AmericaBold,
     mono: FontFamily.RobotoMonoRegular
   },
   fontSize: {
+    xl: 48,
     title: 36,
     header: 24,
     medium: 18,

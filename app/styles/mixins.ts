@@ -101,7 +101,8 @@ const mixins = (theme: ThemeType) => {
     buttonTitle: {
       fontFamily: theme.fontFamily.medium,
       fontSize: theme.fontSize.regular,
-      color: Color.Black
+      fontWeight: 'bold',
+      color: Color.DarkBlue
     },
     buttonTitleSecondary: {
       fontFamily: theme.fontFamily.medium,

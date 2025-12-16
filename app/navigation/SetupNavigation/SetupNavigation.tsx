@@ -16,7 +16,7 @@ import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator
 import SafeScreenView from '../../components/SafeScreenView/SafeScreenView'
 import AccessibleView from '../../components/AccessibleView/AccessibleView'
 import PasswordForm from '../../components/PasswordForm/PasswordForm'
-import walletImage from '../../assets/wallet.png'
+import walletImage from '../../assets/dcw-logo.png'
 import { useAccessibilityFocus } from '../../hooks'
 
 import dynamicStyleSheet from './SetupNavigation.styles'
@@ -61,38 +61,53 @@ export default function SetupNavigation(): React.ReactElement {
 
 function StartStep({ navigation }: StartStepProps) {
   const { styles, mixins } = useDynamicStyles(dynamicStyleSheet)
+  const dispatch = useAppDispatch()
+
+  async function _quickSetup() {
+    const generatedPassword = uuidv4()
+    console.log('generatedPassword', generatedPassword)
+    await dispatch(
+      initialize({ passphrase: generatedPassword, enableBiometrics: false })
+    )
+    await dispatch(pollWalletState())
+  }
 
   return (
-    <SafeScreenView style={[styles.container, styles.containerMiddle]}>
-      <Image
-        style={styles.image}
-        source={walletImage}
-        accessible
-        accessibilityLabel={`${appConfig.displayName} Logo`}
-      />
+    <SafeScreenView
+      style={[styles.container, styles.containerMiddle]}
+      watermarkOpacity={1}
+    >
+      <View style={styles.logoContainer}>
+        <Image
+          style={styles.image}
+          source={walletImage}
+          accessible
+          accessibilityLabel={`${appConfig.displayName} Logo`}
+        />
+        <Text style={styles.logoText} accessibilityRole="header">
+          U.S. Chamber of Commerce
+          {'\n'}
+          Foundation
+        </Text>
+      </View>
       <Text style={styles.title} accessibilityRole="header">
-        {appConfig.displayName}
+        Skill Savings {'\n'} Account
       </Text>
       <Text style={styles.paragraph}>
-        A place to store all your credentials. They stay on your device until
-        you decide to share them.
+        Save for continuing education while you earn, store, and share your
+        workplace and skill credentials.
       </Text>
       <View style={mixins.buttonGroup}>
         <Button
           buttonStyle={[mixins.button, mixins.buttonPrimary]}
           containerStyle={mixins.buttonContainer}
           titleStyle={mixins.buttonTitle}
-          title="Quick Setup"
+          title="Create Your Wallet"
           onPress={() => {
             if (FEATURE_FLAGS.passwordProtect) {
               navigation.navigate('PasswordStep')
             } else {
-              const generatedPassword = uuidv4()
-              console.log('generatedPassword', generatedPassword)
-              navigation.navigate('CreateStep', {
-                password: generatedPassword,
-                enableBiometrics: false
-              })
+              _quickSetup()
             }
           }}
         />

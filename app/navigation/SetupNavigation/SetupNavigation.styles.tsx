@@ -7,24 +7,40 @@ export default createDynamicStyleSheet(({ theme, mixins }) => ({
     alignItems: 'center'
   },
   containerMiddle: {
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginBottom: 200
+  },
+  logoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 32
+  },
+  logoText: {
+    fontFamily: theme.fontFamily.medium,
+    fontSize: 18,
+    color: 'white',
+    marginLeft: 16,
+    textAlign: 'left'
   },
   image: {
     height: 72,
     resizeMode: 'contain'
   },
   title: {
-    fontFamily: theme.fontFamily.bold,
-    fontSize: theme.fontSize.title,
+    fontFamily: theme.fontFamily.TobiasLight,
+    fontSize: theme.fontSize.xl,
     color: theme.color.textHeader,
     padding: 16,
     textAlign: 'center'
   },
   paragraph: {
     ...mixins.paragraphText,
-    fontSize: theme.fontSize.medium,
+    fontSize: 24,
+    lineHeight: 32,
     textAlign: 'center',
-    marginBottom: 48
+    marginBottom: 32
   },
   stepContainer: {
     flexDirection: 'row',
