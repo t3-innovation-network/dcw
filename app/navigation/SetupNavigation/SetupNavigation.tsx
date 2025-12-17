@@ -73,10 +73,7 @@ function StartStep({ navigation }: StartStepProps) {
   }
 
   return (
-    <SafeScreenView
-      style={[styles.container, styles.containerMiddle]}
-      watermarkOpacity={1}
-    >
+    <SafeScreenView style={[styles.container, styles.containerMiddle]}>
       <View style={styles.logoContainer}>
         <Image
           style={styles.image}
