@@ -146,7 +146,7 @@ export default function HomeScreen({
           accessibilityLabel="Learn more about the LCW at lcw.app"
           testID="learn-more-link"
         >
-          <Text style={styles.learnMoreLink}>Learn more</Text> about the LCW
+          <Text style={styles.learnMoreLink}>Learn more</Text> about the DCW
         </Text>
       </View>
     )
