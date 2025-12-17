@@ -144,11 +144,11 @@ export default function HomeScreen({
             style={styles.learnMoreLink}
             onPress={() => Linking.openURL(LinkConfig.appWebsite.home)}
             accessibilityRole="link"
-            accessibilityLabel="Learn more about the LCW at lcw.app"
+            accessibilityLabel="Learn more about the DCW at dcw.app"
           >
             Learn more
           </Text>{' '}
-          about the LCW
+          about the DCW
         </Text>
       </View>
     )
