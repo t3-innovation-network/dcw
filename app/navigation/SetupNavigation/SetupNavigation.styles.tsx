@@ -68,7 +68,7 @@ export default createDynamicStyleSheet(({ theme, mixins }) => ({
   header: {
     fontSize: theme.fontSize.header,
     fontFamily: theme.fontFamily.bold,
-    color: theme.color.textHeader,
+    color: 'white',
     textAlign: 'center',
     marginTop: 32
   },
