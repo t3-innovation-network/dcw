@@ -1,7 +1,10 @@
 import React from 'react'
-import { Platform } from 'react-native'
+import { Platform, View, Image, StyleSheet } from 'react-native'
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import {
+  createBottomTabNavigator,
+  BottomTabBar
+} from '@react-navigation/bottom-tabs'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import dynamicStyleSheet from './HomeNavigation.styles'
@@ -11,6 +14,7 @@ import SettingsNavigation from '../SettingsNavigation/SettingsNavigation'
 import type { HomeNavigationParamList, TabIconProps } from './HomeNavigation.d'
 import AddNavigation from '../AddNavigation/AddNavigation'
 import { useDynamicStyles } from '../../hooks'
+import watermarkImage from '../../assets/WalletLogoMark.png'
 
 const Tab = createBottomTabNavigator<HomeNavigationParamList>()
 
@@ -29,6 +33,18 @@ export default function HomeNavigation(): React.ReactElement {
         tabBarActiveTintColor: theme.color.iconActive,
         tabBarInactiveTintColor: theme.color.iconInactive
       }}
+      tabBar={(props) => (
+        <View style={watermarkStyles.tabBarContainer}>
+          <Image
+            source={watermarkImage}
+            style={watermarkStyles.watermark}
+            accessible={false}
+          />
+          <View style={watermarkStyles.tabBarWrapper}>
+            <BottomTabBar {...props} />
+          </View>
+        </View>
+      )}
     >
       <Tab.Screen
         name="CredentialNavigation"
@@ -89,3 +105,27 @@ const SettingsTabIcon = ({ color }: TabIconProps) => {
   const { theme } = useDynamicStyles()
   return <MaterialIcons name="settings" color={color} size={theme.iconSize} />
 }
+
+const watermarkStyles = StyleSheet.create({
+  tabBarContainer: {
+    position: 'relative',
+    width: '100%',
+    overflow: 'visible'
+  },
+  watermark: {
+    position: 'absolute',
+    bottom: '100%',
+    left: 0,
+    right: 0,
+    width: '100%',
+    height: 220,
+    resizeMode: 'cover',
+    opacity: 0.1,
+    zIndex: 0,
+    pointerEvents: 'none'
+  },
+  tabBarWrapper: {
+    position: 'relative',
+    zIndex: 1
+  }
+})
