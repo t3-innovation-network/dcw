@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import dynamicStyleSheet from './SafeScreenView.styles'
 import type { SafeScreenViewProps } from './SafeScreenView.d'
 import { useDynamicStyles } from '../../hooks'
+import watermarkImage from '../../assets/WalletLogoMark.png'
 
 export default function SafeScreenView({
   children,
@@ -24,6 +25,14 @@ export default function SafeScreenView({
           {children}
         </SafeAreaView>
       </KeyboardAwareScrollView>
+      <Image
+        source={watermarkImage}
+        style={[
+          styles.watermark,
+          watermarkOpacity != null ? { opacity: watermarkOpacity } : null
+        ]}
+        accessible={false}
+      />
     </View>
   )
 }

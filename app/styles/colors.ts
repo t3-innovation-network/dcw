@@ -7,7 +7,7 @@ export enum Color {
   DarkCyan = '#24D3EE',
   TransparentCyan = 'rgba(103, 232, 249, 0.3)',
 
-  Green = '#A3E534',
+  BrightGreen = '#ADFF6B',
   DarkGreen = '#4D7C0F',
 
   Red = '#EF4444',
