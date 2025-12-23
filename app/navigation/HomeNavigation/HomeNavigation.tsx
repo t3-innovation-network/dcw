@@ -118,7 +118,7 @@ const watermarkStyles = StyleSheet.create({
     left: 0,
     right: 0,
     width: '100%',
-    height: 220,
+    height: 280,
     resizeMode: 'cover',
     opacity: 0.1,
     zIndex: 0,
