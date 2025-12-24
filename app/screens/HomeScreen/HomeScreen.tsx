@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Text, View, FlatList, AccessibilityInfo, Linking } from 'react-native'
 import { Button } from 'react-native-elements'
-import { Tooltip } from '@rneui/themed'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler'
+import Tooltip from 'react-native-walkthrough-tooltip'
 
 import { CredentialItem, NavHeader, ConfirmModal } from '../../components'
 import { navigationRef } from '../../navigation/navigationRef'
@@ -171,9 +171,15 @@ export default function HomeScreen({
             <Text style={styles.header}>Looks like your wallet is empty.</Text>
             <View style={{ marginLeft: 8 }}>
               <Tooltip
-                visible={showTooltip}
-                popover={
-                  <>
+                isVisible={showTooltip}
+                placement="bottom"
+                closeOnBackgroundInteraction
+                contentStyle={{
+                  backgroundColor: Color.OptimisticBlue,
+                  borderRadius: '0%'
+                }}
+                content={
+                  <View style={{ display: 'flex', alignItems: 'center' }}>
                     <Text
                       style={{
                         fontFamily: theme.fontFamily.bold,
@@ -191,17 +197,11 @@ export default function HomeScreen({
                       You can add a sample credential or select 'Add Credential'
                       to add a credential to your wallet.
                     </Text>
-                  </>
+                  </View>
                 }
                 onClose={() => setShowTooltip(false)}
-                onOpen={() => setShowTooltip(true)}
-                backgroundColor={Color.Gray300}
-                highlightColor={Color.Gray300}
-                height={100}
-                width={300}
-                withPointer={false}
-                containerStyle={{
-                  alignSelf: 'center'
+                tooltipStyle={{
+                  width: 300
                 }}
               >
                 <TouchableOpacity onPress={() => setShowTooltip(true)}>
