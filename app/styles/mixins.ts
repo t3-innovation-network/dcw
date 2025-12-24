@@ -1,5 +1,6 @@
 import { StyleSheet, ViewStyle } from 'react-native'
 import defaultTheme, { ThemeType } from './theme'
+import { Color } from './colors'
 
 const mixins = (theme: ThemeType) => {
   const sharedMixins = StyleSheet.create({
@@ -17,7 +18,7 @@ const mixins = (theme: ThemeType) => {
     },
     paragraphText: {
       fontFamily: theme.fontFamily.regular,
-      fontSize: theme.fontSize.regular,
+      fontSize: theme.fontSize.medium,
       color: theme.color.textSecondary,
       lineHeight: 24
     }
@@ -42,8 +43,9 @@ const mixins = (theme: ThemeType) => {
     },
     headerTitle: {
       color: theme.color.textPrimary,
-      fontFamily: theme.fontFamily.bold,
-      fontSize: theme.fontSize.regular
+      fontFamily: theme.fontFamily.TobiasLight,
+      fontSize: theme.fontSize.medium,
+      marginLeft: 2
     },
     headerIcon: {
       color: theme.color.textPrimary,
@@ -67,25 +69,21 @@ const mixins = (theme: ThemeType) => {
     /* Button mixins */
     button: {
       backgroundColor: theme.color.iconActive,
-      borderRadius: theme.borderRadius,
       paddingVertical: 12,
       paddingHorizontal: 18,
       minHeight: 48
     },
     buttonPrimary: {
-      backgroundColor: theme.color.buttonPrimary,
-      padding: 16,
-      borderRadius: theme.borderRadius
+      backgroundColor: Color.BrightGreen,
+      padding: 16
     },
     buttonSecondary: {
       backgroundColor: theme.color.foregroundPrimary,
-      padding: 16,
-      borderRadius: theme.borderRadius
+      padding: 16
     },
     buttonError: {
       backgroundColor: theme.color.error,
-      padding: 16,
-      borderRadius: theme.borderRadius
+      padding: 16
     },
     buttonContainer: {
       ...sharedMixins.shadow,
@@ -100,7 +98,8 @@ const mixins = (theme: ThemeType) => {
     buttonTitle: {
       fontFamily: theme.fontFamily.medium,
       fontSize: theme.fontSize.regular,
-      color: theme.color.backgroundSecondary
+      fontWeight: 'bold',
+      color: Color.DarkBlue
     },
     buttonTitleSecondary: {
       fontFamily: theme.fontFamily.medium,
@@ -110,7 +109,6 @@ const mixins = (theme: ThemeType) => {
     buttonIcon: {
       justifyContent: 'space-between',
       backgroundColor: theme.color.foregroundPrimary,
-      borderRadius: theme.borderRadius,
       paddingVertical: 12,
       paddingHorizontal: 18,
       minHeight: 48
@@ -126,12 +124,11 @@ const mixins = (theme: ThemeType) => {
     },
     buttonIconTitle: {
       fontFamily: theme.fontFamily.medium,
-      fontSize: theme.fontSize.regular,
-      color: theme.color.textPrimary
+      fontSize: theme.fontSize.medium,
+      color: Color.OptimisticBlue
     },
     buttonClear: {
       padding: 16,
-      borderRadius: theme.borderRadius,
       backgroundColor: theme.color.transparent
     },
     buttonClearContainer: {
@@ -149,6 +146,7 @@ const mixins = (theme: ThemeType) => {
     /* Input mixins */
     input: {
       fontSize: theme.fontSize.regular,
+      fontFamily: theme.fontFamily.verdana,
       backgroundColor: theme.color.backgroundPrimary,
       height: 48
     },
