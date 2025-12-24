@@ -72,6 +72,7 @@
     "@digitalcredentials/vpqr": "^2.2.1",
     "@digitalcredentials/x25519-key-agreement-key-2020": "^3.0.0",
     "@expo-google-fonts/playfair-display": "^0.2.0",
+    "@expo-google-fonts/arimo": "^0.2.3",
     "@expo-google-fonts/roboto-mono": "^0.2.2",
     "@expo-google-fonts/rubik": "^0.2.0",
     "@expo-google-fonts/source-sans-pro": "^0.2.3",
