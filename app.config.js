@@ -81,7 +81,7 @@ export default {
       userInterfaceStyle: 'automatic',
       buildNumber: BUILD_NUMBER.toString(),
       supportsTablet: true,
-      // bundleIdentifier: 'org.t3.dcw',
+      bundleIdentifier: 'org.t3.lcw',
       deploymentTarget: '13.0',
       entitlements: {
         'com.apple.security.application-groups': [
