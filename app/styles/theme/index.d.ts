@@ -37,6 +37,7 @@ export type ThemeType = {
     medium: FontFamily
     bold: FontFamily
     mono: FontFamily
+    verdana: FontFamily
   }
   fontSize: {
     xl: number
