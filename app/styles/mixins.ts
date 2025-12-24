@@ -1,5 +1,6 @@
 import { StyleSheet, ViewStyle } from 'react-native'
 import defaultTheme, { ThemeType } from './theme'
+import { Color } from './colors'
 
 const mixins = (theme: ThemeType) => {
   const sharedMixins = StyleSheet.create({
@@ -42,8 +43,9 @@ const mixins = (theme: ThemeType) => {
     },
     headerTitle: {
       color: theme.color.textPrimary,
-      fontFamily: theme.fontFamily.bold,
-      fontSize: theme.fontSize.regular
+      fontFamily: theme.fontFamily.TobiasLight,
+      fontSize: theme.fontSize.medium,
+      marginLeft: 2
     },
     headerIcon: {
       color: theme.color.textPrimary,
@@ -100,7 +102,8 @@ const mixins = (theme: ThemeType) => {
     buttonTitle: {
       fontFamily: theme.fontFamily.medium,
       fontSize: theme.fontSize.regular,
-      color: theme.color.backgroundSecondary
+      fontWeight: 'bold',
+      color: Color.DarkBlue
     },
     buttonTitleSecondary: {
       fontFamily: theme.fontFamily.medium,

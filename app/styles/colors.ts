@@ -1,4 +1,6 @@
 export enum Color {
+  OptimisticBlue = '#DBF5FF',
+  DarkBlue = '#031C32',
   Blue = '#0F7390',
   TransparentBlue = 'rgba(15, 115, 144, 0.3)',
 
@@ -6,7 +8,7 @@ export enum Color {
   DarkCyan = '#24D3EE',
   TransparentCyan = 'rgba(103, 232, 249, 0.3)',
 
-  Green = '#A3E534',
+  BrightGreen = '#ADFF6B',
   DarkGreen = '#4D7C0F',
 
   Red = '#EF4444',
@@ -26,7 +28,12 @@ export enum Color {
   Gray600 = '#4B5563',
   Gray700 = '#374151',
   Gray800 = '#1F2937',
-  Gray900 = '#111827'
+  Gray900 = '#111827',
+
+  // New theme colors
+  BackgroundBlue = '#004F91',
+  TitleGreen = '#ADFF6B',
+  NavBlue = '#001F5C'
 }
 
 /* Gray values follow css guide:
