@@ -6,6 +6,20 @@ import { Linking } from 'react-native'
 jest.mock('react-native', () => {
   const mockReact = require('react')
   return {
+    Dimensions: {
+      get: jest.fn(() => ({ width: 320, height: 640 })),
+      addEventListener: jest.fn(() => ({ remove: jest.fn() })),
+      removeEventListener: jest.fn()
+    },
+    InteractionManager: {
+      runAfterInteractions: jest.fn((cb) => cb && cb()),
+      createInteractionHandle: jest.fn(),
+      clearInteractionHandle: jest.fn()
+    },
+    Modal: ({ children }: any) =>
+      mockReact.createElement('View', null, children),
+    TouchableWithoutFeedback: ({ children, onPress }: any) =>
+      mockReact.createElement('View', { onPress }, children),
     View: 'View',
     Text: 'Text',
     FlatList: ({
@@ -31,7 +45,8 @@ jest.mock('react-native', () => {
       ),
     StyleSheet: {
       create: jest.fn((styles: any) => styles),
-      flatten: jest.fn((styles: any) => styles)
+      flatten: jest.fn((styles: any) => styles),
+      compose: jest.fn((a: any, b: any) => ({ ...(a || {}), ...(b || {}) }))
     },
     AccessibilityInfo: { announceForAccessibility: jest.fn() },
     Linking: { openURL: jest.fn() }
@@ -81,7 +96,22 @@ jest.mock('../app/hooks', () => ({
       modalBodyText: {},
       noShadow: {}
     },
-    theme: { iconSize: 24, color: { backgroundPrimary: '#fff' } },
+    theme: {
+      iconSize: 24,
+      color: {
+        backgroundPrimary: '#fff',
+        iconActive: '#000',
+        iconInactive: '#888'
+      },
+      fontFamily: {
+        TobiasLight: 'System-Light',
+        lighter: 'System-Light',
+        regular: 'System-Regular',
+        medium: 'System-Medium',
+        bold: 'System-Bold',
+        mono: 'System-Mono'
+      }
+    },
     mixins: {
       credentialListContainer: {},
       buttonIcon: {},
@@ -149,42 +179,44 @@ jest.mock('../app.config', () => ({
   LinkConfig: {
     appWebsite: {
       home: 'https://lcw.app',
-      faq: 'https://lcw.app/faq',
-    },
-  },
-}));
+      faq: 'https://lcw.app/faq'
+    }
+  }
+}))
 
 jest.mock('../app/lib/verifiableObject', () => ({
-  verificationResultFor: jest.fn(() => Promise.resolve({
-    verified: true,
-    log: [
-      { id: 'valid_signature', valid: true },
-      { id: 'expiration', valid: true },
-      { id: 'registered_issuer', valid: true },
-      { id: 'revocation_status', valid: true },
-    ],
-    timestamp: Date.now(),
-  })),
-}));
+  verificationResultFor: jest.fn(() =>
+    Promise.resolve({
+      verified: true,
+      log: [
+        { id: 'valid_signature', valid: true },
+        { id: 'expiration', valid: true },
+        { id: 'registered_issuer', valid: true },
+        { id: 'revocation_status', valid: true }
+      ],
+      timestamp: Date.now()
+    })
+  )
+}))
 
 // credentialVerificationStatus module removed - all credentials can now be shared
 
 jest.mock('../app/lib/globalModal', () => ({
-  displayGlobalModal: jest.fn(() => Promise.resolve(true)),
-}));
+  displayGlobalModal: jest.fn(() => Promise.resolve(true))
+}))
 
 jest.mock('../app/init/registries', () => ({
   DidRegistryContext: {
     Provider: ({ children }: any) => children,
-    Consumer: ({ children }: any) => children({}),
-  },
-}));
+    Consumer: ({ children }: any) => children({})
+  }
+}))
 
 // Mock useContext to return a mock registry
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
-  useContext: jest.fn(() => ({})),
-}));
+  useContext: jest.fn(() => ({}))
+}))
 
 import HomeScreen from '../app/screens/HomeScreen/HomeScreen'
 
