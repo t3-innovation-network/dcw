@@ -109,7 +109,8 @@ jest.mock('../app/hooks', () => ({
         regular: 'System-Regular',
         medium: 'System-Medium',
         bold: 'System-Bold',
-        mono: 'System-Mono'
+        mono: 'System-Mono',
+        verdana: 'Verdana'
       }
     },
     mixins: {

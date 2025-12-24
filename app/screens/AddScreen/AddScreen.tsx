@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import { AccessibilityInfo, View } from 'react-native'
+import { AccessibilityInfo, View, Image } from 'react-native'
 import { Text, Button } from 'react-native-elements'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
+import ScanQrIcon from '../../assets/icons/scan-QR-icon.png'
+import UploadFileIcon from '../../assets/icons/uploud-icon.png'
+import AddIcon from '../../assets/icons/plus-icon.png'
 import { TextInput } from 'react-native-paper'
 import { IVerifiableCredential } from '@digitalcredentials/ssi'
 
@@ -163,6 +166,10 @@ export default function AddScreen(): React.ReactElement {
     }
   }
 
+  async function addSampleCredential() {
+    return 'Sample credential added'
+  }
+
   return (
     <>
       <NavHeader title="Add Credential" />
@@ -172,21 +179,40 @@ export default function AddScreen(): React.ReactElement {
       >
         <View style={styles.container}>
           <Text style={styles.paragraph}>
-            To add a credential, follow an approved link from an issuer or use
-            the options below.
+            To add credentials, follow an approved link from an Issuer (most
+            often a university) or use the options below.
           </Text>
+          <Button
+            title="Add a sample credential"
+            buttonStyle={mixins.buttonIcon}
+            containerStyle={[mixins.buttonIconContainer, mixins.noFlex]}
+            titleStyle={[
+              mixins.buttonIconTitle,
+              { fontFamily: theme.fontFamily.verdana }
+            ]}
+            iconRight
+            onPress={addSampleCredential}
+            icon={
+              <Image
+                source={AddIcon}
+                style={{ width: 35, height: 35, resizeMode: 'contain' }}
+              />
+            }
+          />
           <Button
             title="Scan QR code"
             buttonStyle={mixins.buttonIcon}
             containerStyle={[mixins.buttonIconContainer, mixins.noFlex]}
-            titleStyle={mixins.buttonIconTitle}
+            titleStyle={[
+              mixins.buttonIconTitle,
+              { fontFamily: theme.fontFamily.verdana }
+            ]}
             iconRight
             onPress={onPressQRScreen}
             icon={
-              <MaterialIcons
-                name="qr-code-scanner"
-                size={theme.iconSize}
-                color={theme.color.iconInactive}
+              <Image
+                source={ScanQrIcon}
+                style={{ width: 35, height: 35, resizeMode: 'contain' }}
               />
             }
           />
@@ -199,37 +225,53 @@ export default function AddScreen(): React.ReactElement {
             onPress={addFromFile}
             testID="add-from-file-button"
             icon={
-              <MaterialCommunityIcons
-                name="file-upload"
-                size={theme.iconSize}
-                color={theme.color.iconInactive}
+              <Image
+                source={UploadFileIcon}
+                style={{ width: 35, height: 35, resizeMode: 'contain' }}
               />
             }
           />
           <View style={styles.sectionContainer}>
             <View style={styles.actionInputContainer}>
-              <TextInput
-                autoCapitalize="none"
-                multiline
-                value={inputValue}
-                onChangeText={setInputValue}
-                style={styles.input}
-                outlineColor={theme.color.iconInactive}
-                selectionColor={theme.color.textPrimary}
-                theme={{
-                  colors: {
-                    placeholder: theme.color.textSecondary,
-                    text: theme.color.textPrimary,
-                    primary: theme.color.brightAccent
-                  }
-                }}
-                label="Paste JSON or URL"
-                mode="outlined"
-                keyboardAppearance={theme.keyboardAppearance}
-                onTextInput={() => {}}
-                tvParallaxProperties={undefined}
-                testID="paste-json-input"
-              />
+              <View style={styles.textAreaContainer}>
+                <View style={styles.inputHeader}>
+                  <Text style={styles.inputLabel}>Paste JSON or URL</Text>
+                  <Text
+                    style={styles.sampleLink}
+                    onPress={addSampleCredential}
+                    accessibilityRole="link"
+                  >
+                    Try sample JSON
+                  </Text>
+                </View>
+                <TextInput
+                  autoCapitalize="none"
+                  multiline
+                  value={inputValue}
+                  onChangeText={setInputValue}
+                  style={[
+                    styles.input,
+                    styles.inputContent,
+                    { fontFamily: theme.fontFamily.verdana }
+                  ]}
+                  textAlignVertical="top"
+                  outlineColor={theme.color.textSecondary}
+                  activeOutlineColor={theme.color.textSecondary}
+                  selectionColor={theme.color.textPrimary}
+                  placeholderTextColor={theme.color.textSecondary}
+                  theme={{
+                    colors: {
+                      placeholder: theme.color.textSecondary,
+                      text: theme.color.textSecondary,
+                      primary: theme.color.brightAccent
+                    }
+                  }}
+                  mode="outlined"
+                  keyboardAppearance={theme.keyboardAppearance}
+                  onTextInput={() => {}}
+                  tvParallaxProperties={undefined}
+                />
+              </View>
               <Button
                 title="Add"
                 buttonStyle={[

@@ -9,5 +9,8 @@ export enum FontFamily {
   GT_AmericaBold = 'SourceSansPro_700Bold',
 
   // Monospace
-  RobotoMonoRegular = 'RobotoMono_400Regular'
+  RobotoMonoRegular = 'RobotoMono_400Regular',
+
+  // System fallback
+  Verdana = 'Arimo_400Regular'
 }
