@@ -18,7 +18,7 @@ export const darkTheme: ThemeType = {
     iconActive: Color.TitleGreen,
     iconInactive: Color.Gray400,
     inputInactive: Color.Gray400,
-    buttonPrimary: Color.TitleGreen,
+    buttonPrimary: Color.BrightGreen,
     buttonSecondary: Color.Gray600,
     buttonDisabled: Color.Gray500,
     shadow: Color.Black,
@@ -37,7 +37,8 @@ export const darkTheme: ThemeType = {
     regular: FontFamily.GT_AmericaRegular,
     medium: FontFamily.GT_AmericaMedium,
     bold: FontFamily.GT_AmericaBold,
-    mono: FontFamily.RobotoMonoRegular
+    mono: FontFamily.RobotoMonoRegular,
+    verdana: FontFamily.Verdana
   },
   fontSize: {
     xl: 48,
@@ -47,7 +48,7 @@ export const darkTheme: ThemeType = {
     regular: 16,
     small: 12
   },
-  borderRadius: 5,
+  borderRadius: 0,
   iconSize: 24,
   issuerIconSize: 48,
   statusBarStyle: ColorScheme.Light,
