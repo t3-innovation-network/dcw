@@ -9,8 +9,8 @@ export default createDynamicStyleSheet(({ theme, mixins }) => ({
     minHeight: 72
   },
   listItemOuterContainer: {
-    marginVertical: 8,
-    borderRadius: mixins.button.borderRadius
+    marginVertical: 8
+    // borderRadius: mixins.button.borderRadius
   },
   listItemContentContainer: {
     flexDirection: 'column'
