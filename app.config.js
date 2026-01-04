@@ -27,7 +27,7 @@ export const ZCAP_EXPIRES = new Date(Date.now() + 1000 * 60 * 60 * 24 * 10) // 1
 export const FEATURE_FLAGS = {
   // true - original LCW behavior (require password at setup)
   // false - no password required
-  passwordProtect: true
+  passwordProtect: false
 }
 
 // Display date format for VCs (expiration, date issued, etc)
@@ -79,7 +79,7 @@ export default {
       userInterfaceStyle: 'automatic',
       buildNumber: BUILD_NUMBER.toString(),
       supportsTablet: true,
-      // bundleIdentifier: 'org.t3.dcw',
+      bundleIdentifier: 'org.t3.lcw',
       deploymentTarget: '13.0',
       entitlements: {
         'com.apple.security.application-groups': [

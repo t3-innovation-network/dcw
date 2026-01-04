@@ -73,7 +73,6 @@ buck-out/
 /ios/Pods/
 
 # Expo
-.expo/
 web-build/
 
 # @end expo-cli
@@ -86,3 +85,6 @@ ios_old
 ios
 *.xcarchive
 android
+
+# jest cache
+.jest-cache/
