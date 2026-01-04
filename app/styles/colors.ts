@@ -33,7 +33,9 @@ export enum Color {
   // New theme colors
   BackgroundBlue = '#004F91',
   TitleGreen = '#ADFF6B',
-  NavBlue = '#001F5C'
+  NavBlue = '#001F5C',
+
+  BlueGray = '#4A5565'
 }
 
 /* Gray values follow css guide:

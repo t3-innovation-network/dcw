@@ -7,6 +7,8 @@ import UploadFileIcon from '../../assets/icons/uploud-icon.png'
 import AddIcon from '../../assets/icons/plus-icon.png'
 import { TextInput } from 'react-native-paper'
 import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { credentials } from '../../mock/credential'
+import { stageCredentials } from '../../store/slices/credentialFoyer'
 
 import dynamicStyleSheet from './AddScreen.styles'
 import { stageCredentialsForProfile } from '../../store/slices/credentialFoyer'
@@ -166,8 +168,21 @@ export default function AddScreen(): React.ReactElement {
     }
   }
 
+  async function goToApproveCredentials() {
+    if (navigationRef.isReady()) {
+      const rawProfileRecord = await NavigationUtil.selectProfile()
+      navigationRef.navigate('AcceptCredentialsNavigation', {
+        screen: 'ApproveCredentialsScreen',
+        params: {
+          rawProfileRecord
+        }
+      })
+    }
+  }
+
   async function addSampleCredential() {
-    return 'Sample credential added'
+    await dispatch(stageCredentials(credentials))
+    goToApproveCredentials()
   }
 
   return (

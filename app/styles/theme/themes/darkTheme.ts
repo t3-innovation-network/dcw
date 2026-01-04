@@ -19,7 +19,7 @@ export const darkTheme: ThemeType = {
     iconInactive: Color.Gray400,
     inputInactive: Color.Gray400,
     buttonPrimary: Color.BrightGreen,
-    buttonSecondary: Color.Gray600,
+    buttonSecondary: Color.BlueGray,
     buttonDisabled: Color.Gray500,
     shadow: Color.Black,
     success: Color.BrightGreen,

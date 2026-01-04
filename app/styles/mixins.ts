@@ -71,7 +71,8 @@ const mixins = (theme: ThemeType) => {
       backgroundColor: theme.color.iconActive,
       paddingVertical: 12,
       paddingHorizontal: 18,
-      minHeight: 48
+      minHeight: 48,
+      color: Color.Black
     },
     buttonPrimary: {
       backgroundColor: Color.BrightGreen,
