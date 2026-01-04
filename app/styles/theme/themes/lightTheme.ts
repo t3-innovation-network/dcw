@@ -19,7 +19,7 @@ export const lightTheme: ThemeType = {
     iconInactive: Color.Gray500,
     inputInactive: Color.Gray600,
     buttonPrimary: Color.BrightGreen,
-    buttonSecondary: Color.Gray400,
+    buttonSecondary: Color.BlueGray,
     buttonDisabled: Color.Gray500,
     shadow: Color.Black,
     success: Color.DarkGreen,
