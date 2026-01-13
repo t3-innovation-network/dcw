@@ -10,21 +10,24 @@ export default function StatusBadge({
   label,
   color,
   icon,
-  backgroundColor
+  iconElement
 }: StatusBadgeProps): React.ReactElement {
   const { styles } = useDynamicStyles(dynamicStyleSheet)
-  const containerStyle = { backgroundColor }
   const labelStyle = { color }
 
   return (
-    <View style={[styles.container, containerStyle]}>
-      {icon && (
-        <MaterialIcons
-          name={icon}
-          color={color}
-          style={styles.icon}
-          size={16}
-        />
+    <View style={[styles.container]}>
+      {iconElement ? (
+        <View style={styles.icon}>{iconElement}</View>
+      ) : (
+        icon && (
+          <MaterialIcons
+            name={icon}
+            color={color}
+            style={styles.icon}
+            size={16}
+          />
+        )
       )}
       <Text style={[styles.label, labelStyle]}>{label}</Text>
     </View>

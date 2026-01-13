@@ -1,5 +1,5 @@
 import React, { ComponentProps, useMemo } from 'react'
-import { View, TouchableOpacity } from 'react-native'
+import { Image, View, TouchableOpacity } from 'react-native'
 import { Text } from 'react-native-elements'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
@@ -9,6 +9,7 @@ import CredentialStatusBadges from '../CredentialStatusBadges/CredentialStatusBa
 import { useDynamicStyles, useVerifyCredential } from '../../hooks'
 import { credentialItemPropsFor } from '../../lib/credentialDisplay'
 import { CardImage } from '../../lib/credentialDisplay/shared'
+import verifiedStatusIcon from '../../assets/deafulatIssueBrightGreen.png'
 
 type VerificationStatus = 'verifying' | 'verified' | 'warning' | 'not_verified'
 
@@ -135,9 +136,9 @@ function CredentialItem({
       return (
         <View style={styles.notVerifiedIcon}>
           <MaterialCommunityIcons
-            name="close-circle"
+            name="close"
             size={theme.issuerIconSize - 8}
-            color={theme.color.error}
+            color={theme.color.errorLight}
           />
         </View>
       )
@@ -167,13 +168,21 @@ function CredentialItem({
       )
     }
 
+    if (verificationStatus === 'verified') {
+      return (
+        <View style={styles.notVerifiedIcon}>
+          <Image
+            source={verifiedStatusIcon}
+            style={styles.verifiedStatusIcon}
+          />
+        </View>
+      )
+    }
+
+    // Fallback: treat unknown state as verified icon
     return (
       <View style={styles.notVerifiedIcon}>
-        <MaterialCommunityIcons
-          name="check-circle"
-          size={theme.issuerIconSize - 8}
-          color={theme.color.success}
-        />
+        <Image source={verifiedStatusIcon} style={styles.verifiedStatusIcon} />
       </View>
     )
   }

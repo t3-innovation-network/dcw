@@ -7,7 +7,7 @@ import UploadFileIcon from '../../assets/icons/uploud-icon.png'
 import AddIcon from '../../assets/icons/plus-icon.png'
 import { TextInput } from 'react-native-paper'
 import { IVerifiableCredential } from '@digitalcredentials/ssi'
-import { credentials } from '../../mock/credential'
+import { bachelorDegree } from '../../mock/BachelorDegree'
 import { stageCredentials } from '../../store/slices/credentialFoyer'
 
 import dynamicStyleSheet from './AddScreen.styles'
@@ -181,7 +181,7 @@ export default function AddScreen(): React.ReactElement {
   }
 
   async function addSampleCredential() {
-    await dispatch(stageCredentials(credentials))
+    await dispatch(stageCredentials([bachelorDegree]))
     goToApproveCredentials()
   }
 
