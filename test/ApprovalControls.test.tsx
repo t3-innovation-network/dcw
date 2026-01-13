@@ -96,7 +96,7 @@ describe('ApprovalControls', () => {
       const { getByText } = renderComponent(pendingCredential)
 
       expect(getByText('Accept')).toBeTruthy()
-      expect(getByText('Decline')).toBeTruthy()
+      expect(getByText('Skip')).toBeTruthy()
     })
 
     it('should call acceptPendingCredentials when Accept is pressed', () => {
@@ -117,7 +117,7 @@ describe('ApprovalControls', () => {
       )
       const { getByText } = renderComponent(pendingCredential)
 
-      fireEvent.press(getByText('Decline'))
+      fireEvent.press(getByText('Skip'))
       // The actual dispatch call would be tested in integration tests
     })
   })
@@ -132,7 +132,7 @@ describe('ApprovalControls', () => {
 
       expect(getByText('Close')).toBeTruthy()
       expect(() => getByText('Accept')).toThrow()
-      expect(() => getByText('Decline')).toThrow()
+      expect(() => getByText('Skip')).toThrow()
     })
 
     it('should display duplicate message for duplicate credentials', () => {
@@ -227,7 +227,7 @@ describe('ApprovalControls', () => {
       const { getByText } = renderComponent(pendingCredential)
 
       const acceptButton = getByText('Accept')
-      const declineButton = getByText('Decline')
+      const declineButton = getByText('Skip')
 
       // Verify buttons are rendered and accessible
       expect(acceptButton).toBeTruthy()
