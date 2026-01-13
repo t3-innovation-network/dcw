@@ -44,9 +44,9 @@ export const lightTheme: ThemeType = {
     xl: 48,
     title: 36,
     header: 24,
-    medium: 18,
-    regular: 16,
-    small: 12
+    medium: 20,
+    regular: 18,
+    small: 14
   },
   borderRadius: 0,
   iconSize: 24,
