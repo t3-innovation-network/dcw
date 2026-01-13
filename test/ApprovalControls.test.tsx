@@ -130,7 +130,7 @@ describe('ApprovalControls', () => {
       )
       const { getByText } = renderComponent(pendingCredential)
 
-      expect(getByText('Close')).toBeTruthy()
+      expect(getByText('Skip')).toBeTruthy()
       expect(() => getByText('Accept')).toThrow()
       expect(() => getByText('Skip')).toThrow()
     })
@@ -152,11 +152,11 @@ describe('ApprovalControls', () => {
       )
       const { getByText } = renderComponent(pendingCredential)
 
-      fireEvent.press(getByText('Close'))
+      fireEvent.press(getByText('Skip'))
 
       // The actual navigation and dispatch calls would be tested in integration tests
       // Here we just verify the button is pressable
-      expect(getByText('Close')).toBeTruthy()
+      expect(getByText('Skip')).toBeTruthy()
     })
 
     it('should not navigate when navigationRef is not ready', async () => {
@@ -169,7 +169,7 @@ describe('ApprovalControls', () => {
       )
       const { getByText } = renderComponent(pendingCredential)
 
-      fireEvent.press(getByText('Close'))
+      fireEvent.press(getByText('Skip'))
 
       expect(navigationRef.navigate).not.toHaveBeenCalled()
     })
