@@ -1,6 +1,6 @@
 import React from 'react'
 import moment from 'moment'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { Image, View, Text, TouchableOpacity } from 'react-native'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 
 import { useDynamicStyles, useVerifyCredential } from '../../hooks'
@@ -10,6 +10,7 @@ import { navigationRef } from '../../navigation/navigationRef'
 import { CredentialRecordRaw } from '../../model'
 
 import { DATE_FORMAT } from '../../../app.config'
+import verifiedStatusIcon from '../../assets/deafulatIssueBrightGreen.png'
 
 type CommonProps = {
   isButton?: boolean
@@ -90,10 +91,13 @@ export default function VerificationCard({
     if (verified) {
       return (
         <View style={styles.flexRow}>
-          <MaterialIcons
-            name="check-circle"
-            size={theme.iconSize}
-            color={theme.color.success}
+          <Image
+            source={verifiedStatusIcon}
+            style={{
+              width: theme.iconSize,
+              height: theme.iconSize,
+              resizeMode: 'contain'
+            }}
             accessibilityLabel="Verified, Icon"
           />
           <View>

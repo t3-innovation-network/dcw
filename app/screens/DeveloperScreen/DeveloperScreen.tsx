@@ -11,6 +11,7 @@ import dynamicStyleSheet from './DeveloperScreen.styles'
 import { DeveloperScreenProps } from './DeveloperScreen.d'
 import { stageCredentials } from '../../store/slices/credentialFoyer'
 import { credentials } from '../../mock/credential'
+import { bachelorDegree } from '../../mock/BachelorDegree'
 import { navigationRef } from '../../navigation/navigationRef'
 import { Cache, CacheKey } from '../../lib/cache'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
@@ -61,7 +62,7 @@ export default function DeveloperScreen({
   }
 
   async function addMockCredentials() {
-    await dispatch(stageCredentials(credentials))
+    await dispatch(stageCredentials([bachelorDegree]))
     goToApproveCredentials()
   }
 
