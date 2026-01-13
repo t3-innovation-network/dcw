@@ -2,7 +2,6 @@ import React from 'react'
 import { render, fireEvent } from '@testing-library/react-native'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
-import ApprovalControls from '../app/components/ApprovalControls/ApprovalControls'
 import {
   PendingCredential,
   ApprovalStatus,
@@ -10,6 +9,17 @@ import {
 } from '../app/store/slices/credentialFoyer'
 import { mockCredential } from '../app/mock/credential'
 import { ObjectID } from 'bson'
+
+// Ensure ApprovalControls' useSelector(selectRawCredentialRecords) always receives
+// a state shape that contains `credential.rawCredentialRecords` (so `.find` can't crash).
+jest.mock('react-redux', () => {
+  const actual = jest.requireActual('react-redux')
+  return {
+    ...actual,
+    useSelector: (selector: any) =>
+      selector({ credential: { rawCredentialRecords: [] } })
+  }
+})
 
 // Mock the navigation
 jest.mock('../app/navigation/navigationRef', () => ({
@@ -60,10 +70,27 @@ jest.mock('../app/store/slices/credentialFoyer', () => ({
   clearFoyer: jest.fn(() => ({ type: 'clearFoyer' }))
 }))
 
+// Mock the credential slice selectors/actions used by ApprovalControls.rejectAndExit
+jest.mock('../app/store/slices/credential', () => ({
+  ...jest.requireActual('../app/store/slices/credential'),
+  // Make this safe even if the store doesn't perfectly match RootState in unit tests.
+  selectRawCredentialRecords: jest.fn(
+    (state?: { credential?: { rawCredentialRecords?: any[] } }) =>
+      state?.credential?.rawCredentialRecords ?? []
+  ),
+  deleteCredential: jest.fn(() => ({ type: 'deleteCredential' }))
+}))
+
+// Require AFTER mocks so ApprovalControls picks up the mocked selectors/actions.
+const ApprovalControls =
+  require('../app/components/ApprovalControls/ApprovalControls').default
+
 const createMockStore = () =>
   configureStore({
     reducer: {
-      credentialFoyer: (state = { pendingCredentials: [] }) => state
+      credentialFoyer: (state = { pendingCredentials: [] }) => state,
+      // ApprovalControls uses selectRawCredentialRecords(state). Ensure this exists for tests.
+      credential: (state = { rawCredentialRecords: [] }) => state
     }
   })
 
@@ -123,14 +150,14 @@ describe('ApprovalControls', () => {
   })
 
   describe('PendingDuplicate status', () => {
-    it('should render Close button for duplicate credentials', () => {
+    it('should render Remove From Wallet button for duplicate credentials', () => {
       const pendingCredential = new PendingCredential(
         mockCredential,
         ApprovalStatus.PendingDuplicate
       )
       const { getByText } = renderComponent(pendingCredential)
 
-      expect(getByText('Skip')).toBeTruthy()
+      expect(getByText('Remove From Wallet')).toBeTruthy()
       expect(() => getByText('Accept')).toThrow()
       expect(() => getByText('Skip')).toThrow()
     })
@@ -145,18 +172,18 @@ describe('ApprovalControls', () => {
       expect(getByText(ApprovalMessage.Duplicate)).toBeTruthy()
     })
 
-    it('should call rejectAndExit when Close is pressed', async () => {
+    it('should call rejectAndExit when Remove From Wallet is pressed', async () => {
       const pendingCredential = new PendingCredential(
         mockCredential,
         ApprovalStatus.PendingDuplicate
       )
       const { getByText } = renderComponent(pendingCredential)
 
-      fireEvent.press(getByText('Skip'))
+      fireEvent.press(getByText('Remove From Wallet'))
 
       // The actual navigation and dispatch calls would be tested in integration tests
       // Here we just verify the button is pressable
-      expect(getByText('Skip')).toBeTruthy()
+      expect(getByText('Remove From Wallet')).toBeTruthy()
     })
 
     it('should not navigate when navigationRef is not ready', async () => {
@@ -169,7 +196,7 @@ describe('ApprovalControls', () => {
       )
       const { getByText } = renderComponent(pendingCredential)
 
-      fireEvent.press(getByText('Skip'))
+      fireEvent.press(getByText('Remove From Wallet'))
 
       expect(navigationRef.navigate).not.toHaveBeenCalled()
     })
