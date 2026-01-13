@@ -1,6 +1,6 @@
 # T3 Digital Credential Wallet
 
-T3 Digital Credential Wallet is a cross-platform iOS and Android mobile application 
+T3 Digital Credential Wallet is a cross-platform iOS and Android mobile application
 for storing and sharing digital learner credentials.
 
 Install [T3 Digital Credential Wallet]() for your mobile!
@@ -10,10 +10,11 @@ The wallet is based on the [LCW Digital Credential Wallet specification](https:/
 The app has been compiled for iOS and Android and allows users to add and share credentials, as well as manage the wallet.
 
 ## Goals
-This T3 Digital Credential Wallet includes the features and technical requirements 
-ultimately enabling individuals to curate and present their learning and 
-employment records to others — for example, as applicants to educational programs 
-or to apply for jobs with employers—in an interoperable manner. 
+
+This T3 Digital Credential Wallet includes the features and technical requirements
+ultimately enabling individuals to curate and present their learning and
+employment records to others — for example, as applicants to educational programs
+or to apply for jobs with employers—in an interoperable manner.
 
 ## Features
 
@@ -245,8 +246,9 @@ For more information on accessibility please visit the
 
 # LCW App - general info
 
-## Privacy Policy 
-This Privacy Policy explains how T3 Digital Credential Wallet collects, uses, and 
+## Privacy Policy
+
+This Privacy Policy explains how T3 Digital Credential Wallet collects, uses, and
 processes personal information about our learners.
 
 ### What Personal Information We Collect
@@ -259,7 +261,7 @@ We may change this Privacy Policy from time to time. If we make any significant
 changes in the way we treat your personal information we will make this clear
 on our website or by contacting you directly.
 
-The controller for your personal information is the T3 Digital Credential Wallet 
+The controller for your personal information is the T3 Digital Credential Wallet
 project at MIT. We can be contacted at lcw-support@mit.edu.
 
 ## Terms and Conditions of Use

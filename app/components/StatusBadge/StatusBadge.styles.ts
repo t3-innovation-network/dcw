@@ -8,16 +8,16 @@ export default createDynamicStyleSheet(({ theme }) => ({
     alignSelf: 'flex-start',
     paddingHorizontal: 7,
     marginHorizontal: 2,
-    height: 20,
+    height: 24,
     marginBottom: 4
   },
   icon: {
     marginRight: 4,
-    marginLeft: -5
+    marginLeft: -10,
+    fontSize: theme.fontSize.medium
   },
   label: {
-    fontFamily: theme.fontFamily.medium,
-    fontSize: theme.fontSize.small,
-    letterSpacing: 0.3
+    fontFamily: theme.fontFamily.bold,
+    fontSize: theme.fontSize.regular
   }
 }))

@@ -24,21 +24,24 @@ export default createDynamicStyleSheet(({ theme, mixins }) => ({
   },
   listItemTitle: {
     color: theme.color.textPrimary,
-    fontFamily: theme.fontFamily.medium,
-    fontSize: theme.fontSize.regular,
+    fontFamily: theme.fontFamily.bold,
+    fontSize: theme.fontSize.medium,
     marginBottom: 6
   },
   listItemSubtitle: {
     color: theme.color.textSecondary,
     fontFamily: theme.fontFamily.regular,
-    fontSize: 14
+    fontSize: theme.fontSize.regular
   },
   notVerifiedIcon: {
-    width: theme.issuerIconSize - 8,
-    height: theme.issuerIconSize - 8,
-    marginRight: 12,
-    justifyContent: 'center',
-    alignItems: 'center'
+    width: theme.issuerIconSize,
+    height: theme.issuerIconSize,
+    marginRight: 16
+  },
+  verifiedStatusIcon: {
+    width: theme.issuerIconSize - 2,
+    height: theme.issuerIconSize - 2,
+    resizeMode: 'contain'
   },
   checkboxContainer: {
     marginRight: 12,

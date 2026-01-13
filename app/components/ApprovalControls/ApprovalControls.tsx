@@ -3,6 +3,7 @@ import { TouchableOpacity, View } from 'react-native'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
 import { Text } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
+import { useSelector } from 'react-redux'
 
 import {
   ApprovalStatus,
@@ -12,11 +13,16 @@ import {
   acceptPendingCredentials,
   clearFoyer
 } from '../../store/slices/credentialFoyer'
+import {
+  deleteCredential,
+  selectRawCredentialRecords
+} from '../../store/slices/credential'
 import { Color, ThemeType } from '../../styles'
 import dynamicStyleSheet from './ApprovalControls.styles'
 import { useAccessibilityFocus } from '../../hooks'
 import { ObjectID } from 'bson'
 import { navigationRef } from '../../navigation/navigationRef'
+import { credentialContentHash } from '../../lib/credentialHash'
 
 enum StatusIcon {
   Schedule = 'schedule',
@@ -88,6 +94,7 @@ export default function ApprovalControls({
 }: ApprovalControlsProps): React.ReactElement {
   const { styles, theme } = useDynamicStyles(dynamicStyleSheet)
   const dispatch = useAppDispatch()
+  const rawCredentialRecords = useSelector(selectRawCredentialRecords)
   const { status, messageOverride } = pendingCredential
   const message = messageOverride || defaultMessageFor(status)
   const [statusRef, focusStatus] = useAccessibilityFocus<View>()
@@ -108,14 +115,16 @@ export default function ApprovalControls({
 
   async function rejectAndExit() {
     setApprovalStatus(ApprovalStatus.Rejected)
-    await dispatch(clearFoyer())
-    if (navigationRef.isReady()) {
-      navigationRef.navigate('HomeNavigation', {
-        screen: 'CredentialNavigation',
-        params: {
-          screen: 'HomeScreen'
-        }
-      })
+    // Remove the credential from the wallet
+    const pendingHash = credentialContentHash(pendingCredential.credential)
+    const recordToDelete = rawCredentialRecords.find(
+      ({ credential, profileRecordId: pid }) =>
+        pid.equals(profileRecordId) &&
+        credentialContentHash(credential) === pendingHash
+    )
+
+    if (recordToDelete) {
+      await dispatch(deleteCredential(recordToDelete))
     }
   }
 
@@ -135,7 +144,7 @@ export default function ApprovalControls({
     case ApprovalStatus.Pending:
       return (
         <View style={styles.approvalContainer}>
-          <ApprovalButton title="Decline" onPress={reject} />
+          <ApprovalButton title="Skip" onPress={reject} />
           <View style={styles.buttonSpacer} />
           <ApprovalButton title="Accept" onPress={accept} primary />
         </View>
@@ -144,7 +153,11 @@ export default function ApprovalControls({
       return (
         <>
           <View style={styles.approvalContainer}>
-            <ApprovalButton title="Close" onPress={rejectAndExit} primary />
+            <ApprovalButton
+              title="Remove From Wallet"
+              onPress={rejectAndExit}
+              primary
+            />
           </View>
           <Text style={styles.statusTextOutside}>{message}</Text>
         </>
