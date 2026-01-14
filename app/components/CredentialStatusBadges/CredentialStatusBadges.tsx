@@ -10,7 +10,6 @@ import { hasPublicLink } from '../../lib/publicLink'
 
 function CredentialStatusBadges({
   rawCredentialRecord,
-  badgeBackgroundColor,
   precomputedVerification,
   precomputedPublic
 }: CredentialStatusBadgesProps): React.ReactElement {
@@ -52,7 +51,6 @@ function CredentialStatusBadges({
     if (isLoading) {
       return (
         <StatusBadge
-          backgroundColor={badgeBackgroundColor}
           color={theme.color.textSecondary}
           label="Verifying"
           icon="rotate-right"
@@ -64,7 +62,6 @@ function CredentialStatusBadges({
     if (logs.length === 0 && isVerified === null) {
       return (
         <StatusBadge
-          backgroundColor={badgeBackgroundColor}
           color={theme.color.errorLight}
           label="Not Verified"
           icon="close"
@@ -96,7 +93,6 @@ function CredentialStatusBadges({
     if (hasFailure) {
       return (
         <StatusBadge
-          backgroundColor={badgeBackgroundColor}
           color={theme.color.errorLight}
           label="Not Verified"
           icon="close"
@@ -107,7 +103,6 @@ function CredentialStatusBadges({
     if (hasWarning) {
       return (
         <StatusBadge
-          backgroundColor={badgeBackgroundColor}
           color={theme.color.warning}
           label="Warning"
           icon="error-outline"
@@ -117,8 +112,7 @@ function CredentialStatusBadges({
 
     return (
       <StatusBadge
-        backgroundColor={badgeBackgroundColor}
-        color={theme.color.success}
+        color={theme.color.buttonPrimary}
         label="Verified"
         icon="check-circle"
       />
@@ -149,11 +143,7 @@ function CredentialStatusBadges({
       {(stablePublicRef.current ??
         precomputedPublic ??
         checkPublicLink.result) && (
-        <StatusBadge
-          label="Public"
-          color={theme.color.textSecondary}
-          backgroundColor={badgeBackgroundColor}
-        />
+        <StatusBadge label="Public" color={theme.color.textSecondary} />
       )}
     </View>
   )

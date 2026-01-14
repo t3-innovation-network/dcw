@@ -18,8 +18,8 @@ export const lightTheme: ThemeType = {
     iconActive: Color.TitleGreen,
     iconInactive: Color.Gray500,
     inputInactive: Color.Gray600,
-    buttonPrimary: Color.TitleGreen,
-    buttonSecondary: Color.Gray400,
+    buttonPrimary: Color.BrightGreen,
+    buttonSecondary: Color.BlueGray,
     buttonDisabled: Color.Gray500,
     shadow: Color.Black,
     success: Color.DarkGreen,
@@ -37,17 +37,18 @@ export const lightTheme: ThemeType = {
     regular: FontFamily.GT_AmericaRegular,
     medium: FontFamily.GT_AmericaMedium,
     bold: FontFamily.GT_AmericaBold,
-    mono: FontFamily.RobotoMonoRegular
+    mono: FontFamily.RobotoMonoRegular,
+    verdana: FontFamily.Verdana
   },
   fontSize: {
     xl: 48,
     title: 36,
     header: 24,
-    medium: 18,
-    regular: 16,
-    small: 12
+    medium: 20,
+    regular: 18,
+    small: 14
   },
-  borderRadius: 5,
+  borderRadius: 0,
   iconSize: 24,
   issuerIconSize: 48,
   statusBarStyle: ColorScheme.Dark,

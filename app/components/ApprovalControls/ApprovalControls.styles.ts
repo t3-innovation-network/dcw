@@ -1,4 +1,5 @@
 import { createDynamicStyleSheet } from '../../lib/dynamicStyles'
+import { Color } from '../../styles/colors'
 
 export default createDynamicStyleSheet(({ theme, mixins }) => ({
   credentialStatusContainer: {
@@ -50,12 +51,12 @@ export default createDynamicStyleSheet(({ theme, mixins }) => ({
     flex: 1
   },
   buttonText: {
-    color: theme.color.textPrimary,
+    color: theme.color.textSecondary,
     fontSize: 14,
     fontFamily: theme.fontFamily.medium
   },
   buttonTextPrimary: {
-    color: theme.color.textPrimaryDark,
+    color: Color.Black,
     fontSize: 14,
     fontFamily: theme.fontFamily.medium
   },
