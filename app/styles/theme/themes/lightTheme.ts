@@ -11,7 +11,7 @@ export const lightTheme: ThemeType = {
     backgroundSecondary: Color.NavBlue,
     foregroundPrimary: Color.NavBlue,
     textHeader: Color.TitleGreen,
-    textPrimary: Color.Gray700,
+    textPrimary: Color.Gray300,
     brightAccent: Color.Blue,
     textSecondary: Color.White,
     textPrimaryDark: Color.White,
@@ -19,7 +19,7 @@ export const lightTheme: ThemeType = {
     iconInactive: Color.Gray500,
     inputInactive: Color.Gray600,
     buttonPrimary: Color.TitleGreen,
-    buttonSecondary: Color.Gray300,
+    buttonSecondary: Color.Gray400,
     buttonDisabled: Color.Gray500,
     shadow: Color.Black,
     success: Color.DarkGreen,
@@ -32,12 +32,15 @@ export const lightTheme: ThemeType = {
     highlightAndroid: Color.TransparentBlue
   },
   fontFamily: {
-    regular: FontFamily.RubikRegular,
-    medium: FontFamily.RubikMedium,
-    bold: FontFamily.RubikBold,
+    TobiasLight: FontFamily.TobiasLight,
+    lighter: FontFamily.GT_AmericaLighter,
+    regular: FontFamily.GT_AmericaRegular,
+    medium: FontFamily.GT_AmericaMedium,
+    bold: FontFamily.GT_AmericaBold,
     mono: FontFamily.RobotoMonoRegular
   },
   fontSize: {
+    xl: 48,
     title: 36,
     header: 24,
     medium: 18,

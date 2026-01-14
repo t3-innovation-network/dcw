@@ -73,7 +73,6 @@ buck-out/
 /ios/Pods/
 
 # Expo
-.expo/
 web-build/
 
 # @end expo-cli
@@ -90,3 +89,6 @@ android
 # Maestro
 .maestro/reports/
 .maestro/.maestro/
+
+# jest cache
+.jest-cache/

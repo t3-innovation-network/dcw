@@ -4,10 +4,11 @@ import { Button } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 import { Swipeable, TouchableOpacity } from 'react-native-gesture-handler'
+import Tooltip from 'react-native-walkthrough-tooltip'
 
 import { CredentialItem, NavHeader, ConfirmModal } from '../../components'
 import { navigationRef } from '../../navigation/navigationRef'
-import { LinkConfig } from '../../../app.config'
+import appConfig, { LinkConfig } from '../../../app.config'
 
 import dynamicStyleSheet from './HomeScreen.styles'
 import { HomeScreenProps, RenderItemProps } from './HomeScreen.d'
@@ -23,6 +24,7 @@ import { verificationResultFor } from '../../lib/verifiableObject'
 import { displayGlobalModal } from '../../lib/globalModal'
 import { useContext } from 'react'
 import { DidRegistryContext } from '../../init/registries'
+import { Color } from '../../styles'
 
 export default function HomeScreen({
   navigation
@@ -33,6 +35,7 @@ export default function HomeScreen({
   const [itemToDelete, setItemToDelete] = useState<CredentialRecordRaw | null>(
     null
   )
+  const [showTooltip, setShowTooltip] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const share = useShareCredentials()
   const registries = useContext(DidRegistryContext)
@@ -122,7 +125,7 @@ export default function HomeScreen({
           <MaterialIcons
             name="add-circle"
             size={theme.iconSize}
-            color={theme.color.iconInactive}
+            color={theme.color.iconActive}
           />
         }
       />
@@ -144,11 +147,11 @@ export default function HomeScreen({
             style={styles.learnMoreLink}
             onPress={() => Linking.openURL(LinkConfig.appWebsite.home)}
             accessibilityRole="link"
-            accessibilityLabel="Learn more about the LCW at lcw.app"
+            accessibilityLabel={`Learn more about the ${appConfig.displayName} at ${appConfig.displayName}`}
           >
             Learn more
-          </Text>{' '}
-          about the LCW
+          </Text>
+          about the {appConfig.displayName}
         </Text>
       </View>
     )
@@ -159,7 +162,58 @@ export default function HomeScreen({
       <NavHeader title="Home" testID="Home Screen" />
       {rawCredentialRecords.length === 0 ? (
         <View style={styles.container}>
-          <Text style={styles.header}>Looks like your wallet is empty.</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+          >
+            <Text style={styles.header}>Looks like your wallet is empty.</Text>
+            <View style={{ marginLeft: 8 }}>
+              <Tooltip
+                isVisible={showTooltip}
+                placement="bottom"
+                closeOnBackgroundInteraction
+                contentStyle={{
+                  backgroundColor: Color.OptimisticBlue,
+                  borderRadius: '0%'
+                }}
+                content={
+                  <View style={{ display: 'flex', alignItems: 'center' }}>
+                    <Text
+                      style={{
+                        fontFamily: theme.fontFamily.bold,
+                        marginBottom: 8
+                      }}
+                    >
+                      Your wallet is empty.
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: theme.fontFamily.regular,
+                        marginBottom: 8
+                      }}
+                    >
+                      You can add a sample credential or select 'Add Credential'
+                      to add a credential to your wallet.
+                    </Text>
+                  </View>
+                }
+                onClose={() => setShowTooltip(false)}
+                tooltipStyle={{
+                  width: 300
+                }}
+              >
+                <TouchableOpacity onPress={() => setShowTooltip(true)}>
+                  <MaterialIcons
+                    name="info"
+                    size={24}
+                    color={theme.color.iconInactive}
+                  />
+                </TouchableOpacity>
+              </Tooltip>
+            </View>
+          </View>
           <AddCredentialButton />
           <LearnMoreLink />
         </View>

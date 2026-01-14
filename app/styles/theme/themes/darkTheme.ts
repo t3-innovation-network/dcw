@@ -11,7 +11,7 @@ export const darkTheme: ThemeType = {
     backgroundSecondary: Color.NavBlue,
     foregroundPrimary: Color.NavBlue,
     textHeader: Color.TitleGreen,
-    textPrimary: Color.Gray100,
+    textPrimary: Color.DarkBlue,
     brightAccent: Color.LightCyan,
     textSecondary: Color.White,
     textPrimaryDark: Color.Black,
@@ -22,7 +22,7 @@ export const darkTheme: ThemeType = {
     buttonSecondary: Color.Gray600,
     buttonDisabled: Color.Gray500,
     shadow: Color.Black,
-    success: Color.Green,
+    success: Color.BrightGreen,
     error: Color.Red,
     warning: Color.Yellow,
     errorLight: Color.LightRed,
@@ -32,12 +32,15 @@ export const darkTheme: ThemeType = {
     highlightAndroid: Color.TransparentCyan
   },
   fontFamily: {
-    regular: FontFamily.RubikRegular,
-    medium: FontFamily.RubikMedium,
-    bold: FontFamily.RubikBold,
+    TobiasLight: FontFamily.TobiasLight,
+    lighter: FontFamily.GT_AmericaLighter,
+    regular: FontFamily.GT_AmericaRegular,
+    medium: FontFamily.GT_AmericaMedium,
+    bold: FontFamily.GT_AmericaBold,
     mono: FontFamily.RobotoMonoRegular
   },
   fontSize: {
+    xl: 48,
     title: 36,
     header: 24,
     medium: 18,

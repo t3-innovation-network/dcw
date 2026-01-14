@@ -43,8 +43,9 @@ const mixins = (theme: ThemeType) => {
     },
     headerTitle: {
       color: theme.color.textPrimary,
-      fontFamily: theme.fontFamily.bold,
-      fontSize: theme.fontSize.regular
+      fontFamily: theme.fontFamily.TobiasLight,
+      fontSize: theme.fontSize.medium,
+      marginLeft: 2
     },
     headerIcon: {
       color: theme.color.textPrimary,
@@ -101,7 +102,8 @@ const mixins = (theme: ThemeType) => {
     buttonTitle: {
       fontFamily: theme.fontFamily.medium,
       fontSize: theme.fontSize.regular,
-      color: Color.Black
+      fontWeight: 'bold',
+      color: Color.DarkBlue
     },
     buttonTitleSecondary: {
       fontFamily: theme.fontFamily.medium,

@@ -31,12 +31,15 @@ export type ThemeType = {
     highlightAndroid: Color
   }
   fontFamily: {
+    TobiasLight: FontFamily
+    lighter: FontFamily
     regular: FontFamily
     medium: FontFamily
     bold: FontFamily
     mono: FontFamily
   }
   fontSize: {
+    xl: number
     title: number
     header: number
     medium: number
