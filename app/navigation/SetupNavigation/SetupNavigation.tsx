@@ -16,7 +16,7 @@ import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator
 import SafeScreenView from '../../components/SafeScreenView/SafeScreenView'
 import AccessibleView from '../../components/AccessibleView/AccessibleView'
 import PasswordForm from '../../components/PasswordForm/PasswordForm'
-import walletImage from '../../assets/dcw-logo.png'
+import walletImage from '../../assets/logo.png'
 import { useAccessibilityFocus } from '../../hooks'
 
 import dynamicStyleSheet from './SetupNavigation.styles'
@@ -93,10 +93,7 @@ function StartStep({ navigation }: StartStepProps) {
       <Text style={styles.title} accessibilityRole="header">
         Skill Savings {'\n'} Account
       </Text>
-      <Text style={styles.paragraph}>
-        Save for continuing education while you earn, store, and share your
-        workplace and skill credentials.
-      </Text>
+      <Text style={styles.paragraph}>{appConfig.launchScreenText}</Text>
       <View style={mixins.buttonGroup}>
         <Button
           buttonStyle={[mixins.button, mixins.buttonPrimary]}

@@ -8,7 +8,7 @@ import Tooltip from 'react-native-walkthrough-tooltip'
 
 import { CredentialItem, NavHeader, ConfirmModal } from '../../components'
 import { navigationRef } from '../../navigation/navigationRef'
-import { LinkConfig } from '../../../app.config'
+import appConfig, { LinkConfig } from '../../../app.config'
 
 import dynamicStyleSheet from './HomeScreen.styles'
 import { HomeScreenProps, RenderItemProps } from './HomeScreen.d'
@@ -146,10 +146,11 @@ export default function HomeScreen({
           style={styles.learnMoreText}
           onPress={() => Linking.openURL(LinkConfig.appWebsite.home)}
           accessibilityRole="link"
-          accessibilityLabel="Learn more about the LCW at lcw.app"
+          accessibilityLabel={`Learn more about the ${appConfig.displayName} at ${appConfig.displayName}`}
           testID="learn-more-link"
         >
-          <Text style={styles.learnMoreLink}>Learn more</Text> about the DCW
+          <Text style={styles.learnMoreLink}>Learn more</Text>
+          about the {appConfig.displayName}
         </Text>
       </View>
     )
