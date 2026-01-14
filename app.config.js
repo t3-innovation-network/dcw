@@ -55,12 +55,14 @@ export const LinkConfig = {
  * @see https://docs.expo.dev/versions/latest/config/app/
  */
 export default {
-  displayName: 'T3 Digital Credential Wallet',
+  displayName: 'DCW',
+  launchScreenText:
+    'Save for continuing education while you earn, store, and share your workplace and skill credentials.',
   expo: {
     systemUIAppearance: 'automatic',
     runtimeVersion: VERSION_NUMBER,
     version: VERSION_NUMBER,
-    name: 'T3 Digital Credential Wallet',
+    name: 'DCW',
     slug: 'learner-credential-wallet',
     scheme: 't3-digital-credential-wallet',
     orientation: 'portrait',
