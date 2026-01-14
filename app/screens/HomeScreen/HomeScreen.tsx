@@ -214,58 +214,6 @@ export default function HomeScreen({
               </Tooltip>
             </View>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}
-          >
-            <Text style={styles.header}>Looks like your wallet is empty.</Text>
-            <View style={{ marginLeft: 8 }}>
-              <Tooltip
-                isVisible={showTooltip}
-                placement="bottom"
-                closeOnBackgroundInteraction
-                contentStyle={{
-                  backgroundColor: Color.OptimisticBlue,
-                  borderRadius: '0%'
-                }}
-                content={
-                  <View style={{ display: 'flex', alignItems: 'center' }}>
-                    <Text
-                      style={{
-                        fontFamily: theme.fontFamily.bold,
-                        marginBottom: 8
-                      }}
-                    >
-                      Your wallet is empty.
-                    </Text>
-                    <Text
-                      style={{
-                        fontFamily: theme.fontFamily.regular,
-                        marginBottom: 8
-                      }}
-                    >
-                      You can add a sample credential or select 'Add Credential'
-                      to add a credential to your wallet.
-                    </Text>
-                  </View>
-                }
-                onClose={() => setShowTooltip(false)}
-                tooltipStyle={{
-                  width: 300
-                }}
-              >
-                <TouchableOpacity onPress={() => setShowTooltip(true)}>
-                  <MaterialIcons
-                    name="info"
-                    size={24}
-                    color={theme.color.iconInactive}
-                  />
-                </TouchableOpacity>
-              </Tooltip>
-            </View>
-          </View>
           <AddCredentialButton />
           <LearnMoreLink />
         </View>
