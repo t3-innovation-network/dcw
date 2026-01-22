@@ -1,6 +1,6 @@
 export enum FontFamily {
-  // Display (used for big titles like "Skill Savings Account")
-  TobiasLight = 'PlayfairDisplay_400Regular',
+  // Inter
+  Inter_700Bold = 'Inter_700Bold',
 
   // GT America replacement: Source Sans Pro
   GT_AmericaLighter = 'SourceSansPro_300Light',

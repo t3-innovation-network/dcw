@@ -29,7 +29,7 @@ export default createDynamicStyleSheet(({ theme, mixins }) => ({
     resizeMode: 'contain'
   },
   title: {
-    fontFamily: theme.fontFamily.TobiasLight,
+    fontFamily: theme.fontFamily.Inter_700Bold,
     fontSize: theme.fontSize.xl,
     color: theme.color.textHeader,
     padding: 16,

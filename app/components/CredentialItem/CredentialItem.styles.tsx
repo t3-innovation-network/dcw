@@ -57,5 +57,29 @@ export default createDynamicStyleSheet(({ theme, mixins }) => ({
     backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  checkboxBoxSelected: {
+    borderColor: theme.color.buttonPrimary,
+    backgroundColor: theme.color.buttonPrimary
+  },
+  radioOuter: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 2,
+    borderColor: theme.color.textSecondary,
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  radioOuterSelected: {
+    borderColor: theme.color.buttonPrimary,
+    backgroundColor: 'transparent'
+  },
+  radioInner: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: theme.color.buttonPrimary
   }
 }))
