@@ -102,6 +102,7 @@ export default function CredentialSelectionScreen({
         onSelect={onSelectItem}
         selected={selected.includes(index)}
         checkable={true}
+        selectionVariant={singleSelect ? 'radio' : 'checkbox'}
         hideLeft={false}
         chevron={false}
         rawCredentialRecord={item}
@@ -121,7 +122,8 @@ export default function CredentialSelectionScreen({
     return (
       <Button
         title={buttonTitle}
-        buttonStyle={styles.shareButton}
+        buttonStyle={mixins.buttonIcon}
+        containerStyle={mixins.buttonIconContainer}
         titleStyle={mixins.buttonTitle}
         onPress={() => {
           onSelectCredentials(selectedCredentials)
@@ -131,7 +133,7 @@ export default function CredentialSelectionScreen({
   }
 
   function CancelButton(): React.ReactElement | null {
-    if (!isVPRFlow) return null
+    // if (!isVPRFlow) return null
 
     return (
       <Button
@@ -155,8 +157,10 @@ export default function CredentialSelectionScreen({
           renderItem={renderItem}
           keyExtractor={(item, index) => `${index}-${item.credential.id}`}
         />
-        <ShareButton />
-        <CancelButton />
+        <View style={{ flexDirection: 'row' }}>
+          <CancelButton />
+          <ShareButton />
+        </View>
       </View>
     </>
   )

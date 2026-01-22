@@ -32,7 +32,7 @@ export const lightTheme: ThemeType = {
     highlightAndroid: Color.TransparentBlue
   },
   fontFamily: {
-    TobiasLight: FontFamily.TobiasLight,
+    Inter_700Bold: FontFamily.Inter_700Bold,
     lighter: FontFamily.GT_AmericaLighter,
     regular: FontFamily.GT_AmericaRegular,
     medium: FontFamily.GT_AmericaMedium,
@@ -49,7 +49,7 @@ export const lightTheme: ThemeType = {
     small: 14
   },
   borderRadius: 0,
-  iconSize: 24,
+  iconSize: 32,
   issuerIconSize: 48,
   statusBarStyle: ColorScheme.Dark,
   keyboardAppearance: ColorScheme.Light,

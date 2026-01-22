@@ -7,6 +7,7 @@ export type CredentialItemProps = {
   credential: Credential
   checkable?: boolean
   selected?: boolean
+  selectionVariant?: 'checkbox' | 'radio'
   chevron?: boolean
   bottomElement?: React.ReactNode
   hideLeft?: boolean

@@ -43,7 +43,7 @@ const mixins = (theme: ThemeType) => {
     },
     headerTitle: {
       color: theme.color.textPrimary,
-      fontFamily: theme.fontFamily.TobiasLight,
+      fontFamily: theme.fontFamily.Inter_700Bold,
       fontSize: theme.fontSize.medium,
       marginLeft: 2
     },

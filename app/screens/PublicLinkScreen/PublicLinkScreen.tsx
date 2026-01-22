@@ -705,12 +705,9 @@ export default function PublicLinkScreen({
             ) : (
               <Button
                 title="Create Public Link"
-                buttonStyle={{ ...mixins.buttonIcon, ...mixins.buttonPrimary }}
-                containerStyle={{
-                  ...mixins.buttonIconContainer,
-                  ...styles.createLinkButtonContainer
-                }}
-                titleStyle={mixins.buttonTitle}
+                buttonStyle={mixins.buttonIcon}
+                containerStyle={mixins.buttonIconContainer}
+                titleStyle={mixins.buttonIconTitle}
                 iconRight
                 onPress={confirmCreatePublicLink}
                 testID="create-public-link-button"
@@ -733,13 +730,7 @@ export default function PublicLinkScreen({
                   titleStyle={mixins.buttonIconTitle}
                   iconRight
                   onPress={exportToPdf}
-                  icon={
-                    <Ionicons
-                      name="document-text"
-                      size={theme.iconSize}
-                      color={theme.color.iconInactive}
-                    />
-                  }
+                  icon={<Ionicons name="document-text" size={theme.iconSize} />}
                 />
               )}
 
@@ -755,7 +746,7 @@ export default function PublicLinkScreen({
                   <Ionicons
                     name="logo-linkedin"
                     size={theme.iconSize}
-                    color={theme.color.iconInactive}
+                    color={theme.color.textPrimaryDark}
                   />
                 }
               />
@@ -772,9 +763,9 @@ export default function PublicLinkScreen({
                     testID="send-credential-button"
                     icon={
                       <MaterialIcons
-                        name="input"
+                        name="send"
                         size={theme.iconSize}
-                        color={theme.color.iconInactive}
+                        color={theme.color.textPrimaryDark}
                       />
                     }
                   />

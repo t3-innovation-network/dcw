@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import {
   useFonts,
-  PlayfairDisplay_400Regular,
-  PlayfairDisplay_700Bold
-} from '@expo-google-fonts/playfair-display'
+  Inter_700Bold as InterBold,
+  Inter_700Bold
+} from '@expo-google-fonts/inter'
 import {
   SourceSansPro_300Light,
   SourceSansPro_400Regular,
@@ -52,8 +52,7 @@ export function useAppLoading(): boolean {
 
 function useFontsLoaded() {
   const [fontsLoaded] = useFonts({
-    PlayfairDisplay_400Regular,
-    PlayfairDisplay_700Bold,
+    Inter_700Bold,
     SourceSansPro_300Light,
     SourceSansPro_400Regular,
     SourceSansPro_700Bold,
