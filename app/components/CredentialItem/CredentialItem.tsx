@@ -10,6 +10,7 @@ import { useDynamicStyles, useVerifyCredential } from '../../hooks'
 import { credentialItemPropsFor } from '../../lib/credentialDisplay'
 import { CardImage } from '../../lib/credentialDisplay/shared'
 import verifiedStatusIcon from '../../assets/deafulatIssueBrightGreen.png'
+import notVerifiedStatusIcon from '../../assets/NotVerified.png'
 
 type VerificationStatus = 'verifying' | 'verified' | 'warning' | 'not_verified'
 
@@ -17,6 +18,7 @@ function CredentialItem({
   onSelect,
   checkable = false,
   selected = false,
+  selectionVariant = 'checkbox',
   chevron = false,
   hideLeft = false,
   bottomElement,
@@ -30,6 +32,8 @@ function CredentialItem({
   const { styles, theme, mixins } = useDynamicStyles(dynamicStyleSheet)
   const verifyCredential = useVerifyCredential(rawCredentialRecord)
 
+  const isRadio = selectionVariant === 'radio'
+
   const {
     title,
     subtitle,
@@ -41,7 +45,8 @@ function CredentialItem({
   const hasBottomElement = bottomElement !== undefined
   const accessibilityProps: ComponentProps<typeof View> = {
     accessibilityLabel: `${title} Credential, from ${subtitle}`,
-    accessibilityRole: checkable ? 'checkbox' : 'button',
+    // For single-select mode, use a radio role instead of checkbox
+    accessibilityRole: checkable ? (isRadio ? 'radio' : 'checkbox') : 'button',
     accessibilityState: { checked: checkable ? selected : undefined }
   }
 
@@ -86,35 +91,29 @@ function CredentialItem({
         <TouchableOpacity
           onPress={onSelect}
           activeOpacity={1}
-          style={mixins.checkboxContainer}
-          accessibilityRole="checkbox"
+          style={styles.checkboxContainer}
+          accessibilityRole={isRadio ? 'radio' : 'checkbox'}
           accessibilityState={{ checked: selected }}
         >
           <View
             style={[
-              {
-                width: 22,
-                height: 22,
-                borderRadius: 4,
-                borderWidth: 2,
-                borderColor: theme.color.textSecondary,
-                backgroundColor: 'transparent',
-                alignItems: 'center',
-                justifyContent: 'center'
-              },
-              selected && {
-                borderColor: theme.color.buttonPrimary,
-                backgroundColor: theme.color.buttonPrimary
-              }
+              isRadio ? styles.radioOuter : styles.checkboxBox,
+              selected &&
+                (isRadio
+                  ? styles.radioOuterSelected
+                  : styles.checkboxBoxSelected)
             ]}
           >
-            {selected && (
-              <MaterialCommunityIcons
-                name="check"
-                size={16}
-                color={theme.color.backgroundPrimary}
-              />
-            )}
+            {selected &&
+              (isRadio ? (
+                <View style={styles.radioInner} />
+              ) : (
+                <MaterialCommunityIcons
+                  name="check"
+                  size={16}
+                  color={theme.color.backgroundPrimary}
+                />
+              ))}
           </View>
         </TouchableOpacity>
       )
@@ -135,10 +134,9 @@ function CredentialItem({
     if (verificationStatus === 'not_verified') {
       return (
         <View style={styles.notVerifiedIcon}>
-          <MaterialCommunityIcons
-            name="close"
-            size={theme.issuerIconSize - 8}
-            color={theme.color.errorLight}
+          <Image
+            source={notVerifiedStatusIcon}
+            style={styles.verifiedStatusIcon}
           />
         </View>
       )
@@ -160,7 +158,8 @@ function CredentialItem({
       return (
         <View style={styles.notVerifiedIcon}>
           <MaterialCommunityIcons
-            name="progress-clock"
+            // Static spinner glyph (no animation)
+            name="loading"
             size={theme.issuerIconSize - 8}
             color={theme.color.textSecondary}
           />

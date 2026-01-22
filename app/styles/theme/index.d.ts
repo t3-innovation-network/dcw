@@ -31,7 +31,7 @@ export type ThemeType = {
     highlightAndroid: Color
   }
   fontFamily: {
-    TobiasLight: FontFamily
+    Inter_700Bold: FontFamily
     lighter: FontFamily
     regular: FontFamily
     medium: FontFamily
