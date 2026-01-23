@@ -14,14 +14,19 @@ export default createDynamicStyleSheet(({ mixins }) => ({
     marginBottom: 16,
     marginTop: 8
   },
+  actionRow: {
+    margin: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 16
+  },
+  actionColumn: {
+    flex: 1
+  },
   shareButton: {
-    ...mixins.buttonPrimary,
-    marginVertical: 16,
-    marginHorizontal: 16
+    ...mixins.buttonPrimary
   },
   cancelButton: {
-    ...mixins.buttonSecondary,
-    marginBottom: 20,
-    marginHorizontal: 16
+    ...mixins.buttonSecondary
   }
 }))
