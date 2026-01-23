@@ -15,6 +15,7 @@ import {
   VerificationResult
 } from '../../lib/verifiableObject'
 import { hasPublicLink } from '../../lib/publicLink'
+import { theme } from '../../styles'
 
 export default function CredentialSelectionScreen({
   navigation,
@@ -122,8 +123,7 @@ export default function CredentialSelectionScreen({
     return (
       <Button
         title={buttonTitle}
-        buttonStyle={mixins.buttonIcon}
-        containerStyle={mixins.buttonIconContainer}
+        buttonStyle={styles.shareButton}
         titleStyle={mixins.buttonTitle}
         onPress={() => {
           onSelectCredentials(selectedCredentials)
@@ -157,9 +157,13 @@ export default function CredentialSelectionScreen({
           renderItem={renderItem}
           keyExtractor={(item, index) => `${index}-${item.credential.id}`}
         />
-        <View style={{ flexDirection: 'row' }}>
-          <CancelButton />
-          <ShareButton />
+        <View style={styles.actionRow}>
+          <View style={styles.actionColumn}>
+            <CancelButton />
+          </View>
+          <View style={styles.actionColumn}>
+            <ShareButton />
+          </View>
         </View>
       </View>
     </>
