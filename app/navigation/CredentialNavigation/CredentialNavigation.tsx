@@ -6,7 +6,8 @@ import {
   HomeScreen,
   CredentialScreen,
   PublicLinkScreen,
-  IssuerInfoScreen
+  IssuerInfoScreen,
+  ResumePreviewScreen
 } from '../../screens'
 import { CredentialNavigationProps, CredentialNavigationParamList } from '../'
 import { useResetNavigationOnBlur } from '../../hooks'
@@ -22,6 +23,10 @@ export default function CredentialNavigation({
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="CredentialScreen" component={CredentialScreen} />
+      <Stack.Screen
+        name="ResumePreviewScreen"
+        component={ResumePreviewScreen}
+      />
       <Stack.Screen name="PublicLinkScreen" component={PublicLinkScreen} />
       <Stack.Screen name="IssuerInfoScreen" component={IssuerInfoScreen} />
     </Stack.Navigator>

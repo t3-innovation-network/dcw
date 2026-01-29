@@ -40,6 +40,16 @@ export default function CredentialScreen({
 
   const { rawCredentialRecord, noShishKabob = false } = route.params
   const { title } = credentialItemPropsFor(rawCredentialRecord.credential)
+  const isResumeCredential = (() => {
+    const cs: any = (rawCredentialRecord.credential as any)?.credentialSubject
+    const t = cs?.type
+    const types = Array.isArray(t) ? t : t ? [t] : []
+    return types.some(
+      (x: unknown) =>
+        x === 'Resume' ||
+        (typeof x === 'string' && x.toLowerCase().includes('resume'))
+    )
+  })()
 
   const rawProfileRecord = useSelectorFactory(makeSelectProfileFromCredential, {
     rawCredentialRecord
@@ -80,6 +90,19 @@ export default function CredentialScreen({
       navigationRef.navigate('DebugScreen', {
         rawCredentialRecord,
         rawProfileRecord
+      })
+    }
+  }
+
+  function onPressResumePreview() {
+    setMenuIsOpen(false)
+    if (navigationRef.isReady()) {
+      navigationRef.navigate('HomeNavigation', {
+        screen: 'CredentialNavigation',
+        params: {
+          screen: 'ResumePreviewScreen',
+          params: { rawCredentialRecord }
+        }
       })
     }
   }
@@ -137,6 +160,13 @@ export default function CredentialScreen({
         {menuIsOpen ? (
           <View style={styles.menuContainer} accessibilityViewIsModal={true}>
             <MenuItem icon="share" title="Share" onPress={onPressShare} />
+            {isResumeCredential ? (
+              <MenuItem
+                icon="description"
+                title="Resume Preview"
+                onPress={onPressResumePreview}
+              />
+            ) : null}
             <MenuItem
               icon="info-outline"
               title="View Source"

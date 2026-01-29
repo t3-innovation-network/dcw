@@ -14,7 +14,7 @@ export const lightTheme: ThemeType = {
     textPrimary: Color.Gray300,
     brightAccent: Color.Blue,
     textSecondary: Color.White,
-    textPrimaryDark: Color.White,
+    textPrimaryDark: Color.Black,
     iconActive: Color.TitleGreen,
     iconInactive: Color.Gray500,
     inputInactive: Color.Gray600,
