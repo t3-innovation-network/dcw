@@ -11,6 +11,9 @@ export type CredentialNavigationParamList = {
   ShareCredentialScreen: {
     rawCredentialRecord: CredentialRecordRaw
   }
+  ResumePreviewScreen: {
+    rawCredentialRecord: CredentialRecordRaw
+  }
   PublicLinkScreen: PublicLinkScreenParams
   IssuerInfoScreen: IssuerInfoScreenParams
 }
@@ -26,6 +29,10 @@ export type CredentialScreenHomeProps = StackScreenProps<
 export type ShareCredentialScreenProps = StackScreenProps<
   CredentialNavigationParamList,
   'ShareCredentialScreen'
+>
+export type ResumePreviewScreenProps = StackScreenProps<
+  CredentialNavigationParamList,
+  'ResumePreviewScreen'
 >
 export type PublicLinkScreenCredentialProps = StackScreenProps<
   CredentialNavigationParamList,
