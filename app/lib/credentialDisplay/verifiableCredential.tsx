@@ -60,8 +60,6 @@ function VerifiableCredentialCard({
     endDateFmt
   } = credentialSubjectRenderInfoFrom(subject)
 
-  const isHttpUrl = (url: string): boolean => /^https?:\/\//i.test(url.trim())
-
   const evidenceLink = String(subject?.evidenceLink ?? '').trim()
   const portfolioEvidence = (() => {
     const raw = subject?.portfolio
@@ -167,10 +165,7 @@ function VerifiableCredentialCard({
       {!!evidenceLink && (
         <View style={styles.dataContainer}>
           <Text style={styles.dataLabel}>Evidence link</Text>
-          <CardLink
-            url={evidenceLink}
-            disabled={urlsDisabled || !isHttpUrl(evidenceLink)}
-          />
+          <CardLink url={evidenceLink} disabled={urlsDisabled} />
         </View>
       )}
       {portfolioEvidence.length > 0 ? (
@@ -179,10 +174,7 @@ function VerifiableCredentialCard({
           {portfolioEvidence.map((p, idx) => (
             <View key={`${p.url}-${idx}`} style={{ marginBottom: 8 }}>
               <Text style={styles.dataValue}>{p.name}</Text>
-              <CardLink
-                url={p.url}
-                disabled={urlsDisabled || !isHttpUrl(p.url)}
-              />
+              <CardLink url={p.url} disabled={urlsDisabled} />
             </View>
           ))}
         </View>
