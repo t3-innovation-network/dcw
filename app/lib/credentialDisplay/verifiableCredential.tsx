@@ -43,7 +43,8 @@ function VerifiableCredentialCard({
   const registries = useContext(DidRegistryContext)
   const urlsDisabled = shouldDisableUrls(credential, registries)
   const navigation = useNavigation<NavigationProp>()
-  const { credentialSubject, issuer } = credential
+  const subject = getSubject(credential) as any
+  const { issuer } = credential
 
   const issuanceDate = getIssuanceDate(credential)
   const formattedIssuanceDate = issuanceDate
@@ -57,7 +58,32 @@ function VerifiableCredentialCard({
     numberOfCredits,
     startDateFmt,
     endDateFmt
-  } = credentialSubjectRenderInfoFrom(credentialSubject)
+  } = credentialSubjectRenderInfoFrom(subject)
+
+  const isHttpUrl = (url: string): boolean => /^https?:\/\//i.test(url.trim())
+
+  const evidenceLink = String(subject?.evidenceLink ?? '').trim()
+  const portfolioEvidence = (() => {
+    const raw = subject?.portfolio
+    const items = Array.isArray(raw) ? raw : raw ? [raw] : []
+
+    return items
+      .map((item: unknown) => {
+        if (typeof item === 'string') {
+          const url = item.trim()
+          if (!url) return null
+          return { name: url, url }
+        }
+        if (!item || typeof item !== 'object') return null
+
+        const url = String((item as any).url ?? (item as any).id ?? '').trim()
+        if (!url) return null
+
+        const name = String((item as any).name ?? '').trim()
+        return { name: name || url, url }
+      })
+      .filter(Boolean) as Array<{ name: string; url: string }>
+  })()
 
   const { issuerName, issuerUrl, issuerId, issuerImage } =
     issuerRenderInfoWithVerification(issuer, verifyCredential?.result)
@@ -138,6 +164,29 @@ function VerifiableCredentialCard({
       </View>
       <CardDetail label="Description" value={description} />
       <CardDetail label="Criteria" value={criteria} />
+      {!!evidenceLink && (
+        <View style={styles.dataContainer}>
+          <Text style={styles.dataLabel}>Evidence link</Text>
+          <CardLink
+            url={evidenceLink}
+            disabled={urlsDisabled || !isHttpUrl(evidenceLink)}
+          />
+        </View>
+      )}
+      {portfolioEvidence.length > 0 ? (
+        <View style={styles.dataContainer}>
+          <Text style={styles.dataLabel}>Portfolio</Text>
+          {portfolioEvidence.map((p, idx) => (
+            <View key={`${p.url}-${idx}`} style={{ marginBottom: 8 }}>
+              <Text style={styles.dataValue}>{p.name}</Text>
+              <CardLink
+                url={p.url}
+                disabled={urlsDisabled || !isHttpUrl(p.url)}
+              />
+            </View>
+          ))}
+        </View>
+      ) : null}
     </View>
   )
 }
