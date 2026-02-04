@@ -27,6 +27,7 @@ import { makeSelectProfileFromCredential } from '../../store/selectorFactories/m
 import { useSelectorFactory } from '../../hooks/useSelectorFactory'
 import { PublicLinkScreenMode } from '../PublicLinkScreen/PublicLinkScreen'
 import { credentialItemPropsFor } from '../../lib/credentialDisplay'
+import { isResumeCredential as isResumeCredentialSubject } from '../../lib/credentialTypes'
 import { useVerifyCredential } from '../../hooks'
 
 export default function CredentialScreen({
@@ -40,16 +41,9 @@ export default function CredentialScreen({
 
   const { rawCredentialRecord, noShishKabob = false } = route.params
   const { title } = credentialItemPropsFor(rawCredentialRecord.credential)
-  const isResumeCredential = (() => {
-    const cs: any = (rawCredentialRecord.credential as any)?.credentialSubject
-    const t = cs?.type
-    const types = Array.isArray(t) ? t : t ? [t] : []
-    return types.some(
-      (x: unknown) =>
-        x === 'Resume' ||
-        (typeof x === 'string' && x.toLowerCase().includes('resume'))
-    )
-  })()
+  const isResumeCredential = isResumeCredentialSubject(
+    (rawCredentialRecord.credential as any)?.credentialSubject as any
+  )
 
   const rawProfileRecord = useSelectorFactory(makeSelectProfileFromCredential, {
     rawCredentialRecord
