@@ -48,7 +48,8 @@ const OpenBadgeCredentialCard = ({
 
   const navigation = useNavigation<NavigationProp>()
 
-  const { credentialSubject, issuer, name } = credential
+  const subject = getSubject(credential) as any
+  const { issuer, name } = credential
 
   const issuanceDate = getIssuanceDate(credential)
   const expirationDate = getExpirationDate(credential)
@@ -69,7 +70,32 @@ const OpenBadgeCredentialCard = ({
     achievementImage,
     achievementType,
     alignment
-  } = credentialSubjectRenderInfoFrom(credentialSubject)
+  } = credentialSubjectRenderInfoFrom(subject)
+
+  const isHttpUrl = (url: string): boolean => /^https?:\/\//i.test(url.trim())
+
+  const evidenceLink = String(subject?.evidenceLink ?? '').trim()
+  const portfolioEvidence = (() => {
+    const raw = subject?.portfolio
+    const items = Array.isArray(raw) ? raw : raw ? [raw] : []
+
+    return items
+      .map((item: unknown) => {
+        if (typeof item === 'string') {
+          const url = item.trim()
+          if (!url) return null
+          return { name: url, url }
+        }
+        if (!item || typeof item !== 'object') return null
+
+        const url = String((item as any).url ?? (item as any).id ?? '').trim()
+        if (!url) return null
+
+        const name = String((item as any).name ?? '').trim()
+        return { name: name || url, url }
+      })
+      .filter(Boolean) as Array<{ name: string; url: string }>
+  })()
 
   const issuedToName: string = issuedTo || (name as string)
   const credentialName = getCredentialName(credential)
@@ -169,6 +195,29 @@ const OpenBadgeCredentialCard = ({
         </View>
         <CardDetail label="Description" value={description} />
         <CardDetail label="Criteria" value={criteria} isMarkdown={true} />
+        {!!evidenceLink && (
+          <View style={styles.dataContainer}>
+            <Text style={styles.dataLabel}>Evidence link</Text>
+            <CardLink
+              url={evidenceLink}
+              disabled={urlsDisabled || !isHttpUrl(evidenceLink)}
+            />
+          </View>
+        )}
+        {portfolioEvidence.length > 0 ? (
+          <View style={styles.dataContainer}>
+            <Text style={styles.dataLabel}>Portfolio</Text>
+            {portfolioEvidence.map((p, idx) => (
+              <View key={`${p.url}-${idx}`} style={{ marginBottom: 8 }}>
+                <Text style={styles.dataValue}>{p.name}</Text>
+                <CardLink
+                  url={p.url}
+                  disabled={urlsDisabled || !isHttpUrl(p.url)}
+                />
+              </View>
+            ))}
+          </View>
+        ) : null}
         <AlignmentsList alignment={alignment} disabled={urlsDisabled} />
       </View>
     </View>

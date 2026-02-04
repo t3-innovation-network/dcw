@@ -41,9 +41,11 @@ export default function CredentialScreen({
 
   const { rawCredentialRecord, noShishKabob = false } = route.params
   const { title } = credentialItemPropsFor(rawCredentialRecord.credential)
-  const isResumeCredential = isResumeCredentialSubject(
-    (rawCredentialRecord.credential as any)?.credentialSubject as any
-  )
+
+  const credentialSubject = (rawCredentialRecord.credential as any)
+    ?.credentialSubject as any
+
+  const isResumeCredential = isResumeCredentialSubject(credentialSubject as any)
 
   const rawProfileRecord = useSelectorFactory(makeSelectProfileFromCredential, {
     rawCredentialRecord
