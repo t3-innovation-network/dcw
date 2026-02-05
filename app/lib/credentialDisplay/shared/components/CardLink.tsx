@@ -17,7 +17,7 @@ export default function CardLink({
   const { styles } = useDynamicStyles(dynamicStyleSheet)
 
   if (!url) return null
-  const displayText = String(label ?? url).trim() || url
+  const displayText = (label as string) || url
 
   return (
     <Text
