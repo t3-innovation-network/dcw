@@ -27,6 +27,7 @@ import { portfolioEvidenceFrom } from './shared/utils/evidence'
 
 import { DATE_FORMAT } from '../../../app.config'
 import { getCredentialName } from '../credentialName'
+import { ICredentialSubject } from '@digitalcredentials/ssi'
 const getSafeImageSource = (imageUri?: string | null): ImageSourcePropType => {
   return imageUri && imageUri.trim() !== ''
     ? { uri: imageUri }
@@ -44,7 +45,7 @@ function VerifiableCredentialCard({
   const registries = useContext(DidRegistryContext)
   const urlsDisabled = shouldDisableUrls(credential, registries)
   const navigation = useNavigation<NavigationProp>()
-  const subject = getSubject(credential) as any
+  const subject = getSubject(credential) as ICredentialSubject
   const { issuer } = credential
 
   const issuanceDate = getIssuanceDate(credential)
