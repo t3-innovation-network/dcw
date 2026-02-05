@@ -60,7 +60,6 @@ function VerifiableCredentialCard({
     endDateFmt
   } = credentialSubjectRenderInfoFrom(subject)
 
-  const evidenceLink = String(subject?.evidenceLink ?? '').trim()
   const portfolioEvidence = (() => {
     const raw = subject?.portfolio
     const items = Array.isArray(raw) ? raw : raw ? [raw] : []
@@ -154,19 +153,12 @@ function VerifiableCredentialCard({
       </View>
       <CardDetail label="Description" value={description} />
       <CardDetail label="Criteria" value={criteria} />
-      {!!evidenceLink && (
-        <View style={styles.dataContainer}>
-          <Text style={styles.dataLabel}>Evidence link</Text>
-          <CardLink url={evidenceLink} disabled={urlsDisabled} />
-        </View>
-      )}
       {portfolioEvidence.length > 0 ? (
         <View style={styles.dataContainer}>
-          <Text style={styles.dataLabel}>Portfolio</Text>
+          <Text style={styles.dataLabel}>Evidence</Text>
           {portfolioEvidence.map((p, idx) => (
             <View key={`${p.url}-${idx}`} style={{ marginBottom: 8 }}>
-              <Text style={styles.dataValue}>{p.name}</Text>
-              <CardLink url={p.url} disabled={urlsDisabled} />
+              <CardLink url={p.url} label={p.name} />
             </View>
           ))}
         </View>
