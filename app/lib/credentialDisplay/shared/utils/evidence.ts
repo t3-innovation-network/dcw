@@ -15,11 +15,13 @@ export function portfolioEvidenceFrom(
 
       if (!item || typeof item !== 'object') return null
 
-      const url = String((item as any).url ?? (item as any).id ?? '').trim()
+      const rawUrl = (item as any).url ?? (item as any).id ?? ''
+      const url = (typeof rawUrl === 'string' ? rawUrl : `${rawUrl}`).trim()
       if (!url) return null
 
-      const name = String((item as any).name ?? '').trim()
-      return { name: name ?? url, url }
+      const rawName = (item as any).name ?? ''
+      const name = (typeof rawName === 'string' ? rawName : `${rawName}`).trim()
+      return { name: name || url, url }
     })
     .filter(Boolean) as Array<PortfolioEvidenceItem>
 }

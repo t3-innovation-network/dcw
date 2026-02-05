@@ -30,6 +30,7 @@ import { portfolioEvidenceFrom } from './shared/utils/evidence'
 
 import { DATE_FORMAT } from '../../../app.config'
 import { getCredentialName } from '../credentialName'
+import { ICredentialSubject } from '@digitalcredentials/ssi'
 
 const getSafeImageSource = (imageUri?: string | null): ImageSourcePropType => {
   return imageUri && imageUri.trim() !== ''
@@ -49,7 +50,7 @@ const OpenBadgeCredentialCard = ({
 
   const navigation = useNavigation<NavigationProp>()
 
-  const subject = getSubject(credential) as any
+  const subject = getSubject(credential) as ICredentialSubject
   const { issuer, name } = credential
 
   const issuanceDate = getIssuanceDate(credential)
