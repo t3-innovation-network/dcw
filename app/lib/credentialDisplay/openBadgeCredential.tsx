@@ -179,6 +179,14 @@ const OpenBadgeCredentialCard = ({
             }
           }}
         />
+        <Button
+          title="View Resume Preview"
+          onPress={() => {
+            navigation.navigate('ResumePreviewScreen', {
+              rawCredentialRecord
+            })
+          }}
+        />
 
         <View style={styles.dateStyles}>
           <CardDetail label="Issuance Date" value={formattedIssuanceDate} />

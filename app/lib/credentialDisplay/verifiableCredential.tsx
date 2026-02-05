@@ -143,6 +143,14 @@ function VerifiableCredentialCard({
             }
           }}
         />
+        <Button
+          title="View Resume Preview"
+          onPress={() => {
+            navigation.navigate('ResumePreviewScreen', {
+              rawCredentialRecord
+            })
+          }}
+        />
       </View>
       <CardDetail label="Issuance Date" value={formattedIssuanceDate} />
       <CardDetail label="Issued To" value={subjectName} />
