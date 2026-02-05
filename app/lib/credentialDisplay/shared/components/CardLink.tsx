@@ -5,16 +5,19 @@ import { createDynamicStyleSheet } from '../../../dynamicStyles'
 
 type CardLinkProps = {
   url: string | null
+  label?: string | null
   disabled?: boolean
 }
 
 export default function CardLink({
   url,
+  label,
   disabled = false
 }: CardLinkProps): React.ReactElement | null {
   const { styles } = useDynamicStyles(dynamicStyleSheet)
 
   if (!url) return null
+  const displayText = String(label ?? url).trim() || url
 
   return (
     <Text
@@ -22,7 +25,7 @@ export default function CardLink({
       accessibilityRole={disabled ? undefined : 'link'}
       onPress={disabled ? undefined : () => Linking.openURL(url)}
     >
-      {url}
+      {displayText}
     </Text>
   )
 }
