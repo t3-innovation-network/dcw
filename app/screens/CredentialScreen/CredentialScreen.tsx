@@ -29,6 +29,7 @@ import { PublicLinkScreenMode } from '../PublicLinkScreen/PublicLinkScreen'
 import { credentialItemPropsFor } from '../../lib/credentialDisplay'
 import { isResumeCredential as isResumeCredentialSubject } from '../../lib/credentialTypes'
 import { useVerifyCredential } from '../../hooks'
+import { getSubject } from '../../lib/credentialDisplay/shared/utils/credentialSubject'
 
 export default function CredentialScreen({
   navigation,
@@ -42,8 +43,7 @@ export default function CredentialScreen({
   const { rawCredentialRecord, noShishKabob = false } = route.params
   const { title } = credentialItemPropsFor(rawCredentialRecord.credential)
 
-  const credentialSubject = (rawCredentialRecord.credential as any)
-    ?.credentialSubject as any
+  const credentialSubject = getSubject(rawCredentialRecord.credential)
 
   const isResumeCredential = isResumeCredentialSubject(credentialSubject as any)
 
