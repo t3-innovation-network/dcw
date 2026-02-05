@@ -89,11 +89,5 @@ export default createDynamicStyleSheet(({ theme, mixins }) => ({
     padding: 8,
     borderRadius: 4,
     marginBottom: 12
-  },
-  noteText: {
-    fontSize: theme.fontSize.small,
-    fontFamily: theme.fontFamily.regular,
-    color: theme.color.textSecondary,
-    marginBottom: 8
   }
 }))
