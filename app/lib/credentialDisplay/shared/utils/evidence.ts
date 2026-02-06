@@ -3,9 +3,9 @@ export type PortfolioEvidenceItem = { name: string; url: string }
 export function portfolioEvidenceFrom(
   raw: unknown
 ): Array<PortfolioEvidenceItem> {
-  const items = raw ? [raw] : []
+  if (!raw || !Array.isArray(raw)) return []
 
-  return items
+  return raw
     .map((item: unknown) => {
       if (typeof item === 'string') {
         const url = item.trim()
