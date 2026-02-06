@@ -81,6 +81,21 @@ describe('portfolioEvidenceFrom', () => {
     ).toEqual([{ name: 'https://example.com', url: 'https://example.com' }])
   })
 
+  it('handles a single non-array evidence object', () => {
+    expect(
+      portfolioEvidenceFrom({
+        name: 'Single Evidence',
+        url: 'https://example.com/single'
+      })
+    ).toEqual([{ name: 'Single Evidence', url: 'https://example.com/single' }])
+  })
+
+  it('handles a single non-array string evidence item', () => {
+    expect(portfolioEvidenceFrom(' https://example.com/string ')).toEqual([
+      { name: 'https://example.com/string', url: 'https://example.com/string' }
+    ])
+  })
+
   it('returns an empty array for empty or invalid input', () => {
     expect(portfolioEvidenceFrom([])).toEqual([])
     expect(portfolioEvidenceFrom(null)).toEqual([])
