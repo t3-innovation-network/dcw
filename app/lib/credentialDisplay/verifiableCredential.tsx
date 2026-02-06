@@ -28,6 +28,7 @@ import { portfolioEvidenceFrom } from './shared/utils/evidence'
 import { DATE_FORMAT } from '../../../app.config'
 import { getCredentialName } from '../credentialName'
 import { ICredentialSubject } from '@digitalcredentials/ssi'
+import { isResumeCredential } from '../credentialTypes'
 const getSafeImageSource = (imageUri?: string | null): ImageSourcePropType => {
   return imageUri && imageUri.trim() !== ''
     ? { uri: imageUri }
@@ -125,14 +126,16 @@ function VerifiableCredentialCard({
             }
           }}
         />
-        <Button
-          title="View Resume Preview"
-          onPress={() => {
-            navigation.navigate('ResumePreviewScreen', {
-              rawCredentialRecord
-            })
-          }}
-        />
+        {isResumeCredential(credential) && (
+          <Button
+            title="View Resume Preview"
+            onPress={() => {
+              navigation.navigate('ResumePreviewScreen', {
+                rawCredentialRecord
+              })
+            }}
+          />
+        )}
       </View>
       <CardDetail label="Issuance Date" value={formattedIssuanceDate} />
       <CardDetail label="Issued To" value={subjectName} />
