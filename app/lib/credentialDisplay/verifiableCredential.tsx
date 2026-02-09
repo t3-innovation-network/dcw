@@ -156,6 +156,12 @@ function VerifiableCredentialCard({
           ))}
         </View>
       ) : null}
+      {subject.duration && (
+        <CardDetail
+          label="Time spent acquiring this skill"
+          value={subject.duration}
+        />
+      )}
     </View>
   )
 }
