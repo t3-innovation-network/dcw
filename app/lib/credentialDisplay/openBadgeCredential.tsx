@@ -45,7 +45,6 @@ const OpenBadgeCredentialCard = ({
 }: CredentialCardProps): React.ReactElement => {
   const { styles, theme } = useDynamicStyles(dynamicStyleSheet)
   const { credential } = rawCredentialRecord
-  console.log('🚀 ~ OpenBadgeCredentialCard ~ credential:', credential)
   const verifyCredential = useVerifyCredential(rawCredentialRecord)
   const registries = useContext(DidRegistryContext)
   const urlsDisabled = shouldDisableUrls(credential, registries)
