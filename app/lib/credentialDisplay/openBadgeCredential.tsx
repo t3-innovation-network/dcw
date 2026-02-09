@@ -45,6 +45,7 @@ const OpenBadgeCredentialCard = ({
 }: CredentialCardProps): React.ReactElement => {
   const { styles, theme } = useDynamicStyles(dynamicStyleSheet)
   const { credential } = rawCredentialRecord
+  console.log('🚀 ~ OpenBadgeCredentialCard ~ credential:', credential)
   const verifyCredential = useVerifyCredential(rawCredentialRecord)
   const registries = useContext(DidRegistryContext)
   const urlsDisabled = shouldDisableUrls(credential, registries)
@@ -195,6 +196,12 @@ const OpenBadgeCredentialCard = ({
             ))}
           </View>
         ) : null}
+        {subject.duration && (
+          <CardDetail
+            label="Time spent acquiring this skill"
+            value={subject.duration}
+          />
+        )}
         <AlignmentsList alignment={alignment} disabled={urlsDisabled} />
       </View>
     </View>
