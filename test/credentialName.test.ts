@@ -77,4 +77,19 @@ describe('getCredentialName', () => {
     const result = getCredentialName(credential as IVerifiableCredential)
     expect(result).toBe('Unknown Credential')
   })
+
+  it('should return a recommendation title for RecommendationCredential', () => {
+    const credential: Partial<IVerifiableCredential> = {
+      type: [
+        'VerifiableCredential',
+        'https://schema.org/RecommendationCredential'
+      ],
+      credentialSubject: {
+        name: 'Ross Geller'
+      } as any
+    }
+
+    const result = getCredentialName(credential as IVerifiableCredential)
+    expect(result).toBe('Recommendation for Ross Geller')
+  })
 })

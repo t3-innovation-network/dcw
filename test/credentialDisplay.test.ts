@@ -49,6 +49,18 @@ jest.mock('../app/lib/credentialDisplay/verifiableCredential', () => ({
   }
 }))
 
+jest.mock('../app/lib/credentialDisplay/recommendationCredential', () => ({
+  recommendationCredentialDisplayConfig: {
+    credentialType: 'https://schema.org/RecommendationCredential',
+    cardComponent: jest.fn(),
+    itemPropsResolver: jest.fn(() => ({
+      title: 'Recommendation for Someone',
+      subtitle: 'Issuer',
+      image: 'default.png'
+    }))
+  }
+}))
+
 import {
   credentialDisplayConfigFor,
   credentialItemPropsFor
@@ -82,6 +94,18 @@ describe('credentialDisplay', () => {
     credentialSubject: { id: 'test-subject' }
   }
 
+  const mockRecommendationCredential: IVerifiableCredential = {
+    '@context': ['https://www.w3.org/2018/credentials/v1'],
+    id: 'test-recommendation',
+    type: [
+      'VerifiableCredential',
+      'https://schema.org/RecommendationCredential'
+    ],
+    issuer: { id: 'test-issuer' },
+    issuanceDate: '2023-01-01T00:00:00Z',
+    credentialSubject: { id: 'test-subject', name: 'Ross Geller' } as any
+  }
+
   describe('credentialDisplayConfigFor', () => {
     it('should return OpenBadgeCredential config for OpenBadgeCredential type', () => {
       const config = credentialDisplayConfigFor(mockOpenBadgeCredential)
@@ -93,6 +117,13 @@ describe('credentialDisplay', () => {
     it('should return OpenBadgeCredential config for AchievementCredential type', () => {
       const config = credentialDisplayConfigFor(mockAchievementCredential)
       expect(config.credentialType).toBe('OpenBadgeCredential')
+    })
+
+    it('should return RecommendationCredential config for RecommendationCredential type', () => {
+      const config = credentialDisplayConfigFor(mockRecommendationCredential)
+      expect(config.credentialType).toBe(
+        'https://schema.org/RecommendationCredential'
+      )
     })
 
     it('should return fallback config for generic VerifiableCredential', () => {
@@ -120,6 +151,12 @@ describe('credentialDisplay', () => {
       const props = credentialItemPropsFor(mockGenericCredential)
       expect(props).toBeDefined()
       expect(props.title).toBe('Credential')
+    })
+
+    it('should return item props for recommendation credential', () => {
+      const props = credentialItemPropsFor(mockRecommendationCredential)
+      expect(props).toBeDefined()
+      expect(props.title).toBe('Recommendation for Someone')
     })
   })
 })
