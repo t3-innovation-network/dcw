@@ -1,5 +1,5 @@
 import moment from 'moment'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Text, ImageSourcePropType } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -14,6 +14,8 @@ import type { CredentialCardProps, CredentialDisplayConfig } from '.'
 import defaultIssuerImage from '../../assets/defaultIssuer.png'
 import { DidRegistryContext } from '../../init/registries'
 import { shouldDisableUrls } from '../credentialSecurity'
+import { getRecommendationsForVC } from '../recommendations'
+import type { CredentialRecordRaw } from '../../types/credential'
 
 import {
   CardLink,
@@ -50,6 +52,9 @@ const OpenBadgeCredentialCard = ({
   const urlsDisabled = shouldDisableUrls(credential, registries)
 
   const navigation = useNavigation<NavigationProp>()
+  const [recommendations, setRecommendations] = useState<CredentialRecordRaw[]>(
+    []
+  )
 
   const subject = getSubject(credential) as ICredentialSubject
   const { issuer, name } = credential
@@ -82,6 +87,24 @@ const OpenBadgeCredentialCard = ({
 
   const { issuerName, issuerUrl, issuerId, issuerImage } =
     issuerRenderInfoWithVerification(issuer, verifyCredential?.result)
+
+  useEffect(() => {
+    let mounted = true
+    const run = async () => {
+      try {
+        const vcId = credential?.id
+        if (!vcId) return
+        const recs = await getRecommendationsForVC(vcId)
+        if (mounted) setRecommendations(recs)
+      } catch (e) {
+        console.warn('Failed to load recommendations for VC:', e)
+      }
+    }
+    run()
+    return () => {
+      mounted = false
+    }
+  }, [credential?.id])
 
   return (
     <View style={styles.cardContainer}>
@@ -193,6 +216,42 @@ const OpenBadgeCredentialCard = ({
                 <CardLink url={p.url} label={p.name} />
               </View>
             ))}
+          </View>
+        ) : null}
+        {recommendations.length > 0 ? (
+          <View style={styles.dataContainer}>
+            <Text style={styles.dataLabel}>Recommendations</Text>
+            {recommendations.map((rec, idx) => {
+              const recSubject = getSubject(rec.credential) as any
+              const label =
+                typeof recSubject?.name === 'string' &&
+                recSubject.name.trim().length > 0
+                  ? `View recommendation from ${recSubject.name}`
+                  : 'View recommendation'
+              return (
+                <View
+                  key={`${rec.credential?.id ?? 'rec'}-${idx}`}
+                  style={{ marginBottom: 8 }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: theme.fontFamily.regular,
+                      fontSize: theme.fontSize.regular,
+                      color: theme.color.linkColor,
+                      textDecorationLine: 'underline'
+                    }}
+                    accessibilityRole="link"
+                    onPress={() =>
+                      navigation.navigate('CredentialScreen', {
+                        rawCredentialRecord: rec
+                      })
+                    }
+                  >
+                    {label}
+                  </Text>
+                </View>
+              )
+            })}
           </View>
         ) : null}
         {subject.duration && (
