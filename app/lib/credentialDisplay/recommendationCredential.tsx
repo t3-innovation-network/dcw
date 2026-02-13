@@ -25,6 +25,7 @@ import {
   getSubject
 } from './shared'
 import { portfolioEvidenceFrom } from './shared/utils/evidence'
+import { stripHtml } from '../stripHtml'
 
 type NavigationProp = StackNavigationProp<CredentialNavigationParamList>
 
@@ -32,12 +33,6 @@ const getSafeImageSource = (imageUri?: string | null): ImageSourcePropType => {
   return imageUri && imageUri.trim() !== ''
     ? { uri: imageUri }
     : defaultIssuerImage
-}
-
-function safeText(value: unknown): string | null {
-  if (typeof value !== 'string') return null
-  const v = value.trim()
-  return v.length > 0 ? v : null
 }
 
 function RecommendationCredentialCard({
@@ -79,11 +74,11 @@ function RecommendationCredentialCard({
       verifyCredential?.result
     )
 
-  const subjectName = safeText((subject as any)?.name)
-  const howKnow = safeText(subject?.howKnow)
-  const recommendationText = safeText(subject?.recommendationText)
-  const qualifications = safeText(subject?.qualifications)
-  const explainAnswer = safeText(subject?.explainAnswer)
+  const subjectName = subject?.name as string
+  const howKnow = subject?.howKnow as string
+  const recommendationText = stripHtml(subject?.recommendationText as string)
+  const qualifications = stripHtml(subject?.qualifications as string)
+  const explainAnswer = stripHtml(subject?.explainAnswer as string)
 
   const portfolioEvidence = portfolioEvidenceFrom(subject?.portfolio)
 

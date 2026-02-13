@@ -54,7 +54,7 @@ jest.mock('../app/lib/credentialDisplay/recommendationCredential', () => ({
     credentialType: 'https://schema.org/RecommendationCredential',
     cardComponent: jest.fn(),
     itemPropsResolver: jest.fn(() => ({
-      title: 'Recommendation for Someone',
+      title: 'Recommendation From Someone',
       subtitle: 'Issuer',
       image: 'default.png'
     }))
@@ -156,7 +156,7 @@ describe('credentialDisplay', () => {
     it('should return item props for recommendation credential', () => {
       const props = credentialItemPropsFor(mockRecommendationCredential)
       expect(props).toBeDefined()
-      expect(props.title).toBe('Recommendation for Someone')
+      expect(props.title).toBe('Recommendation From Someone')
     })
   })
 })
