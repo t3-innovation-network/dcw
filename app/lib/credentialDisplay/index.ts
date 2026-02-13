@@ -1,5 +1,6 @@
 import { CredentialDisplayConfig, ResolvedCredentialItemProps } from './index.d'
 import { openBadgeCredentialDisplayConfig } from './openBadgeCredential'
+import { recommendationCredentialDisplayConfig } from './recommendationCredential'
 
 import { studentIdDisplayConfig } from './studentId'
 import { universityDegreeCredentialDisplayConfig } from './universityDegreeCredential'
@@ -12,6 +13,7 @@ const credentialDisplayConfigs: CredentialDisplayConfig[] = [
   studentIdDisplayConfig,
   universityDegreeCredentialDisplayConfig,
   openBadgeCredentialDisplayConfig,
+  recommendationCredentialDisplayConfig,
   verifiableCredentialDisplayConfig
 ]
 
@@ -23,6 +25,8 @@ export function credentialDisplayConfigFor(
   )
   if (credential.type.includes('AchievementCredential'))
     config = openBadgeCredentialDisplayConfig
+  if (credential.type.includes('RecommendationCredential'))
+    config = recommendationCredentialDisplayConfig
   if (!config) throw new Error('Unrecognized credential type')
 
   const { credentialType, cardComponent, itemPropsResolver } = config
