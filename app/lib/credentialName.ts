@@ -8,16 +8,14 @@ import { getSubject } from './credentialDisplay/shared/utils/credentialSubject'
  */
 export function getCredentialName(credential: IVerifiableCredential): string {
   const isRecommendationCredential = credential?.type?.includes?.(
-    'RecommendationCredential'
+    'https://schema.org/RecommendationCredential'
   )
   const credentialSubject = getSubject(credential)
 
   if (isRecommendationCredential) {
-    const name =
-      typeof (credentialSubject as any)?.name === 'string'
-        ? (credentialSubject as any).name.trim()
-        : ''
-    return name ? `Recommendation From ${name}` : 'Recommendation Credential'
+    return credentialSubject.name
+      ? `Recommendation From ${credentialSubject.name}`
+      : 'Recommendation Credential'
   }
 
   let achievement =

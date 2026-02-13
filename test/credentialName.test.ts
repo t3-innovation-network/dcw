@@ -90,6 +90,6 @@ describe('getCredentialName', () => {
     }
 
     const result = getCredentialName(credential as IVerifiableCredential)
-    expect(result).toBe('Recommendation for Ross Geller')
+    expect(result).toBe('Recommendation From Ross Geller')
   })
 })
