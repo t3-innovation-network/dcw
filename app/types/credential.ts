@@ -1,5 +1,8 @@
 import { ObjectID } from 'bson'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import {
+  ICredentialSubject,
+  IVerifiableCredential
+} from '@digitalcredentials/ssi'
 
 export enum CredentialError {
   IsNotVerified = 'Credential is not verified.',
@@ -32,6 +35,27 @@ export type CredentialRecordEntry = {
 }
 export type CredentialRecordRaw = CredentialRecordEntry & {
   readonly credential: IVerifiableCredential
+}
+
+export interface PerformanceReviewCredentialSubject extends ICredentialSubject {
+  fullName?: unknown
+  employeeName?: unknown
+  employeeJobTitle?: unknown
+  company?: unknown
+  role?: unknown
+  reviewStartDate?: unknown
+  reviewEndDate?: unknown
+  reviewDuration?: unknown
+  jobKnowledgeRating?: unknown
+  teamworkRating?: unknown
+  initiativeRating?: unknown
+  communicationRating?: unknown
+  overallRating?: unknown
+  reviewComments?: unknown
+  goalsNext?: unknown
+  portfolio?: unknown
+  evidenceLink?: unknown
+  evidenceDescription?: unknown
 }
 
 // Different types of queries in verifiable presentation request
