@@ -144,15 +144,23 @@ function RecommendationCredentialCard({
         <CardDetail label="Expiration Date" value={formattedExpirationDate} />
       </View>
 
-      <CardDetail label="Recommended Person" value={subjectName} />
-      <CardDetail label="How do you know them?" value={howKnow} />
-      <CardDetail
-        label="Recommendation"
-        value={recommendationText}
-        isMarkdown={true}
-      />
-      <CardDetail label="Qualifications" value={qualifications} />
-      <CardDetail label="Explain Answer" value={explainAnswer} />
+      {subjectName && (
+        <CardDetail label="Recommended Person" value={subjectName} />
+      )}
+      {howKnow && <CardDetail label="How do you know them?" value={howKnow} />}
+      {recommendationText && (
+        <CardDetail
+          label="Recommendation"
+          value={recommendationText}
+          isMarkdown={true}
+        />
+      )}
+      {qualifications && (
+        <CardDetail label="Qualifications" value={qualifications} />
+      )}
+      {explainAnswer && (
+        <CardDetail label="Explain Answer" value={explainAnswer} />
+      )}
 
       {portfolioEvidence.length > 0 ? (
         <View style={styles.dataContainer}>

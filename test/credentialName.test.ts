@@ -92,4 +92,16 @@ describe('getCredentialName', () => {
     const result = getCredentialName(credential as IVerifiableCredential)
     expect(result).toBe('Recommendation From Ross Geller')
   })
+
+  it('should return a performance review title for PerformanceReviewCredential', () => {
+    const credential: Partial<IVerifiableCredential> = {
+      type: ['VerifiableCredential', 'PerformanceReviewCredential'],
+      credentialSubject: {
+        employeeName: 'Omar Salah'
+      } as any
+    }
+
+    const result = getCredentialName(credential as IVerifiableCredential)
+    expect(result).toBe('Performance Review: Omar Salah')
+  })
 })

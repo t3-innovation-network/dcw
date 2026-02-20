@@ -61,6 +61,18 @@ jest.mock('../app/lib/credentialDisplay/recommendationCredential', () => ({
   }
 }))
 
+jest.mock('../app/lib/credentialDisplay/performanceReviewCredential', () => ({
+  performanceReviewCredentialDisplayConfig: {
+    credentialType: 'PerformanceReviewCredential',
+    cardComponent: jest.fn(),
+    itemPropsResolver: jest.fn(() => ({
+      title: 'Performance Review: Omar Salah',
+      subtitle: 'Issuer',
+      image: 'default.png'
+    }))
+  }
+}))
+
 import {
   credentialDisplayConfigFor,
   credentialItemPropsFor
@@ -106,6 +118,15 @@ describe('credentialDisplay', () => {
     credentialSubject: { id: 'test-subject', name: 'Ross Geller' } as any
   }
 
+  const mockPerformanceReviewCredential: IVerifiableCredential = {
+    '@context': ['https://www.w3.org/2018/credentials/v1'],
+    id: 'test-performance-review',
+    type: ['VerifiableCredential', 'PerformanceReviewCredential'],
+    issuer: { id: 'test-issuer' },
+    issuanceDate: '2026-02-18T14:35:07.554Z',
+    credentialSubject: { id: 'test-subject', employeeName: 'Omar Salah' } as any
+  }
+
   describe('credentialDisplayConfigFor', () => {
     it('should return OpenBadgeCredential config for OpenBadgeCredential type', () => {
       const config = credentialDisplayConfigFor(mockOpenBadgeCredential)
@@ -124,6 +145,11 @@ describe('credentialDisplay', () => {
       expect(config.credentialType).toBe(
         'https://schema.org/RecommendationCredential'
       )
+    })
+
+    it('should return PerformanceReviewCredential config for PerformanceReviewCredential type', () => {
+      const config = credentialDisplayConfigFor(mockPerformanceReviewCredential)
+      expect(config.credentialType).toBe('PerformanceReviewCredential')
     })
 
     it('should return fallback config for generic VerifiableCredential', () => {
@@ -157,6 +183,12 @@ describe('credentialDisplay', () => {
       const props = credentialItemPropsFor(mockRecommendationCredential)
       expect(props).toBeDefined()
       expect(props.title).toBe('Recommendation From Someone')
+    })
+
+    it('should return item props for performance review credential', () => {
+      const props = credentialItemPropsFor(mockPerformanceReviewCredential)
+      expect(props).toBeDefined()
+      expect(props.title).toBe('Performance Review: Omar Salah')
     })
   })
 })
