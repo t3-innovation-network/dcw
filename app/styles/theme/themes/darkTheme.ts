@@ -11,7 +11,7 @@ export const darkTheme: ThemeType = {
     backgroundSecondary: Color.NavBlue,
     foregroundPrimary: Color.NavBlue,
     textHeader: Color.TitleGreen,
-    textPrimary: Color.DarkBlue,
+    textPrimary: Color.Gray300,
     brightAccent: Color.LightCyan,
     textSecondary: Color.White,
     textPrimaryDark: Color.Black,
