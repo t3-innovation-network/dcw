@@ -103,7 +103,7 @@ export default {
       userInterfaceStyle: 'automatic',
       versionCode: BUILD_NUMBER,
       adaptiveIcon: {
-        foregroundImage: './app/assets/dcw-adaptive-foreground-1024.png',
+        foregroundImage: './app/assets/icon.png',
         backgroundColor: '#001F5C'
       },
       intentFilters: [
