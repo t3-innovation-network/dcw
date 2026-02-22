@@ -68,10 +68,10 @@ export default {
     slug: 'learner-credential-wallet',
     scheme: 't3-digital-credential-wallet',
     orientation: 'portrait',
-    icon: './app/assets/dcw-app-icon-image-1024.png',
+    icon: './app/assets/icon.png',
     backgroundColor: '#001F5C',
     splash: {
-      image: './app/assets/splash-dcw.png',
+      image: './app/assets/splash.png',
       resizeMode: 'contain',
       backgroundColor: '#001F5C'
     },
