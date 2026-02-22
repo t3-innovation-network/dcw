@@ -66,12 +66,12 @@ export default {
     slug: 'learner-credential-wallet',
     scheme: 't3-digital-credential-wallet',
     orientation: 'portrait',
-    icon: './app/assets/icon.png',
-    backgroundColor: '#909090',
+    icon: './app/assets/dcw-app-icon-image-1024.png',
+    backgroundColor: '#001F5C',
     splash: {
-      image: './app/assets/splash.png',
+      image: './app/assets/splash-dcw.png',
       resizeMode: 'contain',
-      backgroundColor: '#909090'
+      backgroundColor: '#001F5C'
     },
     updates: {
       fallbackToCacheTimeout: 0
@@ -101,8 +101,8 @@ export default {
       userInterfaceStyle: 'automatic',
       versionCode: BUILD_NUMBER,
       adaptiveIcon: {
-        foregroundImage: './app/assets/adaptive-icon.png',
-        backgroundColor: '#909090'
+        foregroundImage: './app/assets/dcw-adaptive-foreground-1024.png',
+        backgroundColor: '#001F5C'
       },
       intentFilters: [
         {
