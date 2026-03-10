@@ -1,5 +1,7 @@
 import { imageSourceFrom } from './image'
-import { IIssuerObject } from '@digitalcredentials/ssi'
+import { IIssuerObject, IVerifiableCredential } from '@digitalcredentials/ssi'
+import { getSubject } from './credentialSubject'
+import { asNonEmptyString } from './presentation'
 
 type IssuerInfo = {
   issuerName: string | null
@@ -15,17 +17,38 @@ type VerifyCredentialResult = {
   }>
 }
 
+/** Person name from credentialSubject.person (SkillClaimCredential) for issuer display override */
+export function personNameFromCredential(
+  credential?: IVerifiableCredential
+): string | null {
+  if (!credential) return null
+  const subject = getSubject(credential)
+  return (
+    asNonEmptyString(
+      (subject as { person?: { name?: unknown } })?.person?.name
+    ) ?? null
+  )
+}
+
 export function issuerRenderInfoWithVerification(
   issuer: IIssuerObject,
-  verifyResult?: VerifyCredentialResult
+  verifyResult?: VerifyCredentialResult,
+  credential?: IVerifiableCredential
 ): IssuerInfo {
+  const isSkillClaimCredential = credential?.type?.includes?.(
+    'SkillClaimCredential'
+  )
+  const personName = isSkillClaimCredential
+    ? personNameFromCredential(credential)
+    : null
+
   const registeredIssuerLog = verifyResult?.log?.find(
     (log) => log.id === 'registered_issuer'
   )
 
   const matchingIssuer = registeredIssuerLog?.matchingIssuers?.[0]
 
-  if (matchingIssuer?.issuer?.federation_entity) {
+  if (matchingIssuer?.issuer?.federation_entity && !personName) {
     const federationEntity = matchingIssuer.issuer.federation_entity
     return {
       issuerName: federationEntity.organization_name ?? '',
@@ -36,21 +59,32 @@ export function issuerRenderInfoWithVerification(
     }
   }
 
-  // Fallback to existing logic
+  // Fallback to existing logic (or person name for SkillClaimCredential)
   const fallback = issuerRenderInfoFrom(issuer)
   return {
-    issuerName: fallback.issuerName ?? '',
+    issuerName: personName ?? fallback.issuerName ?? '',
     issuerUrl: fallback.issuerUrl ?? '',
     issuerId: fallback.issuerId ?? '',
-    issuerImage: matchingIssuer?.issuer?.federation_entity?.logo_uri ?? ''
+    issuerImage:
+      matchingIssuer?.issuer?.federation_entity?.logo_uri ??
+      fallback.issuerImage ??
+      ''
   }
 }
 
 export function issuerRenderInfoFrom(
-  issuer: IIssuerObject | string
+  issuer: IIssuerObject | string,
+  credential?: IVerifiableCredential
 ): IssuerInfo {
+  const isSkillClaimCredential = credential?.type?.includes?.(
+    'SkillClaimCredential'
+  )
+  const personName = isSkillClaimCredential
+    ? personNameFromCredential(credential)
+    : null
+
   const issuerName =
-    (typeof issuer === 'string' ? issuer : issuer?.name) ?? null
+    personName ?? (typeof issuer === 'string' ? issuer : issuer?.name) ?? null
   const issuerUrl = (typeof issuer === 'string' ? null : issuer?.url) ?? null
   const issuerId = typeof issuer === 'string' ? null : issuer?.id
   const issuerImage =
