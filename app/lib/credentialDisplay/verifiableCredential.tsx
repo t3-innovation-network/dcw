@@ -25,7 +25,7 @@ import {
   IssuerInfoButton,
   getSubject
 } from './shared'
-import { portfolioEvidenceFrom } from './shared/utils/evidence'
+import { evidenceFromCredential } from './shared/utils/evidence'
 
 import { DATE_FORMAT } from '../../../app.config'
 import { getCredentialName } from '../credentialName'
@@ -68,10 +68,14 @@ function VerifiableCredentialCard({
     endDateFmt
   } = credentialSubjectRenderInfoFrom(subject)
 
-  const portfolioEvidence = portfolioEvidenceFrom(subject?.portfolio)
+  const portfolioEvidence = evidenceFromCredential(credential, subject)
 
   const { issuerName, issuerUrl, issuerId, issuerImage } =
-    issuerRenderInfoWithVerification(issuer, verifyCredential?.result)
+    issuerRenderInfoWithVerification(
+      issuer,
+      verifyCredential?.result,
+      credential
+    )
 
   useEffect(() => {
     const run = async () => {
@@ -230,7 +234,9 @@ export const verifiableCredentialDisplayConfig: CredentialDisplayConfig = {
     const title = getCredentialName(credential)
     const { achievementImage } = credentialSubjectRenderInfoFrom(subject)
     const { issuerName, issuerImage } = issuerRenderInfoWithVerification(
-      credential.issuer
+      credential.issuer,
+      undefined,
+      credential
     )
 
     return {

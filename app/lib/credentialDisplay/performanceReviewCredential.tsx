@@ -22,7 +22,7 @@ import {
   IssuerInfoButton,
   getSubject
 } from './shared'
-import { portfolioEvidenceFrom } from './shared/utils/evidence'
+import { evidenceFromCredential } from './shared/utils/evidence'
 import { asNonEmptyString, formatMaybeDate } from './shared/utils/presentation'
 
 type NavigationProp = StackNavigationProp<CredentialNavigationParamList>
@@ -49,7 +49,7 @@ function PerformanceReviewCredentialCard({
       verifyCredential?.result
     )
 
-  const portfolioEvidence = portfolioEvidenceFrom(subject?.portfolio)
+  const portfolioEvidence = evidenceFromCredential(credential, subject)
 
   const reviewStart = formatMaybeDate(subject?.reviewStartDate, DATE_FORMAT)
   const reviewEnd = formatMaybeDate(subject?.reviewEndDate, DATE_FORMAT)
