@@ -54,7 +54,8 @@ export default function IssuerInfoScreen({
 
   const fallbackIssuer = issuerRenderInfoWithVerification(
     credential.issuer,
-    verifyCredential?.result
+    verifyCredential?.result,
+    credential
   )
 
   return (

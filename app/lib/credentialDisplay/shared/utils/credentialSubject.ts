@@ -38,14 +38,24 @@ export function getSubject(vc: IVerifiableCredential): ICredentialSubject {
 export function credentialSubjectRenderInfoFrom(
   credentialSubject: ICredentialSubject
 ): CredentialRenderInfo {
+  // SkillClaimCredential: person.name is the subject
+  const personName = (credentialSubject as { person?: { name?: unknown } })
+    ?.person?.name
+  const personNameStr =
+    typeof personName === 'string' && personName.trim()
+      ? personName.trim()
+      : null
+
   // Same as "issuedTo", below, but used in non-OBv3 components
   const subjectName =
+    personNameStr ??
     credentialSubject?.name ??
     extractNameFromOBV3Identifier(credentialSubject) ??
     null
   // Used in OBv3 components only - prioritize identityHash over credentialSubject.name for Open Badges
   const identityHashName = extractNameFromOBV3Identifier(credentialSubject)
-  const issuedTo = identityHashName ?? credentialSubject?.name ?? null
+  const issuedTo =
+    personNameStr ?? identityHashName ?? credentialSubject?.name ?? null
   const degreeName = credentialSubject.degree?.name ?? null
 
   const [achievement] = Array.isArray(credentialSubject.achievement)

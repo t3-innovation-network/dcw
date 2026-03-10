@@ -14,6 +14,9 @@ export function getCredentialName(credential: IVerifiableCredential): string {
   const isPerformanceReviewCredential = credential?.type?.includes?.(
     'PerformanceReviewCredential'
   )
+  const isSkillClaimCredential = credential?.type?.includes?.(
+    'SkillClaimCredential'
+  )
   const credentialSubject = getSubject(credential)
 
   if (isRecommendationCredential) {
@@ -31,6 +34,14 @@ export function getCredentialName(credential: IVerifiableCredential): string {
       : 'Performance Review Credential'
   }
 
+  if (isSkillClaimCredential) {
+    const skills = (credentialSubject as { skill?: Array<{ name?: unknown }> })
+      ?.skill
+    const firstSkill = Array.isArray(skills) ? skills[0] : skills
+    const skillName = asNonEmptyString(firstSkill?.name)
+    return skillName ?? 'Unknown Skill'
+  }
+
   let achievement =
     credentialSubject.hasCredential ?? credentialSubject.achievement
 
@@ -38,5 +49,5 @@ export function getCredentialName(credential: IVerifiableCredential): string {
     achievement = achievement[0]
   }
 
-  return achievement?.name ?? 'Unknown Credential'
+  return achievement?.name || credential.skill?.name || 'Unknown Credential'
 }
