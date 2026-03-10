@@ -24,7 +24,7 @@ import {
   IssuerInfoButton,
   getSubject
 } from './shared'
-import { portfolioEvidenceFrom } from './shared/utils/evidence'
+import { evidenceFromCredential } from './shared/utils/evidence'
 import { stripHtml } from '../stripHtml'
 
 type NavigationProp = StackNavigationProp<CredentialNavigationParamList>
@@ -80,7 +80,7 @@ function RecommendationCredentialCard({
   const qualifications = stripHtml(subject?.qualifications as string)
   const explainAnswer = stripHtml(subject?.explainAnswer as string)
 
-  const portfolioEvidence = portfolioEvidenceFrom(subject?.portfolio)
+  const portfolioEvidence = evidenceFromCredential(credential, subject)
 
   return (
     <View style={styles.cardContainer}>
