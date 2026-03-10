@@ -28,7 +28,7 @@ import {
   getSubject,
   AlignmentsList
 } from './shared'
-import { portfolioEvidenceFrom } from './shared/utils/evidence'
+import { evidenceFromCredential } from './shared/utils/evidence'
 
 import { DATE_FORMAT } from '../../../app.config'
 import { getCredentialName } from '../credentialName'
@@ -80,7 +80,7 @@ const OpenBadgeCredentialCard = ({
     alignment
   } = credentialSubjectRenderInfoFrom(subject)
 
-  const portfolioEvidence = portfolioEvidenceFrom(subject?.portfolio)
+  const portfolioEvidence = evidenceFromCredential(credential, subject)
 
   const issuedToName: string = issuedTo || (name as string)
   const credentialName = getCredentialName(credential)
