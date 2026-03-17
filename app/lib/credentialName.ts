@@ -1,6 +1,7 @@
 import { IVerifiableCredential } from '@digitalcredentials/ssi'
 import { getSubject } from './credentialDisplay/shared/utils/credentialSubject'
 import { asNonEmptyString } from './credentialDisplay/shared/utils/presentation'
+import { isEmploymentCredential } from './credentialTypes'
 
 /**
  * Extracts the credential name from a verifiable credential
@@ -17,6 +18,7 @@ export function getCredentialName(credential: IVerifiableCredential): string {
   const isSkillClaimCredential = credential?.type?.includes?.(
     'SkillClaimCredential'
   )
+
   const credentialSubject = getSubject(credential)
 
   if (isRecommendationCredential) {
@@ -40,6 +42,14 @@ export function getCredentialName(credential: IVerifiableCredential): string {
     const firstSkill = Array.isArray(skills) ? skills[0] : skills
     const skillName = asNonEmptyString(firstSkill?.name)
     return skillName ?? 'Unknown Skill'
+  }
+
+  if (isEmploymentCredential(credential)) {
+    const fullName = asNonEmptyString((credentialSubject as any)?.fullName)
+    const company = asNonEmptyString((credentialSubject as any)?.company)
+    if (fullName && company) return `Employment: ${fullName} @ ${company}`
+    if (fullName) return `Employment: ${fullName}`
+    return 'Employment Credential'
   }
 
   let achievement =
