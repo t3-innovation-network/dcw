@@ -1,6 +1,6 @@
 import moment from 'moment'
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, ImageSourcePropType } from 'react-native'
+import { View, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { CredentialNavigationParamList } from '../../navigation/CredentialNavigation/CredentialNavigation.d'
@@ -34,12 +34,7 @@ import { DATE_FORMAT } from '../../../app.config'
 import { getCredentialName } from '../credentialName'
 import { ICredentialSubject } from '@digitalcredentials/ssi'
 import { isResumeCredential } from '../credentialTypes'
-
-const getSafeImageSource = (imageUri?: string | null): ImageSourcePropType => {
-  return imageUri && imageUri.trim() !== ''
-    ? { uri: imageUri }
-    : defaultIssuerImage
-}
+import { getSafeImageSource } from '../getsafeImagesource'
 
 type NavigationProp = StackNavigationProp<CredentialNavigationParamList>
 const OpenBadgeCredentialCard = ({
