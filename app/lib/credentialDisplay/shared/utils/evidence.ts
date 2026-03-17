@@ -1,3 +1,5 @@
+import { getSubject } from './credentialSubject'
+
 export type PortfolioEvidenceItem = { name: string; url: string }
 
 /** Evidence item from W3C VC evidence array: { id, type, name } */
@@ -54,8 +56,7 @@ export function evidenceFromCredential(
   if (fromEvidence && Array.isArray(fromEvidence) && fromEvidence.length > 0) {
     return portfolioEvidenceFrom(fromEvidence)
   }
-  const subj =
-    subject ?? (credential as { credentialSubject?: unknown }).credentialSubject
+  const subj = subject ?? getSubject(credential as any)
   const portfolio =
     subj && typeof subj === 'object' && 'portfolio' in subj
       ? (subj as { portfolio?: unknown }).portfolio

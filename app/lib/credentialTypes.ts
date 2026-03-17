@@ -1,4 +1,7 @@
-import { ICredentialSubject } from '@digitalcredentials/ssi'
+import {
+  ICredentialSubject,
+  IVerifiableCredential
+} from '@digitalcredentials/ssi'
 
 export const isResumeCredential = (
   credentialSubject: ICredentialSubject
@@ -10,4 +13,10 @@ export const isResumeCredential = (
       x === 'Resume' ||
       (typeof x === 'string' && x.toLowerCase().includes('resume'))
   )
+}
+
+export const isEmploymentCredential = (
+  credential: IVerifiableCredential
+): boolean => {
+  return credential?.type?.includes?.('EmploymentCredential')
 }
