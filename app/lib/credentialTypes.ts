@@ -20,3 +20,9 @@ export const isEmploymentCredential = (
 ): boolean => {
   return credential?.type?.includes?.('EmploymentCredential')
 }
+
+export const isVolunteerCredential = (
+  credential: IVerifiableCredential
+): boolean => {
+  return credential?.type?.includes?.('VolunteeringCredential')
+}

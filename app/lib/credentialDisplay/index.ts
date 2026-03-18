@@ -3,12 +3,16 @@ import { openBadgeCredentialDisplayConfig } from './openBadgeCredential'
 import { employmentCredentialDisplayConfig } from './employmentCredential'
 import { performanceReviewCredentialDisplayConfig } from './performanceReviewCredential'
 import { recommendationCredentialDisplayConfig } from './recommendationCredential'
+import { volunteerCredentialDisplayConfig } from './volunteerCredential'
 
 import { studentIdDisplayConfig } from './studentId'
 import { universityDegreeCredentialDisplayConfig } from './universityDegreeCredential'
 import { verifiableCredentialDisplayConfig } from './verifiableCredential'
 import { IVerifiableCredential } from '@digitalcredentials/ssi'
-import { isEmploymentCredential } from '../credentialTypes'
+import {
+  isEmploymentCredential,
+  isVolunteerCredential
+} from '../credentialTypes'
 
 export * from './index.d'
 
@@ -17,6 +21,7 @@ const credentialDisplayConfigs: CredentialDisplayConfig[] = [
   universityDegreeCredentialDisplayConfig,
   openBadgeCredentialDisplayConfig,
   employmentCredentialDisplayConfig,
+  volunteerCredentialDisplayConfig,
   recommendationCredentialDisplayConfig,
   performanceReviewCredentialDisplayConfig,
   verifiableCredentialDisplayConfig
@@ -40,6 +45,9 @@ export function credentialDisplayConfigFor(
 
   if (isEmploymentCredential(credential))
     config = employmentCredentialDisplayConfig
+
+  if (isVolunteerCredential(credential))
+    config = volunteerCredentialDisplayConfig
 
   if (!config) throw new Error('Unrecognized credential type')
 
