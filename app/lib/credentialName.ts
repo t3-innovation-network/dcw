@@ -1,7 +1,10 @@
 import { IVerifiableCredential } from '@digitalcredentials/ssi'
 import { getSubject } from './credentialDisplay/shared/utils/credentialSubject'
 import { asNonEmptyString } from './credentialDisplay/shared/utils/presentation'
-import { isEmploymentCredential } from './credentialTypes'
+import {
+  isEmploymentCredential,
+  isVolunteerCredential
+} from './credentialTypes'
 
 /**
  * Extracts the credential name from a verifiable credential
@@ -50,6 +53,17 @@ export function getCredentialName(credential: IVerifiableCredential): string {
     if (fullName && company) return `Employment: ${fullName} @ ${company}`
     if (fullName) return `Employment: ${fullName}`
     return 'Employment Credential'
+  }
+
+  if (isVolunteerCredential(credential)) {
+    const fullName = asNonEmptyString((credentialSubject as any)?.fullName)
+    const volunteerOrg = asNonEmptyString(
+      (credentialSubject as any)?.volunteerOrg
+    )
+    if (fullName && volunteerOrg)
+      return `Volunteer: ${fullName} @ ${volunteerOrg}`
+    if (fullName) return `Volunteer: ${fullName}`
+    return 'Volunteer Credential'
   }
 
   let achievement =

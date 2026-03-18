@@ -70,6 +70,19 @@ export interface EmploymentCredentialSubject extends ICredentialSubject {
   evidenceDescription?: unknown
 }
 
+export interface VolunteerCredentialSubject extends ICredentialSubject {
+  fullName?: unknown
+  volunteerWork?: unknown
+  volunteerOrg?: unknown
+  volunteerDescription?: unknown
+  skillsGained?: unknown
+  duration?: unknown
+  volunteerDates?: unknown
+  portfolio?: unknown
+  evidenceLink?: unknown
+  evidenceDescription?: unknown
+}
+
 // Different types of queries in verifiable presentation request
 export enum VcQueryType {
   Example = 'QueryByExample',
