@@ -73,6 +73,18 @@ jest.mock('../app/lib/credentialDisplay/performanceReviewCredential', () => ({
   }
 }))
 
+jest.mock('../app/lib/credentialDisplay/employmentCredential', () => ({
+  employmentCredentialDisplayConfig: {
+    credentialType: 'EmploymentCredential',
+    cardComponent: jest.fn(),
+    itemPropsResolver: jest.fn(() => ({
+      title: 'Employment: Omar @ testing company',
+      subtitle: 'Issuer',
+      image: 'default.png'
+    }))
+  }
+}))
+
 import {
   credentialDisplayConfigFor,
   credentialItemPropsFor
@@ -127,6 +139,15 @@ describe('credentialDisplay', () => {
     credentialSubject: { id: 'test-subject', employeeName: 'Omar Salah' } as any
   }
 
+  const mockEmploymentCredential: IVerifiableCredential = {
+    '@context': ['https://www.w3.org/2018/credentials/v1'],
+    id: 'test-employment',
+    type: ['VerifiableCredential', 'EmploymentCredential'],
+    issuer: { id: 'test-issuer' },
+    issuanceDate: '2026-03-17T17:14:15.286Z',
+    credentialSubject: { id: 'test-subject', fullName: 'Omar' } as any
+  }
+
   describe('credentialDisplayConfigFor', () => {
     it('should return OpenBadgeCredential config for OpenBadgeCredential type', () => {
       const config = credentialDisplayConfigFor(mockOpenBadgeCredential)
@@ -155,6 +176,11 @@ describe('credentialDisplay', () => {
     it('should return fallback config for generic VerifiableCredential', () => {
       const config = credentialDisplayConfigFor(mockGenericCredential)
       expect(config.credentialType).toBe('VerifiableCredential')
+    })
+
+    it('should return EmploymentCredential config for EmploymentCredential type', () => {
+      const config = credentialDisplayConfigFor(mockEmploymentCredential)
+      expect(config.credentialType).toBe('EmploymentCredential')
     })
   })
 
@@ -189,6 +215,12 @@ describe('credentialDisplay', () => {
       const props = credentialItemPropsFor(mockPerformanceReviewCredential)
       expect(props).toBeDefined()
       expect(props.title).toBe('Performance Review: Omar Salah')
+    })
+
+    it('should return item props for employment credential', () => {
+      const props = credentialItemPropsFor(mockEmploymentCredential)
+      expect(props).toBeDefined()
+      expect(props.title).toBe('Employment: Omar @ testing company')
     })
   })
 })
