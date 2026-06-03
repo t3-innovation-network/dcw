@@ -28,10 +28,6 @@ function isVerificationKey(item: WalletContent): item is IKeyPair {
   return (item as IKeyPair)?.type === 'Ed25519VerificationKey2020'
 }
 
-function isKeyAgreementKey(item: WalletContent): item is IKeyPair {
-  return (item as IKeyPair)?.type === 'X25519KeyAgreementKey2020'
-}
-
 function isProfileMetadata(item: WalletContent): item is ProfileMetadata {
   return (item as ProfileMetadata)?.type === 'ProfileMetadata'
 }
@@ -47,7 +43,6 @@ export function parseWalletContents(rawWallet: string): ParsedWalletContents {
   const credentials = contents.filter(isCredential)
   const didDocument = contents.find(isDidDocument)
   const verificationKey = contents.find(isVerificationKey)
-  const keyAgreementKey = contents.find(isKeyAgreementKey)
   const profileMetadata = contents.find(isProfileMetadata)
 
   const errorMessage = (key: string) =>
@@ -55,14 +50,11 @@ export function parseWalletContents(rawWallet: string): ParsedWalletContents {
   if (didDocument === undefined) throw new Error(errorMessage('didDocument'))
   if (verificationKey === undefined)
     throw new Error(errorMessage('verificationKey'))
-  if (keyAgreementKey === undefined)
-    throw new Error(errorMessage('keyAgreementKey'))
 
   return {
     credentials,
     didDocument,
     verificationKey,
-    keyAgreementKey,
     profileMetadata
   }
 }

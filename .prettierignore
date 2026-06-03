@@ -4,5 +4,6 @@ android/
 ios/
 .expo/
 patches/
+.maestro/
 *.log
 *.lock

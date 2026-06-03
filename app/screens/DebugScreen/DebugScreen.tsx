@@ -51,10 +51,6 @@ export default function DebugScreen({
           <Text style={styles.codeBlock} selectable testID="verification-key">
             {JSON.stringify(rawDidRecord.verificationKey, null, 2)}
           </Text>
-          <Text style={styles.paragraph}>Key Agreement Key:</Text>
-          <Text style={styles.codeBlock} selectable testID="key-agreement-key">
-            {JSON.stringify(rawDidRecord.keyAgreementKey, null, 2)}
-          </Text>
         </View>
       </ScrollView>
     </>

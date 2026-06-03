@@ -15,7 +15,6 @@ export type ParsedWalletContents = {
   credentials: IVerifiableCredential[]
   didDocument: IDidDocument
   verificationKey: IKeyPair
-  keyAgreementKey: IKeyPair
   profileMetadata?: ProfileMetadata
 }
 
