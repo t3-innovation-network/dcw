@@ -30,7 +30,6 @@ type MigrationDidRecord = {
   updatedAt: Date
   rawDidDocument: string
   rawVerificationKey: string
-  rawKeyAgreementKey: string
 }
 
 type MigrationCredentialRecord = {
@@ -65,9 +64,7 @@ function toDidRecordRaw(
     rawDidDocument: migrationRecord.rawDidDocument,
     didDocument: JSON.parse(migrationRecord.rawDidDocument),
     rawVerificationKey: migrationRecord.rawVerificationKey,
-    verificationKey: JSON.parse(migrationRecord.rawVerificationKey),
-    rawKeyAgreementKey: migrationRecord.rawKeyAgreementKey,
-    keyAgreementKey: JSON.parse(migrationRecord.rawKeyAgreementKey)
+    verificationKey: JSON.parse(migrationRecord.rawVerificationKey)
   }
 }
 
@@ -83,8 +80,7 @@ const m1_createDefaultProfileAndAssociateExistingCredentials: Migration =
       createdAt: didRecord.createdAt as Date,
       updatedAt: didRecord.updatedAt as Date,
       rawDidDocument: didRecord.rawDidDocument as string,
-      rawVerificationKey: didRecord.rawVerificationKey as string,
-      rawKeyAgreementKey: didRecord.rawKeyAgreementKey as string
+      rawVerificationKey: didRecord.rawVerificationKey as string
     }
     const rawDidRecord = toDidRecordRaw(migrationDidRecord)
     const rawProfileRecord = ProfileRecord.rawFrom({
@@ -115,6 +111,16 @@ const m1_createDefaultProfileAndAssociateExistingCredentials: Migration =
     })
   }
 
-const migrations = [m1_createDefaultProfileAndAssociateExistingCredentials]
+// Drops the now-unused `rawKeyAgreementKey` property from DidRecord. Realm
+// removes the column automatically once it is no longer in the schema, so the
+// migration body is empty — its only purpose is to bump the schema version.
+const m2_removeKeyAgreementKey: Migration = async () => {
+  // No data transformation needed; Realm drops the removed property's column.
+}
+
+const migrations = [
+  m1_createDefaultProfileAndAssociateExistingCredentials,
+  m2_removeKeyAgreementKey
+]
 
 export const schemaVersion = migrations.length

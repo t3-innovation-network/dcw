@@ -1,19 +1,16 @@
-import * as DidMethodKey from '@digitalcredentials/did-method-key'
+import { driver } from '@interop/did-method-key'
+import { Ed25519VerificationKey } from '@interop/ed25519-verification-key'
 import {
   IDidDocument,
   ISigner,
-  IVerificationKeyPair2020,
-  IKeyAgreementKeyPair2020
+  IVerificationKeyPair2020
 } from '@digitalcredentials/ssi'
-import { X25519KeyAgreementKey2020 } from '@digitalcredentials/x25519-key-agreement-key-2020'
-import { Ed25519VerificationKey2020 } from '@digitalcredentials/ed25519-verification-key-2020'
 
 import { CredentialRecordRaw } from '../types/credential'
 
 export type AddDidRecordParams = {
   didDocument: IDidDocument
   verificationKey: IVerificationKeyPair2020
-  keyAgreementKey: IKeyAgreementKeyPair2020
 }
 
 /**
@@ -25,43 +22,21 @@ export async function mintDid({
 }: {
   seed: Uint8Array
 }): Promise<AddDidRecordParams> {
-  const didKeyDriver = DidMethodKey.driver()
-  didKeyDriver.use({
-    multibaseMultikeyHeader: 'z6Mk',
-    fromMultibase: Ed25519VerificationKey2020.from
-  })
+  const didKeyDriver = driver()
+  didKeyDriver.use({ keyPairClass: Ed25519VerificationKey })
 
-  const verificationKeyPair = await Ed25519VerificationKey2020.generate({
-    seed
-  })
+  const { didDocument, methodFor } = await didKeyDriver.generate({ seed })
 
-  const { didDocument } = await didKeyDriver.fromKeyPair({
-    verificationKeyPair
-  })
-
-  // Note: did-method-key lib changed its signature; it used to export a map
-  // of public-private key pairs, now it just exports public keys.
-  // Due to that, we have to create key pairs manually here.
-  const did = didDocument.id
-  verificationKeyPair.controller = did
-  verificationKeyPair.id = `${did}#${verificationKeyPair.fingerprint()}`
-  const keyAgreementKeyPair =
-    X25519KeyAgreementKey2020.fromEd25519VerificationKey2020({
-      keyPair: verificationKeyPair
-    })
-  keyAgreementKeyPair.controller = did
-  keyAgreementKeyPair.id = `${did}#${keyAgreementKeyPair.fingerprint()}`
+  const verificationKeyPair = methodFor({
+    purpose: 'assertionMethod'
+  }) as Ed25519VerificationKey
 
   return {
     didDocument,
-    verificationKey: verificationKeyPair.export({
+    verificationKey: verificationKeyPair.toVerificationKey2020({
       publicKey: true,
       privateKey: true
-    }) as IVerificationKeyPair2020,
-    keyAgreementKey: keyAgreementKeyPair.export({
-      publicKey: true,
-      privateKey: true
-    }) as IKeyAgreementKeyPair2020
+    }) as IVerificationKeyPair2020
   }
 }
 

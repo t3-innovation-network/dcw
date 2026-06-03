@@ -9,11 +9,7 @@ function generateObjectIdHex(): string {
 }
 
 import { db } from './DatabaseAccess'
-import {
-  IDidDocument,
-  IKeyAgreementKeyPair2020,
-  IKeyPair
-} from '@digitalcredentials/ssi'
+import { IDidDocument, IKeyPair } from '@digitalcredentials/ssi'
 import { AddDidRecordParams } from '../lib/did'
 
 export type DidRecordRaw = {
@@ -24,8 +20,6 @@ export type DidRecordRaw = {
   readonly didDocument: IDidDocument
   readonly rawVerificationKey: string
   readonly verificationKey: IKeyPair
-  readonly rawKeyAgreementKey: string
-  readonly keyAgreementKey: IKeyAgreementKeyPair2020
 }
 export class DidRecord extends Realm.Object implements DidRecordRaw {
   readonly _id!: Realm.BSON.ObjectId
@@ -33,7 +27,6 @@ export class DidRecord extends Realm.Object implements DidRecordRaw {
   readonly updatedAt!: Date
   readonly rawDidDocument!: string
   readonly rawVerificationKey!: string
-  readonly rawKeyAgreementKey!: string
 
   get didDocument(): IDidDocument {
     return JSON.parse(this.rawDidDocument) as IDidDocument
@@ -41,10 +34,6 @@ export class DidRecord extends Realm.Object implements DidRecordRaw {
 
   get verificationKey(): IKeyPair {
     return JSON.parse(this.rawVerificationKey) as IKeyPair
-  }
-
-  get keyAgreementKey(): IKeyPair {
-    return JSON.parse(this.rawKeyAgreementKey) as IKeyPair
   }
 
   static schema: Realm.ObjectSchema = {
@@ -55,7 +44,6 @@ export class DidRecord extends Realm.Object implements DidRecordRaw {
       createdAt: 'date',
       updatedAt: 'date',
       rawDidDocument: 'string',
-      rawKeyAgreementKey: 'string',
       rawVerificationKey: 'string'
     }
   }
@@ -67,8 +55,6 @@ export class DidRecord extends Realm.Object implements DidRecordRaw {
       updatedAt: this.updatedAt,
       rawDidDocument: this.rawDidDocument,
       didDocument: this.didDocument,
-      rawKeyAgreementKey: this.rawKeyAgreementKey,
-      keyAgreementKey: this.keyAgreementKey,
       rawVerificationKey: this.rawVerificationKey,
       verificationKey: this.verificationKey
     }
@@ -78,23 +64,20 @@ export class DidRecord extends Realm.Object implements DidRecordRaw {
 
   static async addDidRecord({
     didDocument,
-    verificationKey,
-    keyAgreementKey
+    verificationKey
   }: AddDidRecordParams): Promise<DidRecordRaw> {
     const _id = new ObjectId(generateObjectIdHex())
     const createdAt = new Date()
     const updatedAt = new Date()
     const rawDidDocument = JSON.stringify(didDocument)
     const rawVerificationKey = JSON.stringify(verificationKey)
-    const rawKeyAgreementKey = JSON.stringify(keyAgreementKey)
 
     const rawDidRecordForRealm = {
       _id,
       createdAt,
       updatedAt,
       rawDidDocument,
-      rawVerificationKey,
-      rawKeyAgreementKey
+      rawVerificationKey
     }
 
     try {

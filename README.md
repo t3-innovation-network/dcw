@@ -33,8 +33,8 @@ Prerequisites:
 - [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) or [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 - [Node.js](https://nodejs.org/en/) - **Version 20.x**
 - [Cocoapods](https://cocoapods.org/) (use brew, not gem, to install)
-- [XCode](https://developer.apple.com/xcode/) - **Version 16 
-- [Android Studio](https://developer.android.com/studio) - **Ladybug 
+- [XCode](https://developer.apple.com/xcode/) - \*\*Version 16
+- [Android Studio](https://developer.android.com/studio) - \*\*Ladybug
 
 See [Installing on Linux](install-linux.md) on setting up the project on Linux.
 

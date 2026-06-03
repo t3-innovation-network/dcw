@@ -5,8 +5,8 @@ import { mintDid } from '../app/lib/did'
 
 describe('DID tests', () => {
   describe('mintDid()', () => {
-    it('Creates a new DID Document and key pairs', async () => {
-      const { didDocument, verificationKey, keyAgreementKey } = await mintDid({
+    it('Creates a new DID Document and key pair', async () => {
+      const { didDocument, verificationKey } = await mintDid({
         seed: await randomBytes(32)
       })
       assert.equal(didDocument['@context'][0], 'https://www.w3.org/ns/did/v1')
@@ -14,9 +14,6 @@ describe('DID tests', () => {
 
       assert.equal(verificationKey.type, 'Ed25519VerificationKey2020')
       assert.ok(verificationKey.privateKeyMultibase)
-
-      assert.equal(keyAgreementKey.type, 'X25519KeyAgreementKey2020')
-      assert.ok(keyAgreementKey.privateKeyMultibase)
     })
   })
 })

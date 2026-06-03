@@ -247,7 +247,7 @@ export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
       throw new Error('No DID record found for profile')
     }
 
-    const { didDocument, verificationKey, keyAgreementKey } = profileDidRecord
+    const { didDocument, verificationKey } = profileDidRecord
 
     const profileMetadata: ProfileMetadata = {
       '@context': ['https://w3id.org/wallet/v1'],
@@ -262,7 +262,6 @@ export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
       ...credentials,
       didDocument,
       verificationKey,
-      keyAgreementKey,
       profileMetadata
     ]
 
@@ -280,13 +279,8 @@ export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
   public static async importProfileRecord(
     rawWallet: string
   ): Promise<ProfileImportReport> {
-    const {
-      credentials,
-      didDocument,
-      verificationKey,
-      keyAgreementKey,
-      profileMetadata
-    } = parseWalletContents(rawWallet)
+    const { credentials, didDocument, verificationKey, profileMetadata } =
+      parseWalletContents(rawWallet)
 
     const profileImportReport: ProfileImportReport = {
       userIdImported: false,
@@ -352,8 +346,7 @@ export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
 
       const rawDidRecord = await DidRecord.addDidRecord({
         didDocument,
-        verificationKey,
-        keyAgreementKey
+        verificationKey
       })
       const rawProfileRecord = await ProfileRecord.addProfileRecord({
         profileName,
