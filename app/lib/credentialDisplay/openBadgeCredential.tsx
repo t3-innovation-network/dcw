@@ -32,7 +32,7 @@ import { evidenceFromCredential } from './shared/utils/evidence'
 
 import { DATE_FORMAT } from '../../../app.config'
 import { getCredentialName } from '../credentialName'
-import { ICredentialSubject } from '@digitalcredentials/ssi'
+import { ICredentialSubject } from '@interop/data-integrity-core'
 import { isResumeCredential } from '../credentialTypes'
 import { getSafeImageSource } from '../getsafeImagesource'
 

@@ -3,7 +3,7 @@ import { View, Text, Linking } from 'react-native'
 import { useDynamicStyles } from '../../../../hooks'
 import { getValidAlignments, ValidAlignment } from '../utils/alignment'
 import { createDynamicStyleSheet } from '../../../dynamicStyles'
-import { IAlignment } from '@digitalcredentials/ssi'
+import { IAlignment } from '@interop/data-integrity-core'
 
 type AlignmentsListProps = {
   alignment?: IAlignment[]

@@ -3,7 +3,7 @@
 
 import { credentialSubjectRenderInfoFrom } from '../app/lib/credentialDisplay/shared/utils/credentialSubject'
 import { getValidAlignments } from '../app/lib/credentialDisplay/shared/utils/alignment'
-import { IAlignment, ICredentialSubject } from '@digitalcredentials/ssi'
+import { IAlignment, ICredentialSubject } from '@interop/data-integrity-core'
 
 // Mock only essential dependencies
 jest.mock('../app/lib/decode', () => ({

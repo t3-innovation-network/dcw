@@ -1,6 +1,6 @@
 import { createHash } from 'crypto'
 import { canonicalize as jcsCanonicalize } from 'json-canonicalize'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 
 export function canonicalCredentialJson(
   credential: IVerifiableCredential

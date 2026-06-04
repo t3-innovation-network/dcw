@@ -1,5 +1,5 @@
 // Mock credential display components
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 
 jest.mock('../app/lib/credentialDisplay/openBadgeCredential', () => ({
   openBadgeCredentialDisplayConfig: {

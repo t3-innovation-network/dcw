@@ -8,7 +8,7 @@ import { volunteerCredentialDisplayConfig } from './volunteerCredential'
 import { studentIdDisplayConfig } from './studentId'
 import { universityDegreeCredentialDisplayConfig } from './universityDegreeCredential'
 import { verifiableCredentialDisplayConfig } from './verifiableCredential'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 import {
   isEmploymentCredential,
   isVolunteerCredential

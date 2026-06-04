@@ -1,5 +1,8 @@
 import { imageSourceFrom } from './image'
-import { IIssuerObject, IVerifiableCredential } from '@digitalcredentials/ssi'
+import {
+  IIssuerObject,
+  IVerifiableCredential
+} from '@interop/data-integrity-core'
 import { getSubject } from './credentialSubject'
 import { asNonEmptyString } from './presentation'
 

@@ -3,7 +3,7 @@ import * as verifierCore from '@digitalcredentials/verifier-core'
 import {
   IVerifiableCredential,
   IVerifiablePresentation
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 jest.mock('@digitalcredentials/verifier-core', () => ({
   verifyPresentation: jest.fn(),

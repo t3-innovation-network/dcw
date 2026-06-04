@@ -1,7 +1,7 @@
 import type {
   IOpenBadgeSubject,
   ICredentialSubject
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 export function extractNameFromOBV3Identifier(
   credentialSubject: IOpenBadgeSubject | ICredentialSubject

@@ -1,4 +1,4 @@
-import type { ICredentialSubject } from '@digitalcredentials/ssi'
+import type { ICredentialSubject } from '@interop/data-integrity-core'
 
 import { isResumeCredential } from '../app/lib/credentialTypes'
 

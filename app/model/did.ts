@@ -9,7 +9,7 @@ function generateObjectIdHex(): string {
 }
 
 import { db } from './DatabaseAccess'
-import { IDidDocument, IKeyPair } from '@digitalcredentials/ssi'
+import { IDidDocument, IKeyPair } from '@interop/data-integrity-core'
 import { AddDidRecordParams } from '../lib/did'
 
 export type DidRecordRaw = {

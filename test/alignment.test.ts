@@ -1,5 +1,5 @@
 import { getValidAlignments } from '../app/lib/credentialDisplay/shared/utils/alignment'
-import { IAlignment } from '@digitalcredentials/ssi'
+import { IAlignment } from '@interop/data-integrity-core'
 
 describe('getValidAlignments', () => {
   it('should return empty array when alignments is undefined', () => {

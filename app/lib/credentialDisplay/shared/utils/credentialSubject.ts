@@ -6,7 +6,7 @@ import {
   IAlignment,
   ICredentialSubject,
   IVerifiableCredential
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 type CredentialRenderInfo = {
   subjectName: string | null

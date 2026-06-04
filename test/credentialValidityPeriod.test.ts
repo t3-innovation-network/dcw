@@ -2,7 +2,7 @@ import {
   getIssuanceDate,
   getExpirationDate
 } from '../app/lib/credentialValidityPeriod'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 
 describe('credentialValidityPeriod', () => {
   describe('getIssuanceDate', () => {

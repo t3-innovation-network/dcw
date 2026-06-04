@@ -14,7 +14,7 @@ import { selectWithFactory } from '../../store/selectorFactories'
 import { makeSelectDidFromProfile } from '../../store/selectorFactories/makeSelectDidFromProfile'
 import dynamicStyleSheet from './CredentialRequestHandler.styles'
 import { stageCredentialsForProfile } from '../../store/slices/credentialFoyer'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 import { navigationRef } from '../../navigation'
 
 type CredentialRequestHandlerProps = {

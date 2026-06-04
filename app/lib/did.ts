@@ -4,7 +4,7 @@ import {
   IDidDocument,
   ISigner,
   IVerificationKeyPair2020
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 import { CredentialRecordRaw } from '../types/credential'
 

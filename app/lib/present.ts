@@ -1,6 +1,6 @@
 import uuid from 'react-native-uuid'
 import * as vc from '@digitalcredentials/vc'
-import { Ed25519VerificationKey2020 } from '@digitalcredentials/ed25519-verification-key-2020'
+import { Ed25519VerificationKey } from '@interop/ed25519-verification-key'
 import { Ed25519Signature2020 } from '@digitalcredentials/ed25519-signature-2020'
 
 import type { DidRecordRaw } from '../model/did'
@@ -10,7 +10,7 @@ import { shareData } from './shareData'
 import {
   IVerifiableCredential,
   IVerifiablePresentation
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 const documentLoader = securityLoader({ fetchRemoteContexts: true }).build()
 
@@ -34,7 +34,7 @@ export async function createVerifiablePresentation({
   verifiableCredential,
   challenge = uuid.v4() as string
 }: SignPresentationParams): Promise<IVerifiablePresentation> {
-  const verificationKeyPair = await Ed25519VerificationKey2020.from(
+  const verificationKeyPair = await Ed25519VerificationKey.from(
     didRecord.verificationKey
   )
   const suite = new Ed25519Signature2020({ key: verificationKeyPair })

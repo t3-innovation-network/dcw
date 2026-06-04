@@ -14,7 +14,7 @@ import {
   QRScreenParams,
   ViewSourceScreenParams
 } from '../../screens'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 
 export type RootNavigationParamsList = {
   HomeNavigation: NavigatorScreenParams<HomeNavigationParamList>

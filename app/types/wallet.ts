@@ -3,7 +3,7 @@ import {
   IDidDocument,
   IKeyPair,
   IVerifiableCredential
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 export type WalletContent =
   | IVerifiableCredential

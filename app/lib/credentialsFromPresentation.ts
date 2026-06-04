@@ -1,7 +1,7 @@
 import {
   IVerifiableCredential,
   IVerifiablePresentation
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 export function credentialsFromPresentation(
   vp: IVerifiablePresentation

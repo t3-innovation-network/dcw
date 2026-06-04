@@ -1,7 +1,7 @@
 import {
   ICredentialSubject,
   IVerifiableCredential
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 export const isResumeCredential = (
   credentialSubject: ICredentialSubject

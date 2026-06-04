@@ -1,5 +1,5 @@
 import { DidRecordRaw } from '../model'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 
 import { createVerifiablePresentation } from './present'
 import { parseResponseBody } from './parseResponse'

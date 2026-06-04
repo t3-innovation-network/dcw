@@ -1,4 +1,4 @@
-import { IImageObject } from '@digitalcredentials/ssi'
+import { IImageObject } from '@interop/data-integrity-core'
 
 function isImageObject(obj: unknown): obj is IImageObject {
   const imageObject = obj as IImageObject

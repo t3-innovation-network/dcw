@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { WAS, VERIFIER_INSTANCE_URL } from '../../app.config'
 import { getStorageClient } from './walletAttachedStorage'
 import { getWasController } from './getWasController'
-import { ISigner } from '@digitalcredentials/ssi'
+import { ISigner } from '@interop/data-integrity-core'
 import { getCredentialName } from './credentialName'
 
 let cachedSigner: ISigner | undefined

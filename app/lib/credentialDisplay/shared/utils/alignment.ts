@@ -1,4 +1,4 @@
-import { IAlignment } from '@digitalcredentials/ssi'
+import { IAlignment } from '@interop/data-integrity-core'
 
 export type ValidAlignment = {
   targetName: string
