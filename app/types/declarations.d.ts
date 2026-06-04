@@ -4,7 +4,6 @@ declare module '@digitalcredentials/vc'
 declare module '@digitalcredentials/verifier-core'
 declare module '@digitalcredentials/vpqr'
 declare module '@digitalcredentials/jsonld-signatures'
-declare module '@digitalcredentials/x25519-key-agreement-key-2020'
 declare module '@digitalcredentials/ed25519-signature-2020' {
   export class Ed25519Signature2020 {
     constructor(options?: unknown)
