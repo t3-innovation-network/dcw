@@ -1,7 +1,7 @@
 import RNHTMLtoPDF from 'react-native-html-to-pdf'
 import Handlebars from 'handlebars'
 import { PDF } from '../types/pdf'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 
 export async function convertSVGtoPDF(
   credential: IVerifiableCredential,

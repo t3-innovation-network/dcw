@@ -6,7 +6,7 @@ import ScanQrIcon from '../../assets/icons/scan-QR-icon.png'
 import UploadFileIcon from '../../assets/icons/uploud-icon.png'
 import AddIcon from '../../assets/icons/plus-icon.png'
 import { TextInput } from 'react-native-paper'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 import { bachelorDegree } from '../../mock/BachelorDegree'
 import { stageCredentials } from '../../store/slices/credentialFoyer'
 

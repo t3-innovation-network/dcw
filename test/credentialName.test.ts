@@ -1,5 +1,5 @@
 import { getCredentialName } from '../app/lib/credentialName'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 
 describe('getCredentialName', () => {
   it('should return credential name from hasCredential property', () => {

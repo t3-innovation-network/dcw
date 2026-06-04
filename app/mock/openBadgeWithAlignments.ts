@@ -1,4 +1,4 @@
-import { IOpenBadgeCredentialV3 } from '@digitalcredentials/ssi'
+import { IOpenBadgeCredentialV3 } from '@interop/data-integrity-core'
 
 export const mockOpenBadgeWithAlignments: IOpenBadgeCredentialV3 = {
   '@context': [

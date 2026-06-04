@@ -2,7 +2,7 @@ import { ISelectedProfile } from './did'
 import {
   IVerifiableCredential,
   IVerifiablePresentation
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 import * as vc from '@digitalcredentials/vc'
 import { Ed25519Signature2020 } from '@digitalcredentials/ed25519-signature-2020'
 import { securityLoader } from '@digitalcredentials/security-document-loader'

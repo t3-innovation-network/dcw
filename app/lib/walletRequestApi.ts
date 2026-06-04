@@ -18,7 +18,7 @@
 import {
   IVerifiableCredential,
   IVerifiablePresentation
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 import qs from 'query-string'
 import { LinkConfig } from '../../app.config'
 import { HumanReadableError } from './error'

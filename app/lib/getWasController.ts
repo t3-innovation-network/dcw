@@ -2,7 +2,7 @@ import 'react-native-get-random-values'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { WAS } from '../../app.config'
 import { Ed25519VerificationKey2020 } from '@digitalcredentials/ed25519-verification-key-2020'
-import { ISigner } from '@digitalcredentials/ssi'
+import { ISigner } from '@interop/data-integrity-core'
 
 export type IController = {
   signer?: ISigner

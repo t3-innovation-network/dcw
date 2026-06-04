@@ -1,5 +1,5 @@
 // Mock dependencies
-import { ICredentialSubject } from '@digitalcredentials/ssi'
+import { ICredentialSubject } from '@interop/data-integrity-core'
 
 jest.mock('../app/lib/decode', () => ({
   educationalOperationalCredentialFrom: jest.fn((subject) =>

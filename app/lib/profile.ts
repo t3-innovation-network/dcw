@@ -1,12 +1,12 @@
 import { CredentialRecord } from '../model/credential'
 import { IProfileSigners, ISelectedProfile } from './did'
-import { Ed25519VerificationKey2020 } from '@digitalcredentials/ed25519-verification-key-2020'
-import { IDidDocument, IKeyPair } from '@digitalcredentials/ssi'
+import { Ed25519VerificationKey } from '@interop/ed25519-verification-key'
+import { IDidDocument, IKeyPair } from '@interop/data-integrity-core'
 
 export async function signersFromKey(
   didKey: IKeyPair
 ): Promise<IProfileSigners> {
-  const keyPair = await Ed25519VerificationKey2020.from(didKey)
+  const keyPair = await Ed25519VerificationKey.from(didKey)
   return {
     authentication: keyPair.signer(),
     assertion: keyPair.signer(),

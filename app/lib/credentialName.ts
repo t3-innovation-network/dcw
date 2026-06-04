@@ -1,4 +1,4 @@
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 import { getSubject } from './credentialDisplay/shared/utils/credentialSubject'
 import { asNonEmptyString } from './credentialDisplay/shared/utils/presentation'
 import {

@@ -9,6 +9,7 @@ import {
   IIssueRequest
 } from '../app/lib/walletRequestApi'
 import { mockCredential } from '../app/mock/credential'
+import type { IProofDescription } from '@interop/data-integrity-core'
 
 import { profileWithSigners } from '../app/lib/profile'
 import { composeVp } from '../app/lib/composeVp'
@@ -211,8 +212,9 @@ describe('vcApi', () => {
         domain: 'https://example.com'
       })
       assert.deepEqual(vp.type, ['VerifiablePresentation'])
-      assert.equal(vp.proof.type, 'Ed25519Signature2020')
-      assert.equal(vp.proof.proofPurpose, 'authentication')
+      const proof = vp.proof as IProofDescription
+      assert.equal(proof.type, 'Ed25519Signature2020')
+      assert.equal(proof.proofPurpose, 'authentication')
       assert.deepEqual(vp.verifiableCredential, [mockCredential])
     })
   })

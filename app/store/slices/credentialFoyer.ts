@@ -7,7 +7,7 @@ import { CredentialRecord } from '../../model/credential'
 import { RootState } from '..'
 import { addCredential } from './credential'
 import { ObjectID } from 'bson'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 import { credentialContentHash } from '../../lib/credentialHash'
 import { CredentialRecordRaw } from '../../types/credential'
 

@@ -2,7 +2,7 @@ import { ObjectID } from 'bson'
 import {
   ICredentialSubject,
   IVerifiableCredential
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 export enum CredentialError {
   IsNotVerified = 'Credential is not verified.',

@@ -3,7 +3,7 @@ import { randomBytes } from 'crypto'
 
 import { CredentialRecordEntry, CredentialRecordRaw } from '../types/credential'
 import { db } from './DatabaseAccess'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 
 const ObjectId = Realm.BSON.ObjectId
 type ObjectId = Realm.BSON.ObjectId

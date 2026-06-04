@@ -1,5 +1,5 @@
 import { extractNameFromOBV3Identifier } from '../app/lib/extractNameFromOBV3Identifier'
-import { ICredentialSubject } from '@digitalcredentials/ssi'
+import { ICredentialSubject } from '@interop/data-integrity-core'
 
 describe('extractNameFromOBV3Identifier', () => {
   it('should return null when there is no identifier object', async () => {

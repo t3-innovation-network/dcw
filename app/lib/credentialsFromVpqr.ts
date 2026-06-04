@@ -1,7 +1,7 @@
 import {
   IVerifiableCredential,
   IVerifiablePresentation
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 import { fromQrCode } from '@digitalcredentials/vpqr'
 import { securityLoader } from '@digitalcredentials/security-document-loader'
 

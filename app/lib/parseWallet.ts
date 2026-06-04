@@ -8,7 +8,7 @@ import {
   IDidDocument,
   IKeyPair,
   IVerifiableCredential
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 function isCredential(item: WalletContent): item is IVerifiableCredential {
   const context = (item as IVerifiableCredential)['@context']

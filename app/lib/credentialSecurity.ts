@@ -1,6 +1,6 @@
 import type { RegistryClient } from '@digitalcredentials/issuer-registry-client'
 import { issuerInRegistries } from './issuerInRegistries'
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 import type { ResultLog } from './validate'
 
 type VerificationResultLike =

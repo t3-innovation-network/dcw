@@ -1,4 +1,4 @@
-import { IVerifiableCredential } from '@digitalcredentials/ssi'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 
 export function getIssuanceDate(
   credential: IVerifiableCredential

@@ -10,7 +10,7 @@ import { CredentialRecordRaw } from '../model'
 import {
   IVerifiableCredential,
   IVerifiablePresentation
-} from '@digitalcredentials/ssi'
+} from '@interop/data-integrity-core'
 
 /**
  * This type is used to identify a request response that could be a
