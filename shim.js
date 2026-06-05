@@ -3,7 +3,7 @@ import { Platform } from 'react-native'
 import * as bi from 'big-integer'
 
 // Used in @digitalcredentials/vc-status-list
-import { Buffer } from '@craftzdog/react-native-buffer'
+import { Buffer } from 'buffer'
 
 import * as ExpoCrypto from 'expo-crypto'
 

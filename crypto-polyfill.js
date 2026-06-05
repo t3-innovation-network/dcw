@@ -1,5 +1,5 @@
 // Crypto polyfill for React Native
-import { Buffer } from '@craftzdog/react-native-buffer'
+import { Buffer } from 'buffer'
 
 // Ultra-simple crypto implementations
 export function randomBytes(size) {

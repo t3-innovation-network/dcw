@@ -10,7 +10,6 @@ module.exports = function (api) {
           alias: {
             crypto: './crypto-polyfill.js',
             stream: 'stream-browserify',
-            buffer: '@craftzdog/react-native-buffer',
             // TODO use Url from expo? https://docs.expo.dev/versions/unversioned/sdk/url/
             'whatwg-url': 'react-native-url-polyfill'
           }
