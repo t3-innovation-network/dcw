@@ -1,7 +1,7 @@
 import type { StackScreenProps } from '@react-navigation/stack'
 import { ShareRequestParams } from '../../lib/shareRequest'
 
-import type { CredentialRecordRaw } from '../../model/credential'
+import type { CredentialRecordRaw } from '../../model'
 import { PublicLinkScreenParams } from '../../screens'
 
 export type ShareNavigationParamsList = {

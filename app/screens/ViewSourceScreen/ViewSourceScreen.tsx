@@ -3,7 +3,7 @@ import { Text, ScrollView, View } from 'react-native'
 
 import { NavHeader } from '../../components'
 import dynamicStyleSheet from './ViewSourceScreen.styles'
-import { ViewSourceScreenParams } from './ViewSourceScreen.d'
+import { ViewSourceScreenParams } from './ViewSourceScreen.types'
 
 type ViewSourceScreenProps = {
   navigation: any

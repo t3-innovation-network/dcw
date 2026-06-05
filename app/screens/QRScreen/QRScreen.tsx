@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native'
 
 import { ConfirmModal } from '../../components'
 import { NavHeader } from '../../components'
-import { QRScreenProps } from './QRScreen.d'
+import { QRScreenProps } from './QRScreen.types'
 import dynamicStyleSheet from './QRScreen.styles'
 import { errorMessageFrom } from '../../lib/error'
 import { useDynamicStyles } from '../../hooks'

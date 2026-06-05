@@ -1,7 +1,10 @@
 import React from 'react'
 import { Image, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { SafeAreaView, type NativeSafeAreaViewProps } from 'react-native-safe-area-context'
+import {
+  SafeAreaView,
+  type NativeSafeAreaViewProps
+} from 'react-native-safe-area-context'
 
 import dynamicStyleSheet from './SafeScreenView.styles'
 type SafeScreenViewProps = NativeSafeAreaViewProps & {

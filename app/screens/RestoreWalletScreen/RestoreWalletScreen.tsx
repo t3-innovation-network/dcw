@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import { NavHeader, ImportFileModal } from '../../components'
 import dynamicStyleSheet from './RestoreWalletScreen.styles'
-import { RestoreWalletScreenProps } from './RestoreWalletScreen.d'
+import { RestoreWalletScreenProps } from '../../navigation'
 import { importWalletFrom, ReportDetails } from '../../lib/import'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
 import { getAllRecords } from '../../store'

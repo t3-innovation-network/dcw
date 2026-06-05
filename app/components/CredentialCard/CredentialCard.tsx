@@ -1,6 +1,6 @@
 import React from 'react'
 import { credentialDisplayConfigFor } from '../../lib/credentialDisplay'
-import { CredentialRecordRaw } from '../../model/credential'
+import { CredentialRecordRaw } from '../../model'
 
 export type CredentialCardProps = {
   rawCredentialRecord: CredentialRecordRaw

@@ -5,10 +5,10 @@ import { MaterialIcons } from '@expo/vector-icons'
 import moment from 'moment'
 
 import { type VerifyPayload } from '../../lib/verifiableObject'
-import { Credential } from '../../types/credential'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 
 type VerificationStatusCardProps = {
-  credential: Credential
+  credential: IVerifiableCredential
   verifyPayload: VerifyPayload
 }
 

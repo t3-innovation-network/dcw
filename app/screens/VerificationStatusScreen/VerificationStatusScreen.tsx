@@ -6,7 +6,7 @@ import VerificationCard from '../../components/VerificationCard/VerificationCard
 import VerificationStatusCard from '../../components/VerificationStatusCard/VerificationStatusCard'
 import { useDynamicStyles } from '../../hooks'
 
-import type { VerificationStatusScreenProps } from './VerificationStatusScreen.d'
+import type { VerificationStatusScreenProps } from '../../navigation'
 import dynamicStyleSheet from './VerificationStatusScreen.styles'
 
 export default function VerificationStatusScreen({

@@ -1,4 +1,4 @@
-import type { CredentialRecordRaw } from '../../model/credential'
+import type { CredentialRecordRaw } from '../../model'
 export type { ShareHomeScreenProps } from '../../navigation'
 
 export type RenderItemProps = {

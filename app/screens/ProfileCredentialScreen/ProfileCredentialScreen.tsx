@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { Text, View, FlatList, AccessibilityInfo } from 'react-native'
 import { NavHeader, ConfirmModal, CredentialListItem } from '../../components'
-import { ProfileCredentialScreenProps } from './ProfileCredentialScreen.d'
+import { ProfileCredentialScreenProps } from './ProfileCredentialScreen.types'
 import { CredentialRecordRaw } from '../../model'
 import {
   useAppDispatch,

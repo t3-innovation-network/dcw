@@ -6,7 +6,10 @@ import walletImage from '../../assets/wallet.png'
 import dynamicStyleSheet from './HelpScreen.styles'
 import { NavHeader } from '../../components'
 import { useDynamicStyles } from '../../hooks'
-import { HelpProps } from './HelpScreen.d'
+import { StackScreenProps } from '@react-navigation/stack'
+import { SettingsNavigationParamList } from '../../navigation'
+
+type HelpProps = StackScreenProps<SettingsNavigationParamList, 'Help'>
 
 export default function HelpScreen({
   navigation

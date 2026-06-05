@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler'
 import { BulletList, NavHeader } from '../../components'
 
 import dynamicStyleSheet from './DetailsScreen.styles'
-import { DetailsScreenProps } from './DetailsScreen.d'
+import { DetailsScreenProps } from './DetailsScreen.types'
 import { useDynamicStyles } from '../../hooks'
 
 export default function DetailsScreen({

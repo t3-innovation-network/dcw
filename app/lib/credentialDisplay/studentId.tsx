@@ -32,7 +32,7 @@ function StudentIdCard({
 }: CredentialCardProps): React.ReactElement {
   const { styles } = useDynamicStyles(dynamicStyleSheet)
   const { credential } = rawCredentialRecord
-  const { credentialSubject } = credential
+  const credentialSubject = getSubject(credential)
   const { studentId } = credentialSubject
 
   return (

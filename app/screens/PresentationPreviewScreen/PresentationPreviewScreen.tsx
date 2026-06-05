@@ -15,7 +15,7 @@ import {
 } from '../../components'
 import dynamicStyleSheet from './PresentationPreviewScreen.styles'
 import type { PresentationPreviewScreenProps } from '../../navigation'
-import type { RenderItemProps } from './PresentationPreviewScreen.d'
+import type { CredentialRecordRaw } from '../../model'
 import { useDynamicStyles, useVerifyCredential } from '../../hooks'
 import { useShareCredentials } from '../../hooks/useShareCredentials'
 import { PublicLinkScreenMode } from '../PublicLinkScreen/PublicLinkScreen'
@@ -27,6 +27,11 @@ import { LinkConfig } from '../../../app.config'
 import { verificationResultFor } from '../../lib/verifiableObject'
 import { useContext } from 'react'
 import { DidRegistryContext } from '../../init/registries'
+
+type RenderItemProps = {
+  item: CredentialRecordRaw
+  index: number
+}
 
 export default function PresentationPreviewScreen({
   navigation,

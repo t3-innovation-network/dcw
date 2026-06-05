@@ -14,7 +14,7 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import OutsidePressHandler from 'react-native-outside-press'
 import Share from 'react-native-share'
 
-import { PublicLinkScreenParams } from './PublicLinkScreen.d'
+import { PublicLinkScreenParams } from './PublicLinkScreen.types'
 import dynamicStyleSheet from './PublicLinkScreen.styles'
 import NavHeader from '../../components/NavHeader/NavHeader'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'

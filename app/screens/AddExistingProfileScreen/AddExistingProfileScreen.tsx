@@ -6,7 +6,7 @@ import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import { NavHeader, ImportFileModal } from '../../components'
 
 import dynamicStyleSheet from './AddExistingProfileScreen.styles'
-import { AddExistingProfileScreenProps } from './AddExistingProfileScreen.d'
+import { AddExistingProfileScreenProps } from '../../navigation'
 import { ProfileRecord } from '../../model'
 import { importProfileFrom, ReportDetails } from '../../lib/import'
 import { HumanReadableError } from '../../lib/error'

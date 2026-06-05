@@ -8,6 +8,7 @@ import {
   acceptPendingCredentials,
   ApprovalStatus,
   clearFoyer,
+  PendingCredential,
   selectPendingCredentials
 } from '../../store/slices/credentialFoyer'
 import CredentialItem from '../../components/CredentialItem/CredentialItem'
@@ -15,13 +16,14 @@ import NavHeader from '../../components/NavHeader/NavHeader'
 import CredentialRequestHandler from '../../components/CredentialRequestHandler/CredentialRequestHandler'
 import ApprovalControls from '../../components/ApprovalControls/ApprovalControls'
 import ConfirmModal from '../../components/ConfirmModal/ConfirmModal'
-import {
-  ApproveCredentialsScreenProps,
-  RenderItemProps
-} from './ApproveCredentialsScreen.d'
+import { ApproveCredentialsScreenProps } from '../../navigation'
 import dynamicStyleSheet from './ApproveCredentialsScreen.styles'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
 import { SafeAreaView } from 'react-native-safe-area-context'
+
+type RenderItemProps = {
+  item: PendingCredential
+}
 
 export default function ApproveCredentialsScreen({
   navigation,

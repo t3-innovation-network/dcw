@@ -11,7 +11,10 @@ import dynamicStyleSheet from './HomeNavigation.styles'
 import CredentialNavigation from '../CredentialNavigation/CredentialNavigation'
 import ShareNavigation from '../ShareNavigation/ShareNavigation'
 import SettingsNavigation from '../SettingsNavigation/SettingsNavigation'
-import type { HomeNavigationParamList, TabIconProps } from './HomeNavigation.types'
+import type {
+  HomeNavigationParamList,
+  TabIconProps
+} from './HomeNavigation.types'
 import AddNavigation from '../AddNavigation/AddNavigation'
 import { useDynamicStyles } from '../../hooks'
 import watermarkImage from '../../assets/WalletLogoMark.png'

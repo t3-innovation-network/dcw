@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { NavHeader } from '../../components'
 import dynamicStyleSheet from './DeveloperScreen.styles'
-import { DeveloperScreenProps } from './DeveloperScreen.d'
+import { DeveloperScreenProps } from '../../navigation'
 import { stageCredentials } from '../../store/slices/credentialFoyer'
 import { credentials } from '../../mock/credential'
 import { bachelorDegree } from '../../mock/BachelorDegree'

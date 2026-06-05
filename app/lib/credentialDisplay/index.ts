@@ -1,4 +1,5 @@
-import { CredentialDisplayConfig, ResolvedCredentialItemProps } from './index.d'
+import { ComponentType } from 'react'
+import type { CredentialCardProps } from '../../components/CredentialCard/CredentialCard'
 import { openBadgeCredentialDisplayConfig } from './openBadgeCredential'
 import { employmentCredentialDisplayConfig } from './employmentCredential'
 import { performanceReviewCredentialDisplayConfig } from './performanceReviewCredential'
@@ -14,7 +15,21 @@ import {
   isVolunteerCredential
 } from '../credentialTypes'
 
-export * from './index.d'
+export type { CredentialCardProps }
+
+export type ResolvedCredentialItemProps = {
+  title: string | null
+  subtitle: string | null
+  image: string | null
+}
+
+export type CredentialDisplayConfig = {
+  credentialType: string
+  cardComponent: ComponentType<CredentialCardProps>
+  itemPropsResolver: (
+    credential: IVerifiableCredential
+  ) => ResolvedCredentialItemProps
+}
 
 const credentialDisplayConfigs: CredentialDisplayConfig[] = [
   studentIdDisplayConfig,

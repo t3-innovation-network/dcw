@@ -13,7 +13,7 @@ import { displayGlobalModal, clearGlobalModal } from '../../lib/globalModal'
 import { getGlobalModalBody } from '../../lib/globalModalBody'
 import { NavigationUtil } from '../../lib/navigationUtil'
 import { delay } from '../../lib/time'
-import { ExchangeCredentialsProps } from './ExchangeCredentials.d'
+import { ExchangeCredentialsProps } from '../../navigation'
 import { HumanReadableError } from '../../lib/error'
 import { useThemeContext } from '../../hooks/useThemeContext'
 
