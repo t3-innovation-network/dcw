@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer'
 import DocumentPicker from 'react-native-document-picker'
 import * as RNFS from 'react-native-fs'
 import { Platform } from 'react-native'
@@ -6,6 +7,7 @@ import base64 from 'react-native-base64'
 import { ProfileRecord } from '../model'
 import { CredentialImportReport } from '../types/credential'
 import { parseWalletContents } from './parseWallet'
+import { unlockedWalletsFromTar } from './walletBackup'
 
 // Type augmentation for global object
 declare global {
@@ -52,15 +54,49 @@ export function isPngFile(base64Str: string): boolean {
   }
 }
 
-export async function readFile(uri: string): Promise<string> {
+function isTarBackup({
+  path,
+  fileName,
+  base64Data
+}: {
+  path?: string
+  fileName?: string
+  base64Data?: string
+}): boolean {
+  const name = (fileName ?? path ?? '').toLowerCase()
+  if (name.endsWith('.tar')) return true
+
+  if (!base64Data) return false
+
+  try {
+    const bytes = Buffer.from(base64Data, 'base64')
+    return bytes.length >= 262 && bytes.subarray(257, 262).toString() === 'ustar'
+  } catch {
+    return false
+  }
+}
+
+export async function readFile(
+  uri: string,
+  fileName?: string
+): Promise<string> {
   try {
     let path = uri
 
     if (Platform.OS === 'ios' && path.startsWith('file://')) {
       path = path.replace('file://', '')
     }
+
+    if (isTarBackup({ path, fileName })) {
+      return RNFS.readFile(path, 'base64')
+    }
+
     // Read as base64 first
     const base64Data = await RNFS.readFile(path, 'base64')
+ 
+    if (isTarBackup({ base64Data })) {
+      return base64Data
+    }
 
     if (isPngFile(base64Data)) {
       // Decode base64 to UTF-8 string for embedded JSON extraction
@@ -147,7 +183,7 @@ export async function pickAndReadFile(): Promise<string> {
 
     if (!exists) throw new Error(`File not found at ${path}`)
 
-    const content = await readFile(path)
+    const content = await readFile(path, file.name ?? undefined)
     return content
   } catch (err) {
     throw new Error('Unable to read selected file.')
@@ -185,6 +221,10 @@ export function aggregateCredentialReports(
 }
 
 export async function importProfileFrom(data: string): Promise<ReportDetails> {
+  if (tryParseJson(data) === null) {
+    return importWalletFromTar(data)
+  }
+
   const profileImportReport = await ProfileRecord.importProfileRecord(data)
 
   let userIdStatusText: string
@@ -205,7 +245,15 @@ export async function importProfileFrom(data: string): Promise<ReportDetails> {
 }
 
 export async function importWalletFrom(data: string): Promise<ReportDetails> {
-  const items: unknown[] = JSON.parse(data)
+  const parsedData = tryParseJson(data)
+  if (parsedData === null) {
+    return importWalletFromTar(data)
+  }
+  if (!(parsedData instanceof Array)) {
+    return importProfileFrom(data)
+  }
+
+  const items: unknown[] = parsedData
 
   const reports = await Promise.all(
     items.map(async (item, index) => {
@@ -266,10 +314,83 @@ export async function importWalletFrom(data: string): Promise<ReportDetails> {
   return reportDetails
 }
 
+function tryParseJson(data: string): unknown | null {
+  try {
+    return JSON.parse(data)
+  } catch {
+    return null
+  }
+}
+
+export async function importWalletFromTar(
+  base64Tar: string
+): Promise<ReportDetails> {
+  const wallets = await unlockedWalletsFromTar(base64Tar)
+
+  const reports = await Promise.all(
+    wallets.map(async (rawWallet, index) => {
+      const report = await ProfileRecord.importProfileRecord(rawWallet)
+
+      try {
+        const { profileMetadata } = parseWalletContents(rawWallet)
+        const profileName =
+          profileMetadata?.data?.profileName || 'Untitled Profile'
+        return { ...report, profileName }
+      } catch {
+        return { ...report, profileName: `Profile ${index + 1}` }
+      }
+    })
+  )
+
+  const credentialReports = reports.map(({ credentials }) => credentials)
+  const totalCredentialsReport = aggregateCredentialReports(credentialReports)
+
+  const profilesImported = reports
+    .filter((r) => r.userIdImported)
+    .map((r) => r.profileName)
+  const profilesDuplicate = reports
+    .filter((r) => r.profileDuplicate)
+    .map((r) => r.profileName)
+  const profilesFailed = reports
+    .filter((r) => !r.userIdImported && !r.profileDuplicate)
+    .map((r) => r.profileName)
+
+  const reportDetails: ReportDetails = {
+    ...credentialReportDetailsFrom(totalCredentialsReport)
+  }
+
+  if (profilesImported.length > 0) {
+    const plural = profilesImported.length !== 1 ? 's' : ''
+    reportDetails[
+      `${profilesImported.length} profile${plural} successfully imported`
+    ] = profilesImported
+  }
+
+  if (profilesDuplicate.length > 0) {
+    const plural = profilesDuplicate.length !== 1 ? 's' : ''
+    reportDetails[
+      `${profilesDuplicate.length} duplicate profile${plural} skipped`
+    ] = profilesDuplicate
+  }
+
+  if (profilesFailed.length > 0) {
+    const plural = profilesFailed.length !== 1 ? 's' : ''
+    reportDetails[
+      `${profilesFailed.length} profile${plural} failed to import`
+    ] = profilesFailed
+  }
+
+  return reportDetails
+}
+
 export async function importWalletOrProfileFrom(
   data: string
 ): Promise<ReportDetails> {
-  const parsedData = JSON.parse(data)
+  const parsedData = tryParseJson(data)
+
+  if (parsedData === null) {
+    return importWalletFromTar(data)
+  }
 
   if (parsedData instanceof Array) {
     return importWalletFrom(data)

@@ -1,26 +1,15 @@
-import { ProfileRecord, ProfileRecordRaw } from '../model'
-import { shareData } from './shareData'
+import { ProfileRecordRaw } from '../model'
+import { shareBinaryFile } from './shareData'
+import { buildFullWalletTar, buildProfileTar } from './walletBackup'
 
 export async function exportProfile(
   rawProfileRecord: ProfileRecordRaw
 ): Promise<void> {
-  const exportedProfile =
-    await ProfileRecord.exportProfileRecord(rawProfileRecord)
-  const exportedProfileString = JSON.stringify([exportedProfile], null, 2)
-
-  const data = exportedProfileString
-
-  await shareData('Profile Backup.json', data)
+  const base64Tar = await buildProfileTar(rawProfileRecord)
+  await shareBinaryFile('Profile Backup.tar', base64Tar, 'application/x-tar')
 }
 
 export async function exportWallet(): Promise<void> {
-  const rawProfileRecords = await ProfileRecord.getAllProfileRecords()
-  const exportedProfiles = await Promise.all(
-    rawProfileRecords.map(ProfileRecord.exportProfileRecord)
-  )
-  const exportedWalletString = JSON.stringify(exportedProfiles, null, 2)
-
-  const data = exportedWalletString
-
-  await shareData('Wallet Backup.json', data)
+  const base64Tar = await buildFullWalletTar()
+  await shareBinaryFile('Wallet Backup.tar', base64Tar, 'application/x-tar')
 }
