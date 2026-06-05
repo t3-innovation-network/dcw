@@ -45,7 +45,8 @@ export default function RestoreWalletScreen({
       <NavHeader title="Restore" goBack={navigation.goBack} />
       <View style={styles.container}>
         <Text style={styles.paragraph}>
-          Select a wallet file (.json) from your device to restore from.
+          Select a wallet backup file (.tar or .json) from your device to
+          restore from.
         </Text>
         <Button
           title="Choose a file"

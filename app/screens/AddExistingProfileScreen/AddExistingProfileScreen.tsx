@@ -73,7 +73,7 @@ export default function AddExistingProfileScreen({
       <View style={styles.container}>
         <Text style={styles.paragraph}>
           To add an existing profile, scan a valid QR code or upload a wallet
-          file (.json) from your device.
+          file (.tar or .json) from your device.
         </Text>
         <Button
           title="Scan QR code"
