@@ -9,9 +9,31 @@ import {
 import { Button } from 'react-native-elements'
 
 import { useAccessibilityFocus, useDynamicStyles } from '../../hooks'
-import { ConfirmModalProps } from './ConfirmModal.d'
 
 import dynamicStyleSheet from './ConfirmModal.style'
+
+export type ConfirmModalDisplayProps = {
+  confirmButtonDisabled?: boolean
+  confirmButton?: boolean
+  cancelButton?: boolean
+
+  title?: string
+  confirmText?: string
+  cancelText?: string
+
+  cancelOnBackgroundPress?: boolean
+  accessibilityFocusContent?: boolean
+}
+
+export type ConfirmModalProps = React.PropsWithChildren<
+  ConfirmModalDisplayProps & {
+    open?: boolean
+    testID?: string
+    onRequestClose?: () => void
+    onConfirm?: () => void
+    onCancel?: () => void
+  }
+>
 
 /**
  * TODO: Right now the accessibility focus throws errors on Android

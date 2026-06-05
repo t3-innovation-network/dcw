@@ -12,7 +12,7 @@ export type VCEvidenceItem = {
 /** VC with top-level evidence array (W3C / IMS OB spec) */
 export type VCWithEvidence = {
   evidence?: unknown
-  credentialSubject?: { portfolio?: unknown }
+  credentialSubject?: unknown
 }
 
 /** Parses a single evidence item into { name, url } */

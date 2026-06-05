@@ -10,7 +10,7 @@ import { useSelectorFactory } from '../../hooks/useSelectorFactory'
 import { makeSelectProfilesWithCredentials } from '../../store/selectorFactories/makeSelectProfilesWithCredentials'
 import { createProfile } from '../../store/slices/profile'
 
-import { ManageProfilesScreenProps } from './ManageProfilesScreen.d'
+import { ManageProfilesScreenProps } from '../../navigation'
 import dynamicStyleSheet from './ManageProfilesScreen.styles'
 
 export default function ManageProfilesScreen({

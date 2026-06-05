@@ -1,6 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import { VcApiCredentialRequest } from '../../types/chapi'
-import { WalletApiMessage } from '../../lib/vcApi'
+import { WalletApiMessage } from '../../lib/walletRequestApi'
 
 export type ExchangeCredentialsNavigationParamList = {
   ExchangeCredentials: { message: WalletApiMessage }

@@ -6,7 +6,7 @@ import dynamicStyleSheet from './ProfileSelectionScreen.styles'
 import {
   ProfileSelectionScreenProps,
   ProfileButtonProps
-} from './ProfileSelectionScreen.d'
+} from './ProfileSelectionScreen.types'
 import { NavHeader } from '../../components'
 import { useSelector } from 'react-redux'
 import { selectRawProfileRecords } from '../../store/slices/profile'

@@ -14,7 +14,7 @@ import { getCredentialName } from '../credentialName'
 import defaultIssuerImage from '../../assets/defaultIssuer.png'
 import { DidRegistryContext } from '../../init/registries'
 import { shouldDisableUrls } from '../credentialSecurity'
-import { CredentialNavigationParamList } from '../../navigation/CredentialNavigation/CredentialNavigation.d'
+import { CredentialNavigationParamList } from '../../navigation/CredentialNavigation/CredentialNavigation.types'
 import {
   CardLink,
   CardDetail,

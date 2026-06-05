@@ -117,6 +117,9 @@ export default function AddScreen(): React.ReactElement {
     if (isWalletApiMessage(text)) {
       // A Wallet API Request JSON object has been pasted
       const message = parseWalletApiMessage({ messageObject: JSON.parse(text) })
+      if (!message) {
+        throw new Error('Could not parse the Wallet API message.')
+      }
       return navigationRef.navigate('ExchangeCredentialsNavigation', {
         screen: 'ExchangeCredentials',
         params: { message }

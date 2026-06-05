@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack'
-import { SettingsNavigationParamList } from '../../navigation/SettingsNavigation/SettingsNavigation.d'
+import { SettingsNavigationParamList } from '../../navigation/SettingsNavigation/SettingsNavigation.types'
 import { ProfileRecordRaw } from '../../model'
 
 export type ProfileCredentialScreenProps = StackScreenProps<

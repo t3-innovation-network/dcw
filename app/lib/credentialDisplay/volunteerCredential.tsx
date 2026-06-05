@@ -10,7 +10,7 @@ import { DATE_FORMAT } from '../../../app.config'
 import defaultIssuerImage from '../../assets/defaultIssuer.png'
 import { DidRegistryContext } from '../../init/registries'
 import { shouldDisableUrls } from '../credentialSecurity'
-import { CredentialNavigationParamList } from '../../navigation/CredentialNavigation/CredentialNavigation.d'
+import { CredentialNavigationParamList } from '../../navigation/CredentialNavigation/CredentialNavigation.types'
 import type { VolunteerCredentialSubject } from '../../types/credential'
 import { getCredentialName } from '../credentialName'
 import {

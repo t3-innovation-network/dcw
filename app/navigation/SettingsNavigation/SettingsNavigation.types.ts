@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack'
 import { ReactNode } from 'react'
 import { DetailsScreenParams, PublicLinkScreenParams } from '../../screens'
-import { ProfileCredentialScreenParams } from '../../screens/ProfileCredentialScreen/ProfileCredentialScreen.d'
+import { ProfileCredentialScreenParams } from '../../screens/ProfileCredentialScreen/ProfileCredentialScreen.types'
 import { CredentialRecordRaw } from '../../types/credential'
 
 export type SettingsItemProps = {

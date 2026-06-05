@@ -4,8 +4,15 @@ import ConfirmModal from '../ConfirmModal/ConfirmModal'
 import LoadingIndicatorDots from '../LoadingIndicatorDots/LoadingIndicatorDots'
 import { useAsyncCallback } from 'react-async-hook'
 import dynamicStyleSheet from './BackupItemModal.styles'
-import { BackupItemModalProps } from './BackupItemModal.d'
 import { useDynamicStyles } from '../../hooks'
+
+type BackupItemModalProps = {
+  onRequestClose: () => void
+  open?: boolean
+  onBackup: () => Promise<void>
+  backupItemName: string
+  backupModalText: string
+}
 
 export default function BackupItemModal({
   onRequestClose,

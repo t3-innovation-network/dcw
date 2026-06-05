@@ -34,7 +34,7 @@ export function personNameFromCredential(
 }
 
 export function issuerRenderInfoWithVerification(
-  issuer: IIssuerObject,
+  issuer: IIssuerObject | string,
   verifyResult?: VerifyCredentialResult,
   credential?: IVerifiableCredential
 ): IssuerInfo {

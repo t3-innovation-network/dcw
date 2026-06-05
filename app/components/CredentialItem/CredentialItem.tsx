@@ -5,12 +5,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import dynamicStyleSheet from './CredentialItem.styles'
 import { CredentialRecordRaw } from '../../model'
-import { Credential } from '../../types/credential'
+import { IVerifiableCredential } from '@interop/data-integrity-core'
 import { VerificationResult } from '../../lib/verifiableObject'
 
 type CredentialItemProps = {
   onSelect: () => void
-  credential: Credential
+  credential: IVerifiableCredential
   checkable?: boolean
   selected?: boolean
   selectionVariant?: 'checkbox' | 'radio'

@@ -26,13 +26,13 @@ export { default as HelpScreen } from './HelpScreen/HelpScreen'
 export { default as ResumePreviewScreen } from './ResumePreviewScreen/ResumePreviewScreen'
 
 // Type Definitions
-export * from './DetailsScreen/DetailsScreen.d'
-export * from './QRScreen/QRScreen.d'
-export * from './PublicLinkScreen/PublicLinkScreen.d'
-export * from './IssuerInfoScreen/IssuerInfoScreen.d'
-export * from './CredentialSelectionScreen/CredentialSelectionScreen.d'
-export * from './ProfileSelectionScreen/ProfileSelectionScreen.d'
-export * from './ViewSourceScreen/ViewSourceScreen.d'
+export * from './DetailsScreen/DetailsScreen.types'
+export * from './QRScreen/QRScreen.types'
+export * from './PublicLinkScreen/PublicLinkScreen.types'
+export * from './IssuerInfoScreen/IssuerInfoScreen.types'
+export * from './CredentialSelectionScreen/CredentialSelectionScreen.types'
+export * from './ProfileSelectionScreen/ProfileSelectionScreen.types'
+export * from './ViewSourceScreen/ViewSourceScreen.types'
 
 // Enum Definitions
 export * from './PublicLinkScreen/PublicLinkScreen'

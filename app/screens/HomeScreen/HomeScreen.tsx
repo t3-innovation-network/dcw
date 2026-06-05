@@ -11,7 +11,7 @@ import { navigationRef } from '../../navigation/navigationRef'
 import appConfig, { LinkConfig } from '../../../app.config'
 
 import dynamicStyleSheet from './HomeScreen.styles'
-import { HomeScreenProps, RenderItemProps } from './HomeScreen.d'
+import { HomeScreenProps } from '../../navigation'
 import { CredentialRecordRaw } from '../../model'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
 import { useShareCredentials } from '../../hooks/useShareCredentials'
@@ -25,6 +25,10 @@ import { displayGlobalModal } from '../../lib/globalModal'
 import { useContext } from 'react'
 import { DidRegistryContext } from '../../init/registries'
 import { Color } from '../../styles'
+
+type RenderItemProps = {
+  item: CredentialRecordRaw
+}
 
 export default function HomeScreen({
   navigation
