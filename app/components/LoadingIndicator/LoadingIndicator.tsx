@@ -5,7 +5,7 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress'
 
 import { useAnimation, useDynamicStyles } from '../../hooks'
 import dynamicStyleSheet from './LoadingIndicator.styles'
-import type { LoadingIndicatorProps } from './LoadingIndicator.d'
+type LoadingIndicatorProps = { loading: boolean }
 import AccessibleView from '../AccessibleView/AccessibleView'
 
 /**

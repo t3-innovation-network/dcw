@@ -3,7 +3,12 @@ import { TouchableHighlight, View, Text } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import dynamicStyleSheet from './MenuItem.styles'
-import type { MenuItemProps } from './MenuItem.d'
+type MenuItemProps = {
+  icon?: React.ComponentProps<typeof MaterialIcons>['name']
+  title: string
+  testID?: string
+  onPress: () => void
+}
 import { useDynamicStyles } from '../../hooks'
 
 export default function MenuItem({

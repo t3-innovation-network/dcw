@@ -8,7 +8,16 @@ import MenuItem from '../MenuItem/MenuItem'
 import ConfirmModal from '../ConfirmModal/ConfirmModal'
 import BackupItemModal from '../BackupItemModal/BackupItemModal'
 import dynamicStyleSheet from './ProfileItem.styles'
-import { ActionModalProps, ProfileItemProps } from './ProfileItem.d'
+import { ProfileWithCredentialRecords } from '../../model'
+
+type ProfileItemProps = {
+  rawProfileRecord: ProfileWithCredentialRecords
+}
+
+type ActionModalProps = {
+  rawProfileRecord: ProfileWithCredentialRecords
+  onRequestClose: () => void
+}
 import { navigationRef } from '../../navigation/navigationRef'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
 import { deleteProfile, updateProfile } from '../../store/slices/profile'

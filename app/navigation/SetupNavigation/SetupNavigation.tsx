@@ -26,7 +26,7 @@ import type {
   PasswordStepProps,
   SetupNavigationParamList,
   ForFadeType
-} from './SetupNavigation.d'
+} from './SetupNavigation.types'
 
 import { DetailsScreen } from '../../screens'
 import { useSelector } from 'react-redux'

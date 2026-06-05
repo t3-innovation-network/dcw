@@ -25,7 +25,7 @@ export { default as GlobalConfirmModal } from './GlobalConfirmModal/GlobalConfir
 export { default as BulletList } from './BulletList/BulletList'
 export { default as CredentialListItem } from './CredentialListItem/CredentialListItem'
 
-export * from './ImportFileModal/ImportFileModal.d'
-export * from './CredentialCard/CredentialCard.d'
-export * from './ConfirmModal/ConfirmModal.d'
-export * from './GlobalConfirmModal/GlobalConfirmModal.d'
+export * from './ImportFileModal/ImportFileModal'
+export * from './CredentialCard/CredentialCard'
+export * from './ConfirmModal/ConfirmModal'
+export * from './GlobalConfirmModal/GlobalConfirmModal'

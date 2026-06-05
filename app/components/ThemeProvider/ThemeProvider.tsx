@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, type ReactNode } from 'react'
 import { useSelector } from 'react-redux'
 
-import type { ThemeProviderProps } from './ThemeProvider.d'
+type ThemeProviderProps = { children: ReactNode }
 import { useAppDispatch } from '../../hooks'
 import { selectWalletState, updateThemeName } from '../../store/slices/wallet'
 import {
