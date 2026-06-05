@@ -1,9 +1,12 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, type ViewStyle, type StyleProp } from 'react-native'
 
 import { useDynamicStyles } from '../../hooks'
 import dynamicStyleSheet from './BulletList.style'
-import { BulletListProps } from './BulletList.d'
+type BulletListProps = {
+  items: string[]
+  style?: StyleProp<ViewStyle>
+}
 
 export default function BulletList({
   items,

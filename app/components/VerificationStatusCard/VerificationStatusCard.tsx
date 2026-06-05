@@ -4,7 +4,20 @@ import { View, Text } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import moment from 'moment'
 
-import { VerificationStatusCardProps } from './VerificationStatusCard.d'
+import { type VerifyPayload } from '../../lib/verifiableObject'
+import { Credential } from '../../types/credential'
+
+type VerificationStatusCardProps = {
+  credential: Credential
+  verifyPayload: VerifyPayload
+}
+
+type StatusItemProps = {
+  positiveText: string
+  negativeText: string
+  verified: boolean
+  children?: React.ReactNode
+}
 import dynamicStyleSheet from './VerificationStatusCard.styles'
 import { useDynamicStyles } from '../../hooks'
 //import { DidRegistryContext } from '../../init/registries';

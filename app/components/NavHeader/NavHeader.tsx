@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react'
 import { Image, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { Header } from 'react-native-elements'
+import { Header, type HeaderProps } from 'react-native-elements'
 
 import { useAccessibilityFocus, useDynamicStyles } from '../../hooks'
-import type { NavHeaderProps } from './NavHeader.d'
+type NavHeaderProps = HeaderProps & {
+  title: string
+  goBack?: () => void
+}
 import AccessibleView from '../AccessibleView/AccessibleView'
 import dynamicStyleSheet from './NavHeader.styles'
 import titleLogo from '../../assets/TitleLogo.png'

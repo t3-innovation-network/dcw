@@ -10,7 +10,7 @@ import {
   ViewSourceScreen
 } from '../../screens'
 import HomeNavigation from '../HomeNavigation/HomeNavigation'
-import type { RootNavigationParamsList } from './RootNavigation.d'
+import type { RootNavigationParamsList } from './RootNavigation.types'
 import AcceptCredentialsNavigation from '../AcceptCredentialsNavigation/AcceptCredentialsNavigation'
 import ExchangeCredentialsNavigation from '../ExchangeCredentialsNavigation/ExchangeCredentialsNavigation'
 

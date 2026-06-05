@@ -4,8 +4,15 @@ import { Text } from 'react-native'
 
 import { useDynamicStyles } from '../../hooks'
 import { selectWalletState } from '../../store/slices/wallet'
-import ConfirmModal from '../ConfirmModal/ConfirmModal'
+import ConfirmModal, { type ConfirmModalProps } from '../ConfirmModal/ConfirmModal'
 import { clearGlobalModal } from '../../lib/globalModal'
+
+export type DisplayGlobalModalPayload = ConfirmModalProps & {
+  body?: string | React.ReactNode
+}
+export type GlobalModalPayload = ConfirmModalProps & {
+  body?: string | React.ReactNode
+}
 
 export default function GlobalConfirmModal(): React.ReactElement | null {
   const { mixins } = useDynamicStyles()

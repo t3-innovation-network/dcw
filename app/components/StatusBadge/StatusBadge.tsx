@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { type ReactNode } from 'react'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Text, View } from 'react-native'
+import { Color } from '../../styles'
 
-import { StatusBadgeProps } from './StatusBadge.d'
+type StatusBadgeProps = {
+  label: string
+  icon?: React.ComponentProps<typeof MaterialIcons>['name']
+  iconElement?: ReactNode
+  color: Color
+}
 import dynamicStyleSheet from './StatusBadge.styles'
 import { useDynamicStyles } from '../../hooks'
 

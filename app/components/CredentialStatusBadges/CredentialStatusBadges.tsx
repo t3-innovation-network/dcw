@@ -1,6 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { View } from 'react-native'
-import { CredentialStatusBadgesProps } from './CredentialStatusBadges.d'
+import { CredentialRecordRaw } from '../../model'
+import { VerificationResult } from '../../lib/verifiableObject'
+import { Color } from '../../styles'
+
+type CredentialStatusBadgesProps = {
+  rawCredentialRecord: CredentialRecordRaw
+  badgeBackgroundColor: Color
+  precomputedVerification?: VerificationResult
+  precomputedPublic?: boolean
+}
 import StatusBadge from '../StatusBadge/StatusBadge'
 import dynamicStyleSheet from './CredentialStatusBadges.styles'
 import { useAsyncCallback } from 'react-async-hook'

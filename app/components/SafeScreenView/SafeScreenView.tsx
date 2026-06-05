@@ -1,10 +1,13 @@
 import React from 'react'
 import { Image, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView, type NativeSafeAreaViewProps } from 'react-native-safe-area-context'
 
 import dynamicStyleSheet from './SafeScreenView.styles'
-import type { SafeScreenViewProps } from './SafeScreenView.d'
+type SafeScreenViewProps = NativeSafeAreaViewProps & {
+  children: React.ReactNode
+  watermarkOpacity?: number
+}
 import { useDynamicStyles } from '../../hooks'
 import watermarkImage from '../../assets/WalletLogoMark.png'
 

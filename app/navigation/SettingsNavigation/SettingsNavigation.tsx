@@ -29,7 +29,7 @@ import {
   SettingsProps,
   AboutProps,
   SettingsNavigationParamList
-} from './SettingsNavigation.d'
+} from './SettingsNavigation.types'
 import {
   AddExistingProfileScreen,
   DetailsScreen,
