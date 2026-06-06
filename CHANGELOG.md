@@ -36,7 +36,10 @@
   (`Wallet Backup.tar` / `Profile Backup.tar`) instead of a single JSON file.
   Credentials are written once under `credentials/<cid>.json` (CID = JCS-
   canonicalized SHA-256, base64url) and **deduplicated across profiles**; each
-  profile in `profiles/<slug>.json` references its credentials by CID. New
+  profile in `profiles/<slug>.json` references its credentials by CID, so
+  per-profile credential membership is preserved across export/import. Profile
+  filenames are uniquified (`work`, `work-2`, ...) when distinct profile names
+  slugify identically, so no profile is lost to a filename collision. New
   modules `app/lib/walletBackupCore.ts` (model-free pack/extract/round-trip) and
   `app/lib/cid.ts`; `app/lib/walletBackup.ts` is now a thin Realm shell over the
   core. (`app/lib/export.ts`)

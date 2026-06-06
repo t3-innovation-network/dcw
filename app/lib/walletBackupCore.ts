@@ -48,6 +48,30 @@ function profileFileName(profileName: string): string {
   return slug || 'profile'
 }
 
+/**
+ * Profile filenames are derived from the (slugified) profile name, so distinct
+ * profiles whose names slugify identically (e.g. "Work" and "work") would
+ * collide on the same `profiles/<slug>.json` path -- the second would overwrite
+ * the first in the tar and be lost on import. Suffix collisions with a counter
+ * (`work`, `work-2`, ...) to keep every profile's entry distinct. The real
+ * profile name is carried in the file's JSON, so the filename is only an
+ * identifier, not data.
+ */
+function uniqueProfileFileName(
+  profileName: string,
+  usedNames: Set<string>
+): string {
+  const base = profileFileName(profileName)
+  let candidate = base
+  let counter = 2
+  while (usedNames.has(candidate)) {
+    candidate = `${base}-${counter}`
+    counter += 1
+  }
+  usedNames.add(candidate)
+  return candidate
+}
+
 function toUnlockedWallet(
   profile: ExportedProfile,
   credentials: IVerifiableCredential[]
@@ -82,6 +106,7 @@ async function gatherTarEntries(
 ): Promise<TarEntry[]> {
   const entries: TarEntry[] = []
   const addedCredentialCids = new Set<string>()
+  const usedProfileNames = new Set<string>()
 
   for (const input of inputs) {
     const credentialCids = await Promise.all(
@@ -96,7 +121,7 @@ async function gatherTarEntries(
     }
 
     entries.push({
-      name: `${PROFILES_DIR}/${profileFileName(input.profileName)}.json`,
+      name: `${PROFILES_DIR}/${uniqueProfileFileName(input.profileName, usedProfileNames)}.json`,
       data: JSON.stringify(exportedProfile, null, 2)
     })
 
