@@ -159,6 +159,53 @@ describe('wallet backup tar', () => {
       assert.ok(hasShared, 'shared credential restored in each wallet')
     }
   })
+
+  it('keeps distinct profiles whose names slugify identically', async () => {
+    const credUpper = makeCredential('did:example:upper')
+    const credLower = makeCredential('did:example:lower')
+
+    // "Work" and "work" both slugify to "work" -- they must not collide on the
+    // same profiles/<slug>.json path and overwrite each other.
+    const base64Tar = await buildWalletTarFromInputs([
+      makeProfile('Work', 'did:key:z6MkUpper', [credUpper]),
+      makeProfile('work', 'did:key:z6MkLower', [credLower])
+    ])
+
+    const files = await extractTar(Buffer.from(base64Tar, 'base64'))
+    assert.ok(files.has(`${PROFILES_DIR}/work.json`))
+    assert.ok(files.has(`${PROFILES_DIR}/work-2.json`))
+
+    const wallets = await unlockedWalletsFromTar(base64Tar)
+    assert.equal(wallets.length, 2)
+
+    // Both profiles survive, each with its own name and its own credential.
+    const contentsByProfileName = new Map<
+      string,
+      Array<Record<string, unknown>>
+    >()
+    for (const raw of wallets) {
+      const contents = JSON.parse(raw).contents as Array<
+        Record<string, unknown>
+      >
+      const meta = contents.find((item) => item.type === 'ProfileMetadata')!
+      const name = (meta.data as { profileName: string }).profileName
+      contentsByProfileName.set(name, contents)
+    }
+
+    assert.deepEqual([...contentsByProfileName.keys()].sort(), ['Work', 'work'])
+
+    const hasSubject = (
+      contents: Array<Record<string, unknown>>,
+      subjectId: string
+    ) =>
+      contents.some(
+        (item) =>
+          (item.credentialSubject as { id?: string })?.id === subjectId
+      )
+
+    assert.ok(hasSubject(contentsByProfileName.get('Work')!, 'did:example:upper'))
+    assert.ok(hasSubject(contentsByProfileName.get('work')!, 'did:example:lower'))
+  })
 })
 
 function bySubjectId(
