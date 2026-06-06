@@ -1,11 +1,9 @@
 import Realm from 'realm'
-import { randomBytes } from 'crypto'
+import { randomBytes, bytesToHex } from '@noble/hashes/utils.js'
 const ObjectId = Realm.BSON.ObjectId
 
-// Generate a 12-byte ObjectId hex without relying on crypto.getRandomValues
-let __OBJECT_ID_COUNTER = Math.floor(Math.random() * 0xffffff)
 function generateObjectIdHex(): string {
-  return randomBytes(12).toString('hex')
+  return bytesToHex(randomBytes(12))
 }
 
 import { db } from './DatabaseAccess'

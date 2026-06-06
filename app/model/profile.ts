@@ -1,5 +1,5 @@
 import Realm from 'realm'
-import { randomBytes } from 'crypto'
+import { randomBytes, bytesToHex } from '@noble/hashes/utils.js'
 import uuid from 'react-native-uuid'
 import { generateSecureRandom } from 'react-native-securerandom'
 
@@ -18,10 +18,8 @@ import { mintDid } from '../lib/did'
 
 const ObjectId = Realm.BSON.ObjectId
 
-// Generate a 12-byte ObjectId hex without relying on crypto.getRandomValues
-// let __PROFILE_OBJECT_ID_COUNTER = Math.floor(Math.random() * 0xffffff);
 function generateProfileObjectIdHex(): string {
-  return randomBytes(12).toString('hex')
+  return bytesToHex(randomBytes(12))
 }
 
 const UNTITLED_PROFILE_NAME = 'Untitled Profile'

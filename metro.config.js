@@ -16,11 +16,6 @@ config.resolver.unstable_enablePackageExports = true
 // 👇 Order matters: "react-native" first, then fallbacks
 config.resolver.unstable_conditionNames = ['react-native', 'require']
 
-// Alias crypto to use our polyfill
-config.resolver.alias = {
-  crypto: require.resolve('./crypto-polyfill.js')
-}
-
 // lru-cache@11 (pulled in via @interop/*) does an optional, .catch()-guarded
 // `import('node:diagnostics_channel')` for metrics/tracing. RN has no Node
 // builtins, so resolve it to an empty module — the guarded import no-ops.

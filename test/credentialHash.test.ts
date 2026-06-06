@@ -3,14 +3,6 @@ jest.mock('json-canonicalize', () => ({
   canonicalize: jest.fn((obj) => obj)
 }))
 
-// Mock the crypto module
-jest.mock('crypto', () => ({
-  createHash: jest.fn(() => ({
-    update: jest.fn().mockReturnThis(),
-    digest: jest.fn(() => 'a'.repeat(64)) // 64 character hex string
-  }))
-}))
-
 import {
   canonicalCredentialJson,
   credentialContentHash
@@ -44,7 +36,7 @@ describe('credentialHash', () => {
       const result = credentialContentHash(mockCredential)
       expect(typeof result).toBe('string')
       expect(result).toHaveLength(64) // SHA256 hex string length
-      expect(result).toMatch(/^[a]+$/) // Only 'a' characters from our mock
+      expect(result).toMatch(/^[0-9a-f]{64}$/) // lowercase hex
     })
 
     it('should produce consistent hash for the same credential', () => {
@@ -53,16 +45,11 @@ describe('credentialHash', () => {
       expect(hash1).toBe(hash2)
     })
 
-    it('should produce consistent hashes for the same credential', () => {
+    it('should produce different hashes for different credentials', () => {
+      const credential2 = { ...mockCredential, id: 'different-id' }
       const hash1 = credentialContentHash(mockCredential)
-      const hash2 = credentialContentHash(mockCredential)
-      expect(hash1).toBe(hash2)
-    })
-
-    it('should call the hash function correctly', () => {
-      const { createHash } = require('crypto')
-      credentialContentHash(mockCredential)
-      expect(createHash).toHaveBeenCalledWith('sha256')
+      const hash2 = credentialContentHash(credential2)
+      expect(hash1).not.toBe(hash2)
     })
   })
 })
