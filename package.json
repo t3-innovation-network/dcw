@@ -10,7 +10,7 @@
     "lint:fix": "prettier --write ./app ./App.tsx && npm run compile",
     "format": "prettier --write .",
     "test": "npm run lint:fix && npm run test-jest && npm run test-node",
-    "test-jest": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest --config jest.config.ts --runInBand --detectOpenHandles --forceExit",
+    "test-jest": "jest --config jest.config.ts --runInBand --detectOpenHandles --forceExit",
     "test-node": "node --import=tsx --test test-node/*",
     "coverage": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest --config jest.config.coverage.ts --runInBand --detectOpenHandles --forceExit",
     "coverage:open": "npm run coverage && open coverage/lcov-report/index.html",

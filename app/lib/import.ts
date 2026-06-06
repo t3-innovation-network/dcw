@@ -70,7 +70,9 @@ function isTarBackup({
 
   try {
     const bytes = Buffer.from(base64Data, 'base64')
-    return bytes.length >= 262 && bytes.subarray(257, 262).toString() === 'ustar'
+    return (
+      bytes.length >= 262 && bytes.subarray(257, 262).toString() === 'ustar'
+    )
   } catch {
     return false
   }
@@ -93,7 +95,7 @@ export async function readFile(
 
     // Read as base64 first
     const base64Data = await RNFS.readFile(path, 'base64')
- 
+
     if (isTarBackup({ base64Data })) {
       return base64Data
     }
