@@ -16,10 +16,15 @@ import { NavHeader } from '../../components'
 import {
   legacyRequestParamsFromUrl,
   credentialsFrom,
-  isLegacyCredentialRequest
+  isLegacyCredentialRequest,
+  VPQR_UNSUPPORTED_MESSAGE
 } from '../../lib/decode'
 import { PresentationError } from '../../types/credential'
-import { errorMessageMatches, HumanReadableError } from '../../lib/error'
+import {
+  errorMessageFrom,
+  errorMessageMatches,
+  HumanReadableError
+} from '../../lib/error'
 import { navigationRef } from '../../navigation/navigationRef'
 import { CredentialRequestParams } from '../../lib/credentialRequest'
 import { pickAndReadFile } from '../../lib/import'
@@ -155,7 +160,7 @@ export default function AddScreen(): React.ReactElement {
       console.error(err)
       await displayGlobalModal({
         title: 'Unable to Add Credentials',
-        body: 'Contents not recognized.',
+        body: errorMessageFrom(err, 'Contents not recognized.'),
         cancelButton: false,
         confirmText: 'Close'
       })
@@ -170,7 +175,12 @@ export default function AddScreen(): React.ReactElement {
     } catch (err) {
       console.warn(err)
 
-      if (errorMessageMatches(err, Object.values(PresentationError))) {
+      if (
+        errorMessageMatches(err, [
+          ...Object.values(PresentationError),
+          VPQR_UNSUPPORTED_MESSAGE
+        ])
+      ) {
         throw new HumanReadableError(err.message)
       } else {
         throw new HumanReadableError(

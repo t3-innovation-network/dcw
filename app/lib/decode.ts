@@ -7,15 +7,18 @@ import { CredentialRecordRaw } from '../model'
 import { IVerifiableCredential } from '@interop/data-integrity-core'
 import { getSubject } from './credentialDisplay/shared'
 import { isDeepLink } from './walletRequestApi'
-import { credentialsFromVpqr } from './credentialsFromVpqr'
 import { credentialsFromPresentation } from './credentialsFromPresentation'
 import { isVerifiableCredential, isVerifiablePresentation } from './validate'
+import { HumanReadableError } from './error'
 
 export const regexPattern = {
   vpqr: /^VP1-[A-Z|0-9]+/,
   url: /^https?:\/\/.+/,
   json: /^{.*}$/s
 }
+
+export const VPQR_UNSUPPORTED_MESSAGE =
+  'VPQR encoded credentials are not supported.'
 
 export function isLegacyCredentialRequest(url: string): boolean {
   if (!isDeepLink(url)) {
@@ -54,7 +57,8 @@ async function credentialsFromJson(
  * Used on the Add Credential screen (when a user scans QR code or pastes
  * something into the text box).
  *
- * @param text - A string containing a VPQR, URL, or JSON object.
+ * @param text - A string containing a URL or JSON object. VPQR (VP1-) input is
+ *   detected but no longer supported.
  * @returns {Promise<IVerifiableCredential[]>} - An array of credentials.
  */
 export async function credentialsFrom(
@@ -66,7 +70,7 @@ export async function credentialsFrom(
   }
 
   if (regexPattern.vpqr.test(text)) {
-    return credentialsFromVpqr(text)
+    throw new HumanReadableError(VPQR_UNSUPPORTED_MESSAGE)
   }
 
   if (regexPattern.json.test(text)) {
