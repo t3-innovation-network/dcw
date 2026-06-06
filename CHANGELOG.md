@@ -10,15 +10,26 @@
   Realm DB encryption key (previously a non-cryptographic toy loop), SHA-256
   hashes credential content, and a CSPRNG generates record ObjectIds (previously
   `Math.random()`). The `@interop/*` packages resolve their own `react-native`
-  exports (backed by `@noble/*`) without the alias. The legitimate
-  `expo-crypto`-backed `crypto.subtle.digest`, `Buffer`, `BigInt`, and `btoa`
-  polyfills remain in `shim.js`.
+  exports (backed by `@noble/*`) without the alias. Only the load-bearing
+  polyfills remain in `shim.js`: `global.Buffer`, `btoa`, and a real
+  `expo-crypto`-backed `crypto.subtle.digest` (used by `rdf-canonize` during
+  rdfc-2022 canonicalization).
   - **Breaking:** real PBKDF2 changes the derived encryption key, so wallets
     created with the old fake KDF can no longer be decrypted. Existing installs
     must be reset/re-initialized.
 
+### Fixed
+
+- `expo export` / iOS (Hermes) builds failing on `import.meta is not supported in
+  Hermes` from `@digitalbazaar/credentials-context`, by enabling
+  `unstable_transformImportMeta` in babel-preset-expo (`babel.config.js`).
+
 ### Changed
 
+- Trimmed dead polyfills now that the app targets modern Hermes: removed the
+  `BigInt` polyfill (native since RN 0.70+) and its `big-integer` dependency, the
+  unused `base64FromArrayBuffer` shim, and the `text-encoding` dependency
+  (`DatabaseAccess` now uses the global `TextEncoder`/`TextDecoder`).
 - Switched the verifier from `@digitalcredentials/verifier-core` to the
   `@interop/verifier-core` fork and upgraded
   `@digitalcredentials/issuer-registry-client` `^3.0.0` to `^4.0.0` (a breaking

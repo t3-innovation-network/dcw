@@ -2,7 +2,15 @@
 module.exports = function (api) {
   api.cache(true)
   return {
-    presets: [['babel-preset-expo', { jsxRuntime: 'automatic' }]],
+    presets: [
+      [
+        'babel-preset-expo',
+        // @digitalbazaar/credentials-context (and other ESM context packages)
+        // use `import.meta.url`, which Hermes does not support. This polyfill
+        // rewrites it at build time.
+        { jsxRuntime: 'automatic', unstable_transformImportMeta: true }
+      ]
+    ],
     plugins: [
       [
         'module-resolver',
