@@ -1,9 +1,9 @@
 // Mock external dependencies
 import { IQueryByExample } from '../app/lib/walletRequestApi'
 
-jest.mock('@digitalcredentials/security-document-loader')
-jest.mock('@digitalcredentials/ed25519-signature-2020')
-jest.mock('@digitalcredentials/vc')
+jest.mock('@interop/security-document-loader')
+jest.mock('@interop/ed25519-signature')
+jest.mock('@interop/vc')
 
 import { rawVcRecords } from '../app/mock/credential'
 import { filterCredentialRecordsByType } from '../app/lib/credentialMatching'

@@ -13,6 +13,10 @@ import type { IProofDescription } from '@interop/data-integrity-core'
 
 import { profileWithSigners } from '../app/lib/profile'
 import { composeVp } from '../app/lib/composeVp'
+import {
+  negotiateCryptosuite,
+  EDDSA_RDFC_2022
+} from '../app/lib/presentationSuite'
 
 const mockDidRecord = {
   didDocument: {
@@ -212,10 +216,134 @@ describe('vcApi', () => {
         domain: 'https://example.com'
       })
       assert.deepEqual(vp.type, ['VerifiablePresentation'])
+      assert.ok(
+        (vp['@context'] as string[]).includes(
+          'https://www.w3.org/2018/credentials/v1'
+        ),
+        'Default VP uses the VC 1.0 context'
+      )
       const proof = vp.proof as IProofDescription
       assert.equal(proof.type, 'Ed25519Signature2020')
       assert.equal(proof.proofPurpose, 'authentication')
       assert.deepEqual(vp.verifiableCredential, [mockCredential])
+    })
+
+    it('signs with eddsa-rdfc-2022 when the verifier requests it', async () => {
+      const loadCredentials = async () => [mockCredential]
+      const selectedProfile = await profileWithSigners({
+        profileName: 'Mock Default Profile',
+        loadCredentials,
+        didRecord: mockDidRecord
+      })
+
+      const vp = await composeVp({
+        selectedProfile,
+        selectedVcs: [mockCredential],
+        didAuthRequested: true,
+        challenge: '123',
+        domain: 'https://example.com',
+        cryptosuite: EDDSA_RDFC_2022
+      })
+      assert.ok(
+        (vp['@context'] as string[]).includes(
+          'https://www.w3.org/ns/credentials/v2'
+        ),
+        'eddsa-rdfc-2022 VP uses the VC 2.0 context'
+      )
+      const proof = vp.proof as IProofDescription
+      assert.equal(proof.type, 'DataIntegrityProof')
+      assert.equal(
+        (proof as { cryptosuite?: string }).cryptosuite,
+        EDDSA_RDFC_2022
+      )
+      assert.equal(proof.proofPurpose, 'authentication')
+    })
+  })
+
+  describe('negotiateCryptosuite', () => {
+    it('returns undefined when no preference is expressed', () => {
+      assert.equal(
+        negotiateCryptosuite([
+          { type: 'DIDAuthentication', acceptedMethods: [{ method: 'key' }] }
+        ]),
+        undefined
+      )
+    })
+
+    it('selects eddsa-rdfc-2022 when the verifier accepts it', () => {
+      assert.equal(
+        negotiateCryptosuite([
+          {
+            type: 'DIDAuthentication',
+            acceptedCryptosuites: [{ cryptosuite: EDDSA_RDFC_2022 }]
+          }
+        ]),
+        EDDSA_RDFC_2022
+      )
+    })
+
+    it('falls back to the default for unsupported cryptosuites', () => {
+      assert.equal(
+        negotiateCryptosuite([
+          {
+            type: 'DIDAuthentication',
+            acceptedCryptosuites: [{ cryptosuite: 'ecdsa-rdfc-2019' }]
+          }
+        ]),
+        undefined
+      )
+    })
+
+    it('infers eddsa-rdfc-2022 from a VC 2.0 QueryByExample context', () => {
+      assert.equal(
+        negotiateCryptosuite([
+          {
+            type: 'QueryByExample',
+            credentialQuery: {
+              example: {
+                '@context': ['https://www.w3.org/ns/credentials/v2'],
+                type: 'PermanentResidentCard'
+              }
+            }
+          }
+        ]),
+        EDDSA_RDFC_2022
+      )
+    })
+
+    it('stays on the default for a VC 1.0 QueryByExample context', () => {
+      assert.equal(
+        negotiateCryptosuite([
+          {
+            type: 'QueryByExample',
+            credentialQuery: {
+              example: {
+                '@context': ['https://www.w3.org/2018/credentials/v1'],
+                type: 'PermanentResidentCard'
+              }
+            }
+          }
+        ]),
+        undefined
+      )
+    })
+
+    it('lets an explicit acceptedCryptosuites override the example heuristic', () => {
+      assert.equal(
+        negotiateCryptosuite([
+          {
+            type: 'QueryByExample',
+            acceptedCryptosuites: [{ cryptosuite: 'ecdsa-rdfc-2019' }],
+            credentialQuery: {
+              example: {
+                '@context': ['https://www.w3.org/ns/credentials/v2'],
+                type: 'PermanentResidentCard'
+              }
+            }
+          }
+        ]),
+        undefined
+      )
     })
   })
 })

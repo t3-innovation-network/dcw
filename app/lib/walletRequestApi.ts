@@ -276,6 +276,7 @@ export type IVprQuery = IQueryByExample | IDidAuthenticationQuery | IZcapQuery
  */
 export type IQueryByExample = {
   type: 'QueryByExample'
+  acceptedCryptosuites?: Array<{ cryptosuite: string }>
   credentialQuery: {
     reason?: string
     example: {

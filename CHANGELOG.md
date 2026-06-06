@@ -35,6 +35,29 @@
   `driver().use({ keyPairClass })` + `generate({ seed })` pattern), replacing
   `@digitalcredentials/did-method-key` and
   `@digitalcredentials/ed25519-verification-key-2020` in `app/lib/did.ts`.
+- Migrated the remaining `@digitalcredentials/*` credential dependencies to the
+  `@interop/*` forks: `@digitalcredentials/vc` to `@interop/vc`,
+  `@digitalcredentials/ed25519-signature-2020` to `@interop/ed25519-signature`,
+  `@digitalcredentials/security-document-loader` to
+  `@interop/security-document-loader`, and `@digitalcredentials/lru-memoize` to
+  `@interop/lru-memoize` (`@digitalcredentials/issuer-registry-client` is
+  intentionally retained). The `Ed25519Signature2020` suite now takes a `signer`
+  (via `Ed25519VerificationKey.signer()`) instead of a `key`, and the `LruCache`
+  in `verifiableObject.ts` uses `ttl` instead of the dropped `maxAge`. Both
+  suites' module declarations were removed from `declarations.d.ts` since the
+  forks ship their own types.
+- Presentation signing now negotiates the proof cryptosuite per the VCALM
+  `acceptedCryptosuites` query field (on `DIDAuthentication` and
+  `QueryByExample`). The wallet still signs with `Ed25519Signature2020` (VC 1.0
+  context) by default for backwards compatibility, but when a verifier requests
+  `eddsa-rdfc-2022` it signs a `DataIntegrityProof` under the VC 2.0 context. As
+  a fallback when no `acceptedCryptosuites` is given, a QueryByExample asking for
+  a VC 2.0 example credential also triggers the `eddsa-rdfc-2022`/VC 2.0
+  response. New `app/lib/presentationSuite.ts` (`negotiateCryptosuite`,
+  `presentationSuiteFor`) centralizes the choice of suite and VC data model
+  version, consumed by `composeVp.ts`, `present.ts`, and `exchanges.ts`. Added
+  `@interop/data-integrity-proof` as a direct dependency for the
+  `eddsa-rdfc-2022` path.
 
 ### Removed
 

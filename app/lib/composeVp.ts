@@ -3,9 +3,9 @@ import {
   IVerifiableCredential,
   IVerifiablePresentation
 } from '@interop/data-integrity-core'
-import * as vc from '@digitalcredentials/vc'
-import { Ed25519Signature2020 } from '@digitalcredentials/ed25519-signature-2020'
-import { securityLoader } from '@digitalcredentials/security-document-loader'
+import * as vc from '@interop/vc'
+import { securityLoader } from '@interop/security-document-loader'
+import { presentationSuiteFor } from './presentationSuite'
 
 const documentLoader = securityLoader({ fetchRemoteContexts: true }).build()
 
@@ -19,13 +19,15 @@ export async function composeVp({
   selectedVcs = [],
   challenge,
   domain,
-  didAuthRequested
+  didAuthRequested,
+  cryptosuite
 }: {
   selectedProfile: ISelectedProfile
   selectedVcs?: IVerifiableCredential[]
   challenge?: string
   domain?: string
   didAuthRequested: boolean
+  cryptosuite?: string
 }): Promise<IVerifiablePresentation> {
   if (!didAuthRequested && selectedVcs!.length === 0) {
     throw new Error('A VP requires either credentials or a DID Auth request.')
@@ -40,9 +42,19 @@ export async function composeVp({
     // The VC library 10.0.2+ properly handles this flag
     return await vc.createPresentation({
       verifiableCredential: selectedVcs,
-      verify: false
+      verify: false,
+      version: 1.0
     })
   }
+
+  // Sign with the cryptosuite the verifier requested (via VCALM
+  // `acceptedCryptosuites`), falling back to the wallet default. The suite
+  // dictates the VC data model version: eddsa-rdfc-2022 proofs require VC 2.0,
+  // the default Ed25519Signature2020 proof uses VC 1.0.
+  const { suite, version } = presentationSuiteFor({
+    signer: selectedProfile.signers.authentication,
+    cryptosuite
+  })
 
   // Return a signed VP
   // Use verify: false to skip validation (including expiration checks)
@@ -50,7 +62,8 @@ export async function composeVp({
   const presentation = await vc.createPresentation({
     holder: selectedProfile.did,
     verifiableCredential: selectedVcs!.length > 0 ? selectedVcs : undefined,
-    verify: false
+    verify: false,
+    version
   })
 
   return await vc.signPresentation({
@@ -58,8 +71,6 @@ export async function composeVp({
     challenge,
     domain,
     documentLoader,
-    suite: new Ed25519Signature2020({
-      signer: selectedProfile.signers.authentication
-    })
+    suite
   })
 }
