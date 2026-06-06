@@ -5,15 +5,6 @@ jest.mock('expo-secure-store', () => ({
   isAvailableAsync: jest.fn().mockResolvedValue(true)
 }))
 
-jest.mock('crypto', () => ({
-  createHash: jest.fn(() => ({
-    update: jest.fn().mockReturnThis(),
-    digest: jest.fn(() => 'mocked-hash')
-  })),
-  pbkdf2Sync: jest.fn(() => Buffer.alloc(32, 4)),
-  randomBytes: jest.fn((n) => Buffer.alloc(n, 4))
-}))
-
 // Also mock react-native-fs with proper jest.fn() support
 const mockReadFile = jest.fn().mockImplementation((path, encoding) => {
   // Default fallback based on encoding

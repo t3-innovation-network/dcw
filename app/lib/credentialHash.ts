@@ -1,4 +1,5 @@
-import { createHash } from 'crypto'
+import { sha256 } from '@noble/hashes/sha2.js'
+import { bytesToHex, utf8ToBytes } from '@noble/hashes/utils.js'
 import { canonicalize as jcsCanonicalize } from 'json-canonicalize'
 import { IVerifiableCredential } from '@interop/data-integrity-core'
 
@@ -12,5 +13,5 @@ export function credentialContentHash(
   credential: IVerifiableCredential
 ): string {
   const json = canonicalCredentialJson(credential)
-  return createHash('sha256').update(json).digest('hex')
+  return bytesToHex(sha256(utf8ToBytes(json)))
 }

@@ -2,6 +2,21 @@
 
 ## Unreleased - TBD
 
+### Security
+
+- Removed the insecure crypto shims (`crypto-polyfill.js` and the fake
+  `randomBytes`/`createHash`/`pbkdf2Sync` in `shim.js`, plus the `crypto` build
+  aliases). App code now uses `@noble/hashes`: PBKDF2-HMAC-SHA512 derives the
+  Realm DB encryption key (previously a non-cryptographic toy loop), SHA-256
+  hashes credential content, and a CSPRNG generates record ObjectIds (previously
+  `Math.random()`). The `@interop/*` packages resolve their own `react-native`
+  exports (backed by `@noble/*`) without the alias. The legitimate
+  `expo-crypto`-backed `crypto.subtle.digest`, `Buffer`, `BigInt`, and `btoa`
+  polyfills remain in `shim.js`.
+  - **Breaking:** real PBKDF2 changes the derived encryption key, so wallets
+    created with the old fake KDF can no longer be decrypted. Existing installs
+    must be reset/re-initialized.
+
 ### Changed
 
 - Switched the verifier from `@digitalcredentials/verifier-core` to the

@@ -1,5 +1,5 @@
 import Realm from 'realm'
-import { randomBytes } from 'crypto'
+import { randomBytes, bytesToHex } from '@noble/hashes/utils.js'
 
 import { CredentialRecordEntry, CredentialRecordRaw } from '../types/credential'
 import { db } from './DatabaseAccess'
@@ -8,9 +8,8 @@ import { IVerifiableCredential } from '@interop/data-integrity-core'
 const ObjectId = Realm.BSON.ObjectId
 type ObjectId = Realm.BSON.ObjectId
 
-// Use native RNG for ObjectId to avoid crypto.getRandomValues path
 function generateCredentialObjectIdHex(): string {
-  return randomBytes(12).toString('hex')
+  return bytesToHex(randomBytes(12))
 }
 export class CredentialRecord
   extends Realm.Object

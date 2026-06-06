@@ -10,7 +10,9 @@ import {
   storeInBiometricKeychain
 } from '../lib/biometrics'
 import { runMigrations, schemaVersion } from './migration'
-import { createHash, pbkdf2Sync } from 'crypto'
+import { pbkdf2 } from '@noble/hashes/pbkdf2.js'
+import { sha512 } from '@noble/hashes/sha2.js'
+import { bytesToHex } from '@noble/hashes/utils.js'
 
 // Models will be loaded dynamically to avoid circular dependencies
 let models: Realm.ObjectClass[] | null = null
@@ -114,16 +116,12 @@ class DatabaseAccess {
   public static async unlock(passphrase: string): Promise<void> {
     if (await this.isUnlocked()) return
 
-    const key = pbkdf2Sync(
-      passphrase,
-      await DatabaseAccess.salt(),
-      PBKDF2_ITERATIONS,
-      32,
-      'SHA-512'
-    )
+    const key = pbkdf2(sha512, passphrase, await DatabaseAccess.salt(), {
+      c: PBKDF2_ITERATIONS,
+      dkLen: 32
+    })
     // each byte is 2 hex characters, reaching the necessary 64 characters
-    // @ts-ignore
-    const keyString = key.toString('hex')
+    const keyString = bytesToHex(key)
     await Promise.all([
       SecureStore.setItemAsync(PRIVILEGED_KEY_STATUS_ID, UNLOCKED),
       SecureStore.setItemAsync(PRIVILEGED_KEY_KID, keyString)
