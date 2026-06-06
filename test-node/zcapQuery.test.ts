@@ -19,8 +19,8 @@
 //   setItem: jest.fn()
 // }));
 //
-// jest.mock('@digitalcredentials/ed25519-verification-key-2020', () => ({
-//   Ed25519VerificationKey2020: {
+// jest.mock('@interop/ed25519-verification-key', () => ({
+//   Ed25519VerificationKey: {
 //     from: async () => ({
 //       signer: () => ({
 //         sign: async () => ({ proofValue: 'zFakeProof' })
@@ -29,7 +29,7 @@
 //   }
 // }));
 //
-// jest.mock('@digitalcredentials/ezcap', () => ({
+// jest.mock('@interop/ezcap', () => ({
 //   ZcapClient: class {
 //     constructor() {}
 //     async delegate() {

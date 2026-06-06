@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import NavHeader from '../../components/NavHeader/NavHeader'
 import { navigationRef } from '../../navigation/navigationRef'
-import { Ed25519VerificationKey2020 } from '@digitalcredentials/ed25519-verification-key-2020'
+import { Ed25519VerificationKey } from '@interop/ed25519-verification-key'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 // import FileReader from 'react-native-filereader'
@@ -65,7 +65,7 @@ const WASScreen = () => {
 
       if (spaceId && keyPairJson) {
         setHasConnection(true)
-        const keyPair = await Ed25519VerificationKey2020.from(
+        const keyPair = await Ed25519VerificationKey.from(
           JSON.parse(keyPairJson)
         )
         setConnectionDetails({
