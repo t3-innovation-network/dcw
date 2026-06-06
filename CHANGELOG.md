@@ -38,6 +38,12 @@
 
 ### Removed
 
+- Dropped support for VPQR-encoded credentials and removed the
+  `@digitalcredentials/vpqr` dependency (along with the `credentialsFromVpqr.ts`
+  helper and its `declarations.d.ts` entry). `credentialsFrom()` still detects
+  the `VP1-` prefix but now throws a `HumanReadableError`
+  ("VPQR encoded credentials are not supported.") that surfaces to the user when
+  scanning a VPQR QR code or pasting VPQR text into the Add Credential screen.
 - Dropped the unused `keyAgreementKey` (X25519) from DID minting and throughout
   the model layer: `AddDidRecordParams`, the `DidRecord` schema, profile
   import/export, wallet parsing, and the debug screen. The
