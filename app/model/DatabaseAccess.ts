@@ -1,7 +1,6 @@
 import Realm from 'realm'
 import * as SecureStore from 'expo-secure-store'
 import * as RNFS from 'react-native-fs'
-import * as encoding from 'text-encoding'
 import { generateSecureRandom } from 'react-native-securerandom'
 
 import {
@@ -186,7 +185,7 @@ class DatabaseAccess {
       throw new Error('Wallet must be in reset state to be initialized')
     }
 
-    const decoder = new encoding.TextDecoder()
+    const decoder = new TextDecoder()
     const rawSalt = await generateSecureRandom(64)
     const salt: string = decoder.decode(rawSalt)
 
@@ -208,7 +207,7 @@ class DatabaseAccess {
       throw new Error('Key not present in keychain.')
     }
 
-    const encoder = new encoding.TextEncoder()
+    const encoder = new TextEncoder()
     const encodedBytes = new Int8Array(encoder.encode(key))
     return encodedBytes.slice(0, 64)
   }
