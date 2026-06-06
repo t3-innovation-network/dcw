@@ -7,7 +7,7 @@ jest.mock('@digitalcredentials/did-method-key', () => ({
   }
 }))
 
-jest.mock('@digitalcredentials/ed25519-verification-key-2020', () => {})
+jest.mock('@interop/ed25519-verification-key', () => {})
 
 // Mock React Native dependencies with a functional FlatList
 jest.mock('react-native', () => {

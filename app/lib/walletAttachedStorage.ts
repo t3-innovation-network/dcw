@@ -1,6 +1,6 @@
 import { StorageClient } from '@wallet.storage/fetch-client'
 import { WAS } from '../../app.config'
-import { Ed25519VerificationKey2020 } from '@digitalcredentials/ed25519-verification-key-2020'
+import { Ed25519VerificationKey } from '@interop/ed25519-verification-key'
 import { v4 as uuidv4 } from 'uuid'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { getWasController } from './getWasController'
@@ -18,9 +18,9 @@ export function getStorageClient() {
 
 export async function generateRootKey(): Promise<{
   controllerDid: string
-  key: Ed25519VerificationKey2020
+  key: Ed25519VerificationKey
 }> {
-  const key = await Ed25519VerificationKey2020.generate()
+  const key = await Ed25519VerificationKey.generate()
   const fp = key.fingerprint()
   const controllerDid = `did:key:${fp}`
   key.controller = controllerDid
@@ -74,7 +74,10 @@ export async function provisionWasSpace(): Promise<{
     throw new Error(`Failed to initialize space. Status: ${response.status}`)
   }
 
-  const signerJson = await key.export({ publicKey: true, privateKey: true })
+  const signerJson = key.toVerificationKey2020({
+    publicKey: true,
+    privateKey: true
+  })
   // Store the signer for future connections
   await AsyncStorage.setItem(
     WAS.KEYS.SIGNER_KEYPAIR,

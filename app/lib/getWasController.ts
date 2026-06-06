@@ -1,7 +1,7 @@
 import 'react-native-get-random-values'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { WAS } from '../../app.config'
-import { Ed25519VerificationKey2020 } from '@digitalcredentials/ed25519-verification-key-2020'
+import { Ed25519VerificationKey } from '@interop/ed25519-verification-key'
 import { ISigner } from '@interop/data-integrity-core'
 
 export type IController = {
@@ -21,7 +21,7 @@ export async function getWasController(): Promise<IController> {
     console.log('Cannot get root signer, key pair not in storage.')
     return {}
   }
-  const key = await Ed25519VerificationKey2020.from(
+  const key = await Ed25519VerificationKey.from(
     JSON.parse(rootSignerSerializedKeypair)
   )
 
