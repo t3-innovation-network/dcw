@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView } from 'react-native'
 import { Text, Button } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -15,7 +15,28 @@ import {
 import { fmtCredentialCount } from '../../lib/text'
 import { NavigationUtil } from '../../lib/navigationUtil'
 import { displayGlobalModal } from '../../lib/globalModal'
-import { DidRegistryContext } from '../../init/registries'
+import {
+  registryManager,
+  type LookupResult
+} from '../../lib/registry/registryManager'
+
+/**
+ * Best-effort display name for a requester DID, read from the first matching
+ * registry issuer entry (runtime dcc-legacy shape, with leaner fallbacks).
+ */
+function requesterNameFrom(
+  result: LookupResult | undefined
+): string | undefined {
+  const issuer = result?.matchingIssuers?.[0]?.issuer as
+    | {
+        federation_entity?: { organization_name?: string }
+        name?: string
+      }
+    | null
+    | undefined
+  if (!issuer) return undefined
+  return issuer.federation_entity?.organization_name || issuer.name || undefined
+}
 
 export default function ShareHomeScreen({
   navigation,
@@ -23,7 +44,6 @@ export default function ShareHomeScreen({
 }: ShareHomeScreenProps): React.ReactElement {
   const { styles, theme, mixins } = useDynamicStyles(dynamicStyleSheet)
   const { shareRequestParams } = route.params || {}
-  const registries = useContext(DidRegistryContext)
 
   useEffect(() => {
     if (isShareRequestParams(shareRequestParams)) {
@@ -32,8 +52,19 @@ export default function ShareHomeScreen({
   }, [shareRequestParams])
 
   async function startShareRequest(params: ShareRequestParams) {
-    const issuerName =
-      registries.didEntry(params.client_id)?.name || 'Unknown Issuer'
+    // Best-effort instant name from the warm cache, refined by an async
+    // read-through lookup (the requester DID is rarely pre-warmed, so this
+    // resolves known requesters that the synchronous peek would miss).
+    let issuerName =
+      requesterNameFrom(registryManager.peekDid(params.client_id)) ||
+      'Unknown Issuer'
+    try {
+      issuerName =
+        requesterNameFrom(await registryManager.lookupDid(params.client_id)) ||
+        issuerName
+    } catch {
+      // Keep the best-effort name on lookup failure.
+    }
 
     const confirmedShare = await displayGlobalModal({
       title: 'Share Credentials?',

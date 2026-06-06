@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { View, Text } from 'react-native'
 import { Button } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native'
@@ -8,7 +8,6 @@ import { mixins } from '../../styles'
 import { useDynamicStyles, useVerifyCredential } from '../../hooks'
 import { DATE_FORMAT } from '../../../app.config'
 import defaultIssuerImage from '../../assets/defaultIssuer.png'
-import { DidRegistryContext } from '../../init/registries'
 import { shouldDisableUrls } from '../credentialSecurity'
 import { CredentialNavigationParamList } from '../../navigation/CredentialNavigation/CredentialNavigation.types'
 import type { VolunteerCredentialSubject } from '../../types/credential'
@@ -43,12 +42,7 @@ function VolunteerCredentialCard({
   const { styles } = useDynamicStyles(dynamicStyleSheet)
   const { credential } = rawCredentialRecord
   const verifyCredential = useVerifyCredential(rawCredentialRecord)
-  const registries = useContext(DidRegistryContext)
-  const urlsDisabled = shouldDisableUrls(
-    credential,
-    registries,
-    verifyCredential?.result
-  )
+  const urlsDisabled = shouldDisableUrls(verifyCredential?.result)
   const navigation = useNavigation<NavigationProp>()
   const subject = getSubject(credential) as VolunteerCredentialSubject
 

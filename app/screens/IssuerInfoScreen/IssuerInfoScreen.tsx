@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { View, Text, Linking, Image } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { NavHeader } from '../../components'
@@ -7,7 +7,6 @@ import { IssuerInfoScreenProps } from './IssuerInfoScreen.types'
 import { useDynamicStyles, useVerifyCredential } from '../../hooks'
 import defaultIssuerImage from '../../assets/defaultIssuer.png'
 import { issuerRenderInfoWithVerification } from '../../lib/credentialDisplay/shared/utils/issuer'
-import { DidRegistryContext } from '../../init/registries'
 import { shouldDisableUrls } from '../../lib/credentialSecurity'
 
 const NO_URL = 'None'
@@ -20,12 +19,7 @@ export default function IssuerInfoScreen({
   const { styles } = useDynamicStyles(dynamicStyleSheet)
   const verifyCredential = useVerifyCredential(rawCredentialRecord)
   const credential = rawCredentialRecord.credential
-  const registries = useContext(DidRegistryContext)
-  const urlsDisabled = shouldDisableUrls(
-    credential,
-    registries,
-    verifyCredential?.result
-  )
+  const urlsDisabled = shouldDisableUrls(verifyCredential?.result)
 
   const getImageUri = (img?: string | { id?: string }): string | undefined => {
     if (!img) return undefined

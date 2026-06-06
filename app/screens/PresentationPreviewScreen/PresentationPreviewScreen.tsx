@@ -25,8 +25,6 @@ import { createPublicLinkFor, getPublicViewLink } from '../../lib/publicLink'
 // @ts-ignore - app.config.js doesn't have type declarations
 import { LinkConfig } from '../../../app.config'
 import { verificationResultFor } from '../../lib/verifiableObject'
-import { useContext } from 'react'
-import { DidRegistryContext } from '../../init/registries'
 
 type RenderItemProps = {
   item: CredentialRecordRaw
@@ -40,7 +38,6 @@ export default function PresentationPreviewScreen({
   const { styles, mixins } = useDynamicStyles(dynamicStyleSheet)
   const { selectedCredentials, mode = 'send' } = route.params
   const share = useShareCredentials()
-  const registries = useContext(DidRegistryContext)
 
   const isCreateLinkMode = mode === 'createLink'
   const buttonTitle = isCreateLinkMode ? 'Create Public Link' : 'Send'

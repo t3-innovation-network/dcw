@@ -5,7 +5,6 @@ import {
   ResultLog,
   verifyCredential
 } from './validate'
-import { RegistryClient } from '@digitalcredentials/issuer-registry-client'
 import { CredentialRecordRaw } from '../model'
 import {
   IVerifiableCredential,
@@ -58,7 +57,6 @@ export async function verificationResultFor({
 }: {
   rawCredentialRecord: CredentialRecordRaw
   forceFresh?: boolean
-  registries: RegistryClient
 }): Promise<VerificationResult> {
   const cachedRecordId = String(rawCredentialRecord._id)
 

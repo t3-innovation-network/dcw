@@ -1,223 +1,248 @@
-import { verifyPresentation, verifyCredential } from '../app/lib/validate'
-import * as verifierCore from '@digitalcredentials/verifier-core'
-import {
-  IVerifiableCredential,
-  IVerifiablePresentation
-} from '@interop/data-integrity-core'
+/**
+ * Tests the verifier-core adapter in app/lib/validate.ts.
+ *
+ * The fork (`@interop/verifier-core`) is mocked so we can feed hand-built
+ * `CheckResult[]` and assert the translation back into dcw's legacy `log[]`
+ * shape (signature / revocation / expiry rows + matchingIssuers, the
+ * status_list_not_found drop special case, and hasStatusError). The shared
+ * registryManager is mocked too, so loading validate.ts doesn't pull in the
+ * (ESM) issuer-registry-client.
+ */
+import type { IVerifiableCredential } from '@interop/data-integrity-core'
 
-jest.mock('@digitalcredentials/verifier-core', () => ({
-  verifyPresentation: jest.fn(),
-  verifyCredential: jest.fn()
+const STATUS_LIST_NOT_FOUND =
+  'https://www.w3.org/TR/vc-data-model#STATUS_LIST_NOT_FOUND'
+
+const mockCoreVerify = jest.fn()
+const mockCoreVerifyPresentation = jest.fn()
+
+jest.mock('@interop/verifier-core', () => ({
+  verifyCredential: (...args: unknown[]) => mockCoreVerify(...args),
+  verifyPresentation: (...args: unknown[]) =>
+    mockCoreVerifyPresentation(...args),
+  ProblemTypes: {
+    STATUS_LIST_NOT_FOUND:
+      'https://www.w3.org/TR/vc-data-model#STATUS_LIST_NOT_FOUND'
+  }
 }))
 
-// Mock fetch
-global.fetch = jest.fn()
+jest.mock('../app/lib/registry/registryManager', () => ({
+  registryManager: { lookupDid: jest.fn(), peekDid: jest.fn() }
+}))
+
+import { verifyCredential, verifyPresentation } from '../app/lib/validate'
+
+const credential = {
+  type: ['VerifiableCredential'],
+  issuer: 'did:web:example.edu'
+} as unknown as IVerifiableCredential
+
+type Outcome =
+  | { status: 'success'; message: string; payload?: unknown }
+  | { status: 'failure'; problems: Array<{ type: string; title: string }> }
+  | { status: 'skipped'; reason: string }
+
+const check = (checkId: string, outcome: Outcome) => ({
+  check: checkId,
+  suite: checkId.split('.')[0],
+  outcome
+})
+
+const coreResult = (results: unknown[]) => ({
+  verified: true,
+  verifiableCredential: credential,
+  results,
+  summary: []
+})
+
+const success = (message = 'ok'): Outcome => ({ status: 'success', message })
 
 describe('validate', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    ;(global.fetch as jest.Mock).mockResolvedValue({
-      json: () => Promise.resolve({ registries: ['test-registry'] })
+  })
+
+  describe('verifyCredential', () => {
+    it('translates a fully-verified credential into the legacy log shape', async () => {
+      const matchingIssuers = [
+        { issuer: { federation_entity: { organization_name: 'MIT' } } }
+      ]
+      mockCoreVerify.mockResolvedValue(
+        coreResult([
+          check('proof.signature', success()),
+          check('status.bitstring', success()),
+          check('validity.expiration', success()),
+          check('trust.issuer-details', {
+            status: 'success',
+            message: 'found',
+            payload: { matchingIssuers }
+          })
+        ])
+      )
+
+      const result = await verifyCredential(credential)
+
+      expect(result.verified).toBe(true)
+      const log = result.results[0].log
+      expect(log).toEqual([
+        { id: 'valid_signature', valid: true },
+        { id: 'revocation_status', valid: true },
+        { id: 'expiration', valid: true },
+        { id: 'registered_issuer', valid: true, matchingIssuers }
+      ])
+    })
+
+    it('drops the revocation row (not revoked) when the status list is not found', async () => {
+      mockCoreVerify.mockResolvedValue(
+        coreResult([
+          check('proof.signature', success()),
+          check('status.bitstring', {
+            status: 'failure',
+            problems: [{ type: STATUS_LIST_NOT_FOUND, title: 'not found' }]
+          }),
+          check('trust.issuer-details', {
+            status: 'success',
+            message: 'found',
+            payload: { matchingIssuers: [{}] }
+          })
+        ])
+      )
+
+      const result = await verifyCredential(credential)
+
+      const log = result.results[0].log
+      expect(log.find((e) => e.id === 'revocation_status')).toBeUndefined()
+      expect(result.hasStatusError).toBeUndefined()
+      // signature + registered_issuer remain, both valid.
+      expect(result.verified).toBe(true)
+    })
+
+    it('keeps a genuine revocation failure and flags hasStatusError', async () => {
+      mockCoreVerify.mockResolvedValue(
+        coreResult([
+          check('proof.signature', success()),
+          check('status.bitstring', {
+            status: 'failure',
+            problems: [
+              {
+                type: 'https://www.w3.org/TR/vc-data-model#CREDENTIAL_REVOKED_OR_SUSPENDED',
+                title: 'revoked'
+              }
+            ]
+          }),
+          check('trust.issuer-details', {
+            status: 'success',
+            message: 'found',
+            payload: { matchingIssuers: [{}] }
+          })
+        ])
+      )
+
+      const result = await verifyCredential(credential)
+
+      const revocation = result.results[0].log.find(
+        (e) => e.id === 'revocation_status'
+      )
+      expect(revocation?.valid).toBe(false)
+      expect(result.hasStatusError).toBe(true)
+      expect(result.verified).toBe(false)
+    })
+
+    it('marks an unrecognized issuer invalid with a registry error', async () => {
+      mockCoreVerify.mockResolvedValue(
+        coreResult([
+          check('proof.signature', success()),
+          check('trust.issuer-details', {
+            status: 'success',
+            message: 'none',
+            payload: { matchingIssuers: [] }
+          })
+        ])
+      )
+
+      const result = await verifyCredential(credential)
+
+      const registered = result.results[0].log.find(
+        (e) => e.id === 'registered_issuer'
+      )
+      expect(registered?.valid).toBe(false)
+      expect(registered?.matchingIssuers).toEqual([])
+      expect(registered?.error?.message).toContain('registry')
+      expect(result.verified).toBe(false)
+    })
+
+    it('omits the expiration row when the expiration check is skipped', async () => {
+      mockCoreVerify.mockResolvedValue(
+        coreResult([
+          check('proof.signature', success()),
+          check('validity.expiration', {
+            status: 'skipped',
+            reason: 'no expiry'
+          }),
+          check('trust.issuer-details', {
+            status: 'success',
+            message: 'found',
+            payload: { matchingIssuers: [{}] }
+          })
+        ])
+      )
+
+      const result = await verifyCredential(credential)
+
+      expect(
+        result.results[0].log.find((e) => e.id === 'expiration')
+      ).toBeUndefined()
+    })
+
+    it('returns a fatal error result on a parse failure', async () => {
+      mockCoreVerify.mockResolvedValue(
+        coreResult([
+          check('parsing.envelope', {
+            status: 'failure',
+            problems: [{ type: 'PARSING_ERROR', title: 'bad json' }]
+          })
+        ])
+      )
+
+      const result = await verifyCredential(credential)
+
+      expect(result.verified).toBe(false)
+      expect(result.results[0].error?.isFatal).toBe(true)
+    })
+
+    it('throws CredentialError when the fork rejects', async () => {
+      mockCoreVerify.mockRejectedValue(new Error('boom'))
+
+      await expect(verifyCredential(credential)).rejects.toThrow(
+        'Credential could not be checked for verification and may be malformed.'
+      )
     })
   })
 
   describe('verifyPresentation', () => {
-    it('should verify presentation successfully', async () => {
-      const mockPresentation = {
-        type: 'VerifiablePresentation'
-      } as IVerifiablePresentation
-      const mockResult = { verified: true, results: [] }
-
-      ;(verifierCore.verifyPresentation as jest.Mock).mockResolvedValue(
-        mockResult
-      )
-
-      const result = await verifyPresentation(mockPresentation)
-
-      expect(verifierCore.verifyPresentation).toHaveBeenCalledWith({
-        presentation: mockPresentation
+    it('passes through the top-level verified boolean', async () => {
+      mockCoreVerifyPresentation.mockResolvedValue({
+        verified: true,
+        verifiablePresentation: {},
+        presentationResults: [],
+        credentialResults: [],
+        summary: []
       })
-      expect(result).toEqual(mockResult)
+
+      const result = await verifyPresentation({
+        type: 'VerifiablePresentation'
+      } as never)
+
+      expect(result.verified).toBe(true)
     })
 
-    it('should handle verification failure', async () => {
-      const mockPresentation = {
-        type: 'VerifiablePresentation'
-      } as IVerifiablePresentation
-      const mockResult = { verified: false, results: [] }
+    it('throws PresentationError on exception', async () => {
+      mockCoreVerifyPresentation.mockRejectedValue(new Error('boom'))
 
-      ;(verifierCore.verifyPresentation as jest.Mock).mockResolvedValue(
-        mockResult
-      )
-
-      const result = await verifyPresentation(mockPresentation)
-      expect(result).toEqual(mockResult)
-    })
-
-    it('should throw error on verification exception', async () => {
-      const mockPresentation = {
-        type: 'VerifiablePresentation'
-      } as IVerifiablePresentation
-
-      ;(verifierCore.verifyPresentation as jest.Mock).mockRejectedValue(
-        new Error('Verification failed')
-      )
-
-      await expect(verifyPresentation(mockPresentation)).rejects.toThrow(
+      await expect(
+        verifyPresentation({ type: 'VerifiablePresentation' } as never)
+      ).rejects.toThrow(
         'Presentation encoded could not be checked for verification and may be malformed.'
-      )
-    })
-  })
-
-  describe('verifyCredential', () => {
-    it('should verify credential successfully', async () => {
-      const mockCredential = {
-        type: 'VerifiableCredential'
-      } as unknown as IVerifiableCredential
-      const mockResult = {
-        verified: true,
-        log: [{ id: 'test', valid: true }],
-        results: [{ verified: true, log: [{ id: 'test', valid: true }] }]
-      }
-
-      ;(verifierCore.verifyCredential as jest.Mock).mockResolvedValue(
-        mockResult
-      )
-
-      const result = await verifyCredential(mockCredential)
-
-      expect(result.verified).toBe(true)
-    })
-
-    it('should handle credential with error in results', async () => {
-      const mockCredential = {
-        type: 'VerifiableCredential'
-      } as unknown as IVerifiableCredential
-      const mockResult = {
-        verified: true,
-        log: [{ id: 'test', valid: true }],
-        results: [
-          {
-            verified: true,
-            error: { log: [{ id: 'error', valid: false }] }
-          }
-        ]
-      }
-
-      ;(verifierCore.verifyCredential as jest.Mock).mockResolvedValue(
-        mockResult
-      )
-
-      const result = await verifyCredential(mockCredential)
-
-      expect((result as any).results[0].log).toEqual([
-        { id: 'error', valid: false }
-      ])
-    })
-
-    it('should handle missing log in response', async () => {
-      const mockCredential = {
-        type: 'VerifiableCredential'
-      } as unknown as IVerifiableCredential
-      const mockResult = { verified: true }
-
-      ;(verifierCore.verifyCredential as jest.Mock).mockResolvedValue(
-        mockResult
-      )
-
-      const result = await verifyCredential(mockCredential)
-
-      expect((result as any).log).toEqual([])
-      expect(result.verified).toBe(true) // Empty log with every() returns true
-    })
-
-    it('should create results when missing', async () => {
-      const mockCredential = {
-        type: 'VerifiableCredential'
-      } as unknown as IVerifiableCredential
-      const mockResult = {
-        verified: true,
-        log: [{ id: 'test', valid: true }]
-      }
-
-      ;(verifierCore.verifyCredential as jest.Mock).mockResolvedValue(
-        mockResult
-      )
-
-      const result = await verifyCredential(mockCredential)
-
-      expect((result as any).results).toHaveLength(1)
-      expect((result as any).results[0].verified).toBe(true)
-    })
-
-    it('should handle revocation status not found', async () => {
-      const mockCredential = {
-        type: 'VerifiableCredential'
-      } as unknown as IVerifiableCredential
-      const mockResult = {
-        verified: false,
-        log: [
-          { id: 'signature', valid: true },
-          {
-            id: 'revocation_status',
-            valid: false,
-            error: { name: 'status_list_not_found' }
-          }
-        ],
-        results: [{ verified: false, log: [] }]
-      }
-
-      ;(verifierCore.verifyCredential as jest.Mock).mockResolvedValue(
-        mockResult
-      )
-
-      const result = await verifyCredential(mockCredential)
-
-      expect(result.verified).toBe(true)
-      expect((result as any).log).toHaveLength(1)
-    })
-
-    it('should handle revocation status error', async () => {
-      const mockCredential = {
-        type: 'VerifiableCredential'
-      } as unknown as IVerifiableCredential
-      const mockResult = {
-        verified: false,
-        log: [
-          { id: 'signature', valid: true },
-          {
-            id: 'revocation_status',
-            valid: false,
-            error: { name: 'other_error' }
-          }
-        ],
-        results: [{ verified: false, log: [] }]
-      }
-
-      ;(verifierCore.verifyCredential as jest.Mock).mockResolvedValue(
-        mockResult
-      )
-
-      const result = await verifyCredential(mockCredential)
-
-      expect((result as any).hasStatusError).toBe(true)
-      expect((result as any).results[0].log).toContainEqual({
-        id: 'revocation_status',
-        valid: false
-      })
-    })
-
-    it('should throw error on verification exception', async () => {
-      const mockCredential = {
-        type: 'VerifiableCredential'
-      } as unknown as IVerifiableCredential
-
-      ;(verifierCore.verifyCredential as jest.Mock).mockRejectedValue(
-        new Error('Network error')
-      )
-
-      await expect(verifyCredential(mockCredential)).rejects.toThrow(
-        'Credential could not be checked for verification and may be malformed.'
       )
     })
   })

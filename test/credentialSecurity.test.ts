@@ -1,81 +1,41 @@
 import { shouldDisableUrls } from '../app/lib/credentialSecurity'
-import { RegistryClient } from '@digitalcredentials/issuer-registry-client'
-
-// Mock the issuerInRegistries function
-jest.mock('../app/lib/issuerInRegistries', () => ({
-  issuerInRegistries: jest.fn()
-}))
-
-import { issuerInRegistries } from '../app/lib/issuerInRegistries'
 
 describe('credentialSecurity', () => {
-  let mockRegistries: RegistryClient
-  let mockCredential: any
-
-  beforeEach(() => {
-    mockRegistries = {} as RegistryClient
-    mockCredential = {
-      issuer: 'did:example:123',
-      type: ['VerifiableCredential']
-    }
-    jest.clearAllMocks()
-  })
-
   describe('shouldDisableUrls', () => {
-    it('should return true when credential is not from DCC registry', () => {
-      ;(issuerInRegistries as jest.Mock).mockReturnValue(null)
-
-      const result = shouldDisableUrls(mockCredential, mockRegistries)
-
-      expect(result).toBe(true)
+    it('disables URLs when there is no verification result', () => {
+      expect(shouldDisableUrls()).toBe(true)
+      expect(shouldDisableUrls(null)).toBe(true)
+      expect(shouldDisableUrls({})).toBe(true)
     })
 
-    it('should return false when credential is from DCC registry', () => {
-      ;(issuerInRegistries as jest.Mock).mockReturnValue(['DCC Registry'])
+    it('disables URLs when the log has no registered_issuer entry', () => {
+      const result = { log: [{ id: 'valid_signature', valid: true }] }
 
-      const result = shouldDisableUrls(mockCredential, mockRegistries)
-
-      expect(result).toBe(false)
+      expect(shouldDisableUrls(result as never)).toBe(true)
     })
 
-    it('should return true when issuer is in empty registry list', () => {
-      ;(issuerInRegistries as jest.Mock).mockReturnValue([])
-
-      const result = shouldDisableUrls(mockCredential, mockRegistries)
-
-      expect(result).toBe(true)
-    })
-
-    it('should return false when verification confirms registered issuer', () => {
-      ;(issuerInRegistries as jest.Mock).mockReturnValue(null)
-
-      const verificationResult = {
+    it('enables URLs when verification confirms a registered issuer', () => {
+      const result = {
         log: [{ id: 'registered_issuer', valid: true, matchingIssuers: [{}] }]
       }
 
-      const result = shouldDisableUrls(
-        mockCredential,
-        mockRegistries,
-        verificationResult as any
-      )
-
-      expect(result).toBe(false)
+      expect(shouldDisableUrls(result as never)).toBe(false)
     })
 
-    it('should ignore verification log entries that are invalid', () => {
-      ;(issuerInRegistries as jest.Mock).mockReturnValue([])
-
-      const verificationResult = {
+    it('disables URLs when the registered_issuer entry has no matches', () => {
+      const result = {
         log: [{ id: 'registered_issuer', valid: false, matchingIssuers: [] }]
       }
 
-      const result = shouldDisableUrls(
-        mockCredential,
-        mockRegistries,
-        verificationResult as any
-      )
+      expect(shouldDisableUrls(result as never)).toBe(true)
+    })
 
-      expect(result).toBe(true)
+    it('disables URLs when the registered_issuer entry is valid but empty', () => {
+      const result = {
+        log: [{ id: 'registered_issuer', valid: true, matchingIssuers: [] }]
+      }
+
+      expect(shouldDisableUrls(result as never)).toBe(true)
     })
   })
 })

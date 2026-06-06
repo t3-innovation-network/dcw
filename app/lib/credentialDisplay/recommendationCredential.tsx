@@ -1,5 +1,5 @@
 import moment from 'moment'
-import React, { useContext } from 'react'
+import React from 'react'
 import { View, Text } from 'react-native'
 import { Button } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native'
@@ -12,7 +12,6 @@ import { DATE_FORMAT } from '../../../app.config'
 import { getExpirationDate, getIssuanceDate } from '../credentialValidityPeriod'
 import { getCredentialName } from '../credentialName'
 import defaultIssuerImage from '../../assets/defaultIssuer.png'
-import { DidRegistryContext } from '../../init/registries'
 import { shouldDisableUrls } from '../credentialSecurity'
 import { CredentialNavigationParamList } from '../../navigation/CredentialNavigation/CredentialNavigation.types'
 import {
@@ -36,12 +35,7 @@ function RecommendationCredentialCard({
   const { styles } = useDynamicStyles(dynamicStyleSheet)
   const { credential } = rawCredentialRecord
   const verifyCredential = useVerifyCredential(rawCredentialRecord)
-  const registries = useContext(DidRegistryContext)
-  const urlsDisabled = shouldDisableUrls(
-    credential,
-    registries,
-    verifyCredential?.result
-  )
+  const urlsDisabled = shouldDisableUrls(verifyCredential?.result)
   const navigation = useNavigation<NavigationProp>()
 
   const subject = getSubject(credential) as ICredentialSubject & {
