@@ -1,6 +1,6 @@
 import { ZCAP_EXPIRES } from '../../app.config'
 import { ZcapClient } from '@interop/ezcap'
-import { Ed25519Signature2020 } from '@digitalcredentials/ed25519-signature-2020'
+import { Ed25519Signature2020 } from '@interop/ed25519-signature'
 
 import { displayGlobalModal } from './globalModal'
 import { getWasController } from './getWasController'

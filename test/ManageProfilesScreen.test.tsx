@@ -1,12 +1,6 @@
 import React from 'react'
 import { render, fireEvent, act } from '@testing-library/react-native'
 
-jest.mock('@digitalcredentials/did-method-key', () => ({
-  DidMethodKey: {
-    driver: jest.fn()
-  }
-}))
-
 jest.mock('@interop/ed25519-verification-key', () => {})
 
 // Mock React Native dependencies with a functional FlatList

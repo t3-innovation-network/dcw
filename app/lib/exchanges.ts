@@ -18,6 +18,7 @@ import { extractCredentialsFrom } from './verifiableObject'
 import { selectCredentials } from './selectCredentials'
 import { ISelectedProfile } from './did'
 import { composeVp } from './composeVp'
+import { negotiateCryptosuite } from './presentationSuite'
 import { IController } from './getWasController'
 
 type IResponseToExchanger = {
@@ -152,6 +153,8 @@ export async function processRequest({
   const didAuthRequested = isDidAuthRequested({ queries })
   // challenge and domain are only relevant for DID Auth
   const { challenge, domain } = request
+  // Honor any cryptosuite the verifier asks for (VCALM `acceptedCryptosuites`)
+  const cryptosuite = negotiateCryptosuite(queries)
 
   console.log('isDidAuthRequested', didAuthRequested, challenge, domain)
 
@@ -207,7 +210,8 @@ export async function processRequest({
       selectedVcs,
       challenge,
       domain,
-      didAuthRequested
+      didAuthRequested,
+      cryptosuite
     })
   }
 

@@ -1,4 +1,4 @@
-import { LruCache } from '@digitalcredentials/lru-memoize'
+import { LruCache } from '@interop/lru-memoize'
 import {
   isVerifiableCredential,
   isVerifiablePresentation,
@@ -37,7 +37,7 @@ export function extractCredentialsFrom(
 
 /* Verification expiration = 30 days */
 const VERIFICATION_EXPIRATION = 1000 * 30
-const lruCache = new LruCache({ maxAge: VERIFICATION_EXPIRATION })
+const lruCache = new LruCache({ ttl: VERIFICATION_EXPIRATION })
 export type VerificationResult = {
   timestamp: number | null
   log: ResultLog[]
@@ -66,7 +66,7 @@ export async function verificationResultFor({
       fn: () => {
         return verifyCredential(rawCredentialRecord.credential)
       }
-    })) as VerificationResult
+    })) as unknown as VerificationResult
     return cachedResult
   }
 

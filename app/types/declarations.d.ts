@@ -1,17 +1,3 @@
-declare module '@digitalcredentials/did-io'
-declare module '@digitalcredentials/did-method-key'
-declare module '@digitalcredentials/vc'
-declare module '@digitalcredentials/jsonld-signatures'
-declare module '@digitalcredentials/ed25519-signature-2020' {
-  export class Ed25519Signature2020 {
-    constructor(options?: unknown)
-  }
-}
-declare module '@digitalcredentials/data-integrity'
-declare module '@digitalcredentials/eddsa-rdfc-2022-cryptosuite'
-declare module '@digitalcredentials/lru-memoize'
-declare module 'jsonld-document-loader'
-declare module '@interop/did-web-resolver'
 declare module 'json-canonicalize'
 declare module 'rn-animated-ellipsis'
 declare module 'react-native-html-to-pdf'
