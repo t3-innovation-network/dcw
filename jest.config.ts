@@ -17,7 +17,8 @@ const packagesToTransformWithBabel = [
   'immer',
   'react-native-securerandom',
   'rn-animated-ellipsis',
-  'react-native-outside-press'
+  'react-native-outside-press',
+  '@noble/hashes' // ESM-only (type: module); used by app/lib/cid.ts
 ]
 
 const transformIgnorePatterns = [

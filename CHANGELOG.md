@@ -32,6 +32,22 @@
 
 ### Changed
 
+- Wallet and profile backups now export as a content-addressed **tar archive**
+  (`Wallet Backup.tar` / `Profile Backup.tar`) instead of a single JSON file.
+  Credentials are written once under `credentials/<cid>.json` (CID = JCS-
+  canonicalized SHA-256, base64url) and **deduplicated across profiles**; each
+  profile in `profiles/<slug>.json` references its credentials by CID. New
+  modules `app/lib/walletBackupCore.ts` (model-free pack/extract/round-trip) and
+  `app/lib/cid.ts`; `app/lib/walletBackup.ts` is now a thin Realm shell over the
+  core. (`app/lib/export.ts`)
+- Backup import auto-detects format: new `.tar` archives and legacy `.json`
+  exports both restore. Tar detection uses the `.tar` extension or the `ustar`
+  magic bytes; `RestoreWalletScreen` and `AddExistingProfileScreen` copy now
+  mentions `.tar or .json`. (`app/lib/import.ts`)
+- Jest no longer runs with `--experimental-vm-modules`, and `@noble/hashes`
+  (ESM-only) is added to `transformIgnorePatterns` so it transpiles to CJS. This
+  lets the CID/backup code be imported under Jest. (`jest.config.ts`,
+  `package.json`)
 - Trimmed dead polyfills now that the app targets modern Hermes: removed the
   `BigInt` polyfill (native since RN 0.70+) and its `big-integer` dependency, the
   unused `base64FromArrayBuffer` shim, and the `text-encoding` dependency

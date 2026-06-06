@@ -21,10 +21,17 @@ config.resolver.unstable_conditionNames = ['react-native', 'require']
 // builtins, so resolve it to an empty module — the guarded import no-ops.
 const defaultResolveRequest = config.resolver.resolveRequest
 config.resolver.resolveRequest = (context, moduleName, platform) => {
-  if (moduleName === 'node:diagnostics_channel' || moduleName === 'diagnostics_channel') {
+  if (
+    moduleName === 'node:diagnostics_channel' ||
+    moduleName === 'diagnostics_channel'
+  ) {
     return { type: 'empty' }
   }
-  return (defaultResolveRequest ?? context.resolveRequest)(context, moduleName, platform)
+  return (defaultResolveRequest ?? context.resolveRequest)(
+    context,
+    moduleName,
+    platform
+  )
 }
 
 // Add support for Realm binary files
