@@ -1,5 +1,5 @@
 import moment from 'moment'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import { Button } from 'react-native-elements'
 import { mixins } from '../../styles'
@@ -11,7 +11,6 @@ import { useDynamicStyles, useVerifyCredential } from '../../hooks'
 import { getIssuanceDate } from '../credentialValidityPeriod'
 import type { CredentialCardProps, CredentialDisplayConfig } from '.'
 import defaultIssuerImage from '../../assets/defaultIssuer.png'
-import { DidRegistryContext } from '../../init/registries'
 import { shouldDisableUrls } from '../credentialSecurity'
 import { getRecommendationsForVC } from '../recommendations'
 import type { CredentialRecordRaw } from '../../types/credential'
@@ -41,8 +40,7 @@ function VerifiableCredentialCard({
   const { styles, theme } = useDynamicStyles(dynamicStyleSheet)
   const { credential } = rawCredentialRecord
   const verifyCredential = useVerifyCredential(rawCredentialRecord)
-  const registries = useContext(DidRegistryContext)
-  const urlsDisabled = shouldDisableUrls(credential, registries)
+  const urlsDisabled = shouldDisableUrls(verifyCredential?.result)
   const navigation = useNavigation<NavigationProp>()
   const [recommendations, setRecommendations] = useState<CredentialRecordRaw[]>(
     []

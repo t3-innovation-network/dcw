@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useContext } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import {
   useFonts,
@@ -12,7 +12,6 @@ import {
 } from '@expo-google-fonts/source-sans-pro'
 import { RobotoMono_400Regular } from '@expo-google-fonts/roboto-mono'
 
-import { DidRegistryContext, loadKnownDidRegistries } from '../init/registries'
 import {
   lock,
   pollWalletState,
@@ -21,11 +20,13 @@ import {
 import { getAllRecords } from '../store'
 import { useAppDispatch } from './useAppDispatch'
 import { initializeLogger } from '../init/logger'
+import { CredentialRecord } from '../model'
+import { registryManager } from '../lib/registry/registryManager'
 
 export function useAppLoading(): boolean {
   const [loading, setLoading] = useState(true)
 
-  const didRegistries = useContext(DidRegistryContext)
+  const { isUnlocked } = useSelector(selectWalletState)
 
   const primaryTasks = [useFontsLoaded(), useWalletStateInitialized()]
 
@@ -39,15 +40,46 @@ export function useAppLoading(): boolean {
   }, [primaryTasksFinished])
 
   async function runSecondaryTasks() {
-    await Promise.all([
-      initializeLogger(),
-      loadKnownDidRegistries({ client: didRegistries })
-    ])
+    await Promise.all([initializeLogger(), warmRegistryCache()])
 
     setLoading(false)
   }
 
+  /**
+   * Pre-populates the registry lookup cache with the issuer DIDs of all stored
+   * credentials, so those issuers resolve offline / instantly after a warm
+   * start. Best-effort: not load-bearing for correctness (lookups are
+   * read-through), and skipped when the wallet is locked.
+   */
+  async function warmRegistryCache() {
+    if (!isUnlocked) return
+    try {
+      const records = await CredentialRecord.getAllCredentialRecords()
+      const issuerDids = records
+        .map((record) => issuerDidFromCredential(record.credential))
+        .filter((did): did is string => !!did)
+      await registryManager.warm(issuerDids)
+    } catch (err) {
+      console.warn('Registry cache warm skipped:', err)
+    }
+  }
+
   return loading
+}
+
+/**
+ * Extracts an issuer DID from a credential, handling both the string and
+ * `{ id }` object forms of the `issuer` property.
+ */
+function issuerDidFromCredential(credential: {
+  issuer?: string | { id?: string }
+}): string | undefined {
+  const issuer = credential?.issuer
+  if (typeof issuer === 'string') return issuer
+  if (issuer && typeof issuer === 'object' && typeof issuer.id === 'string') {
+    return issuer.id
+  }
+  return undefined
 }
 
 function useFontsLoaded() {

@@ -40,20 +40,17 @@ jest.mock('../app/hooks', () => ({
   useVerifyCredential: jest.fn()
 }))
 
-jest.mock('../app/components', () => {
-  const mockReact = require('react')
-  return {
-    NavHeader: ({ title }: { title: string }) =>
-      mockReact.createElement('Text', null, title)
-  }
-}, { virtual: true })
-
-jest.mock('../app/init/registries', () => {
-  const mockReact = require('react')
-  return {
-    DidRegistryContext: mockReact.createContext({ didEntry: () => undefined })
-  }
-})
+jest.mock(
+  '../app/components',
+  () => {
+    const mockReact = require('react')
+    return {
+      NavHeader: ({ title }: { title: string }) =>
+        mockReact.createElement('Text', null, title)
+    }
+  },
+  { virtual: true }
+)
 
 import IssuerInfoScreen from '../app/screens/IssuerInfoScreen/IssuerInfoScreen'
 import { useVerifyCredential } from '../app/hooks'

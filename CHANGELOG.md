@@ -4,6 +4,22 @@
 
 ### Changed
 
+- Switched the verifier from `@digitalcredentials/verifier-core` to the
+  `@interop/verifier-core` fork and upgraded
+  `@digitalcredentials/issuer-registry-client` `^3.0.0` to `^4.0.0` (a breaking
+  API redesign). `app/lib/validate.ts` is now a thin adapter that runs the
+  fork's composable suite pipeline plus two custom suites (`expirationSuite`,
+  `issuerDetailsSuite` -- re-adding the expiration check and rich issuer
+  metadata the fork no longer bundles) and translates the result back into the
+  legacy `log[]` shape, so the view layer (`VerificationStatusCard`,
+  `IssuerInfoScreen`, `issuer.ts`, status badges) is unchanged. Issuer/requester
+  DID lookups now go through a new cached `RegistryManager`
+  (`app/lib/registry/`) -- a single warm, offline-capable cache (in-memory +
+  AsyncStorage) shared by the verify pipeline and the standalone "who's asking"
+  lookup -- replacing the eager-loaded `DidRegistryContext`. `shouldDisableUrls`
+  is now purely verification-driven (and stays synchronous); `ShareHomeScreen`
+  resolves the requester name via the registry manager.
+
 - Removed the legacy split `.d.ts`/`.d.tsx` declaration files that shadowed their
   `.tsx`/`.ts` siblings (tech-debt item 3). Component and screen prop/helper types
   are now inlined into their implementation files; the 8 cycle-sensitive screen

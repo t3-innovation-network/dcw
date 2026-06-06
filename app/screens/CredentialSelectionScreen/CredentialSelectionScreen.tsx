@@ -62,8 +62,7 @@ export default function CredentialSelectionScreen({
         try {
           const res = await verificationResultFor({
             rawCredentialRecord: r,
-            forceFresh: false,
-            registries: undefined as any
+            forceFresh: false
           })
           entries[String(r._id)] = res
           publicEntries[String(r._id)] = await hasPublicLink(r)

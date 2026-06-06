@@ -1,6 +1,3 @@
-import type { RegistryClient } from '@digitalcredentials/issuer-registry-client'
-import { issuerInRegistries } from './issuerInRegistries'
-import { IVerifiableCredential } from '@interop/data-integrity-core'
 import type { ResultLog } from './validate'
 
 type VerificationResultLike =
@@ -29,25 +26,18 @@ function issuerRecognizedByVerification(
 }
 
 /**
- * Determines if URLs should be disabled for a credential
+ * Determines whether URLs should be disabled for a credential.
+ *
+ * Purely verification-driven (and synchronous): an issuer is trusted only when
+ * the verification result's `registered_issuer` log entry confirms a registry
+ * match. Anything else -- unknown, still loading, or an error -- disables URLs
+ * (the safe default).
  */
 export function shouldDisableUrls(
-  credential: IVerifiableCredential,
-  registries: RegistryClient,
   verificationResult?: VerificationResultLike
 ): boolean {
   try {
-    if (issuerRecognizedByVerification(verificationResult)) {
-      return false
-    }
-
-    const registryNames = issuerInRegistries({
-      issuer: credential.issuer,
-      registries
-    })
-    const shouldDisable = !registryNames || registryNames.length === 0
-
-    return shouldDisable
+    return !issuerRecognizedByVerification(verificationResult)
   } catch (error) {
     console.error('Error in shouldDisableUrls:', error)
     return true // Default to safe mode

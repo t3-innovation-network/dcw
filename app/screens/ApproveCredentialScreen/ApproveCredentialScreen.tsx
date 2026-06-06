@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from 'react'
+import React, { useMemo } from 'react'
 import { View, ScrollView, Text } from 'react-native'
 
 //import { CredentialCard, VerificationCard, VerificationStatusCard } from '../../components';
@@ -11,7 +11,6 @@ import dynamicStyleSheet from './ApproveCredentialScreen.styles'
 import { useDynamicStyles, usePendingCredential } from '../../hooks'
 import { navigationRef } from '../../navigation/navigationRef'
 import { useVerifyCredential } from '../../hooks'
-import { DidRegistryContext } from '../../init/registries'
 import { shouldDisableUrls } from '../../lib/credentialSecurity'
 
 export default function ApproveCredentialScreen({
@@ -27,12 +26,7 @@ export default function ApproveCredentialScreen({
     [credential]
   )
   const verifyPayload = useVerifyCredential(rawCredentialRecord, true)
-  const registries = useContext(DidRegistryContext)
-  const urlsDisabled = shouldDisableUrls(
-    credential,
-    registries,
-    verifyPayload?.result
-  )
+  const urlsDisabled = shouldDisableUrls(verifyPayload?.result)
 
   function goToIssuerInfo(issuerId: string) {
     if (navigationRef.isReady()) {

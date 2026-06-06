@@ -22,8 +22,6 @@ import {
 import { getCredentialName } from '../../lib/credentialName'
 import { verificationResultFor } from '../../lib/verifiableObject'
 import { displayGlobalModal } from '../../lib/globalModal'
-import { useContext } from 'react'
-import { DidRegistryContext } from '../../init/registries'
 import { Color } from '../../styles'
 
 type RenderItemProps = {
@@ -42,7 +40,6 @@ export default function HomeScreen({
   const [showTooltip, setShowTooltip] = useState<boolean>(false)
   const dispatch = useAppDispatch()
   const share = useShareCredentials()
-  const registries = useContext(DidRegistryContext)
 
   const itemToDeleteName = itemToDelete
     ? getCredentialName(itemToDelete.credential)

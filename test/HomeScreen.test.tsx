@@ -206,13 +206,6 @@ jest.mock('../app/lib/globalModal', () => ({
   displayGlobalModal: jest.fn(() => Promise.resolve(true))
 }))
 
-jest.mock('../app/init/registries', () => ({
-  DidRegistryContext: {
-    Provider: ({ children }: any) => children,
-    Consumer: ({ children }: any) => children({})
-  }
-}))
-
 // Mock useContext to return a mock registry
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
