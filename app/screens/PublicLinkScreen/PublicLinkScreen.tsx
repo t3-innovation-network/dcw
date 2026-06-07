@@ -31,8 +31,6 @@ import { navigationRef } from '../../navigation/navigationRef'
 
 import { convertSVGtoPDF } from '../../lib/svgToPdf'
 import { PDF } from '../../types/pdf'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore - app.config.js doesn't have type declarations
 import { LinkConfig } from '../../../app.config'
 
 export enum PublicLinkScreenMode {

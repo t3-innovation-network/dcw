@@ -20,7 +20,7 @@ export type PasswordInputProps = TextInputProps & {
   value: string
   onChangeText: (value: string) => void
   highlightError?: boolean
-  inputRef?: RefObject<RNTextInput>
+  inputRef?: RefObject<RNTextInput | null>
   testID?: string
 }
 

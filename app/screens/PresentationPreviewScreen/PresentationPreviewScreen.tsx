@@ -21,8 +21,6 @@ import { useShareCredentials } from '../../hooks/useShareCredentials'
 import { PublicLinkScreenMode } from '../PublicLinkScreen/PublicLinkScreen'
 import { displayGlobalModal, clearGlobalModal } from '../../lib/globalModal'
 import { createPublicLinkFor, getPublicViewLink } from '../../lib/publicLink'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore - app.config.js doesn't have type declarations
 import { LinkConfig } from '../../../app.config'
 import { verificationResultFor } from '../../lib/verifiableObject'
 

@@ -45,7 +45,7 @@ export default function CredentialScreen({
 
   const credentialSubject = getSubject(rawCredentialRecord.credential)
 
-  const isResumeCredential = isResumeCredentialSubject(credentialSubject as any)
+  const isResumeCredential = isResumeCredentialSubject(credentialSubject)
 
   const rawProfileRecord = useSelectorFactory(makeSelectProfileFromCredential, {
     rawCredentialRecord

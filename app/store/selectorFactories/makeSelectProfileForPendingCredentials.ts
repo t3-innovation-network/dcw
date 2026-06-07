@@ -37,18 +37,14 @@ export const makeSelectProfileForPendingCredentials = (): Selector<
 export function didKeyFrom(
   pendingCredential: PendingCredential
 ): string | null {
-  let subject = pendingCredential.credential.credentialSubject
-  if (!subject) {
+  const { credentialSubject } = pendingCredential.credential
+  if (!credentialSubject) {
     return null
   }
-  if (Array.isArray(subject) && subject.length === 0) {
-    return null
-  }
-  if (!Array.isArray(subject)) {
-    subject = [subject]
-  }
-  // @ts-ignore
-  return subject[0].id || null
+  const subjects = Array.isArray(credentialSubject)
+    ? credentialSubject
+    : [credentialSubject]
+  return subjects[0]?.id || null
 }
 
 function reduceCommonDidKeyFrom(

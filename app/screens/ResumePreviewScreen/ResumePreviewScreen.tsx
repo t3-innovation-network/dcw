@@ -12,6 +12,53 @@ type ResumePreviewScreenProps = {
   route: { params: { rawCredentialRecord: CredentialRecordRaw } }
 }
 
+type ResumeNarrative = { narrative?: string; text?: string }
+type ResumeProfessionalSummary = ResumeNarrative & {
+  credentialSubject?: ResumeNarrative
+}
+
+type ResumeEmployment = {
+  id?: string
+  title?: string
+  organization?: string | { tradeName?: string }
+  startDate?: string
+  endDate?: string
+  stillEmployed?: boolean
+  duration?: string
+  description?: string
+}
+
+type ResumeEducation = {
+  id?: string
+  degree?: string
+  fieldOfStudy?: string
+  institution?: string
+  duration?: string
+}
+
+type ResumeSkill = { name?: string }
+
+type ResumeProject = {
+  id?: string
+  name?: string
+  title?: string
+  description?: string
+}
+
+type ResumeCertification = {
+  id?: string
+  name?: string
+  issuer?: string
+  date?: string
+}
+
+type ResumeAffiliation = {
+  id?: string
+  name?: string
+  organization?: string
+  duration?: string
+}
+
 type ResumeVc = {
   credentialSubject?: {
     type?: string | string[]
@@ -37,13 +84,13 @@ type ResumeVc = {
         }
       }
     }
-    professionalSummary?: any
-    employmentHistory?: any[]
-    educationAndLearning?: any[]
-    skills?: any[]
-    certifications?: any[]
-    projects?: any[]
-    professionalAffiliations?: any[]
+    professionalSummary?: ResumeProfessionalSummary
+    employmentHistory?: ResumeEmployment[]
+    educationAndLearning?: ResumeEducation[]
+    skills?: ResumeSkill[]
+    certifications?: ResumeCertification[]
+    projects?: ResumeProject[]
+    professionalAffiliations?: ResumeAffiliation[]
   }
 }
 
@@ -116,27 +163,21 @@ export default function ResumePreviewScreen({
   }, [resume?.professionalSummary])
 
   const employmentHistory = useMemo(
-    () => (resume?.employmentHistory ?? []) as any[],
+    () => resume?.employmentHistory ?? [],
     [resume?.employmentHistory]
   )
   const education = useMemo(
-    () => (resume?.educationAndLearning ?? []) as any[],
+    () => resume?.educationAndLearning ?? [],
     [resume?.educationAndLearning]
   )
-  const skills = useMemo(
-    () => (resume?.skills ?? []) as any[],
-    [resume?.skills]
-  )
-  const projects = useMemo(
-    () => (resume?.projects ?? []) as any[],
-    [resume?.projects]
-  )
+  const skills = useMemo(() => resume?.skills ?? [], [resume?.skills])
+  const projects = useMemo(() => resume?.projects ?? [], [resume?.projects])
   const certifications = useMemo(
-    () => (resume?.certifications ?? []) as any[],
+    () => resume?.certifications ?? [],
     [resume?.certifications]
   )
   const affiliations = useMemo(
-    () => (resume?.professionalAffiliations ?? []) as any[],
+    () => resume?.professionalAffiliations ?? [],
     [resume?.professionalAffiliations]
   )
 
@@ -295,8 +336,10 @@ export default function ResumePreviewScreen({
               <Section title="Work Experience">
                 {employmentHistory.map((job) => {
                   const role = String(job?.title ?? '').trim()
+                  const orgRaw = job?.organization
                   const org = String(
-                    job?.organization?.tradeName ?? job?.organization ?? ''
+                    (typeof orgRaw === 'object' ? orgRaw?.tradeName : orgRaw) ??
+                      ''
                   ).trim()
                   const startDate = String(job?.startDate ?? '').trim()
                   const endDate = String(job?.endDate ?? '').trim()
