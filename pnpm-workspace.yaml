@@ -8,12 +8,12 @@ strictPeerDependencies: false
 # Moved here from package.json: pnpm v11 no longer reads the "pnpm" field.
 # Aligns @types/react (and react) across deps that declare older peer ranges.
 overrides:
-  react-redux>react: ^19.0.0
-  react-redux>@types/react: ~19.0.10
-  '@reduxjs/toolkit>react': ^19.0.0
-  '@reduxjs/toolkit>@types/react': ~19.0.10
-  react-native>@types/react: ~19.0.10
-  '@react-native/virtualized-lists>@types/react': ~19.0.10
+  react-redux>react: ^19.1.0
+  react-redux>@types/react: ~19.1.17
+  '@reduxjs/toolkit>react': ^19.1.0
+  '@reduxjs/toolkit>@types/react': ~19.1.17
+  react-native>@types/react: ~19.1.17
+  '@react-native/virtualized-lists>@types/react': ~19.1.17
   # Force a single copy of each @interop package across direct + transitive deps.
   # Without this, transitive `^x.y.1` refs keep the older release while the app's
   # direct deps pull the newer one, producing duplicate-class type errors (e.g.

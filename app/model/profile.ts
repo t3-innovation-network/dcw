@@ -1,5 +1,4 @@
 import uuid from 'react-native-uuid'
-import { generateSecureRandom } from 'react-native-securerandom'
 
 import { db } from './DatabaseAccess'
 import { CREDENTIALS_TABLE, DIDS_TABLE, PROFILES_TABLE } from './schema'
@@ -97,7 +96,7 @@ export class ProfileRecord {
 
     if (rawDidRecord === undefined) {
       // No DID record passed in -- generate a new one from random seed
-      const randomSeed = await generateSecureRandom(32)
+      const randomSeed = crypto.getRandomValues(new Uint8Array(32))
       const didPayload = await mintDid({ seed: randomSeed })
       rawDidRecord = await DidRecord.addDidRecord(didPayload)
     }

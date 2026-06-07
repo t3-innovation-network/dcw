@@ -1,5 +1,35 @@
 # T3 Digital Credential Wallet Changelog
 
+## Unreleased - TBD
+
+### Changed
+
+- Migrated to **Expo SDK 54** (React Native 0.81, React 19.1), staying on the
+  **legacy RN architecture** (`newArchEnabled: false`). SDK 54 is the last SDK
+  that supports the legacy architecture; moving to the New Architecture and
+  replacing the remaining unmaintained native modules is a separate future SDK 55
+  effort. `expo install --fix` drove the version bumps for `expo-*` and
+  Expo-managed RN packages; pnpm React / `@types/react` overrides moved to the
+  19.1 line.
+- Raised native build floors in `app.config.js` (expo-build-properties): Android
+  `compileSdkVersion` / `targetSdkVersion` to 36 and `buildToolsVersion` to
+  `36.0.0`; iOS `deploymentTarget` to `15.1`.
+- Replaced the unmaintained `react-native-securerandom` at the wallet's own call
+  sites (PBKDF2 salt in `DatabaseAccess`, DID seed in `profile`) with the
+  `react-native-get-random-values` polyfill (`crypto.getRandomValues`), removing
+  it as a direct dependency. It remains present transitively via
+  `@digitalcredentials/bnid`.
+
+### Fixed
+
+- `CredentialItem` type error under React Native 0.81: narrowed the
+  accessibility props object from `ComponentProps<typeof View>` to
+  `AccessibilityProps`, since RN 0.81 widened `View`'s `onBlur` to allow `null`,
+  which is incompatible with `TouchableOpacity` when spread.
+
+> **Note:** Android edge-to-edge is forced on in SDK 54 and cannot be disabled --
+> verify `SafeScreenView` insets on device.
+
 ## 3.0.0 - 2026-06-07
 
 ### Security

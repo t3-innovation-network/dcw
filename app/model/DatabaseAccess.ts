@@ -1,7 +1,6 @@
 import * as SQLite from 'expo-sqlite'
 import * as SecureStore from 'expo-secure-store'
 import * as RNFS from 'react-native-fs'
-import { generateSecureRandom } from 'react-native-securerandom'
 
 import {
   resetBiometricKeychain,
@@ -197,7 +196,7 @@ class DatabaseAccess {
     }
 
     const decoder = new TextDecoder()
-    const rawSalt = await generateSecureRandom(64)
+    const rawSalt = crypto.getRandomValues(new Uint8Array(64))
     const salt: string = decoder.decode(rawSalt)
 
     await RNFS.writeFile(PBKDF2_SALT_PATH, salt, 'utf8')
