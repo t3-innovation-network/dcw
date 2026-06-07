@@ -28,7 +28,13 @@ export const ZCAP_EXPIRES = new Date(Date.now() + 1000 * 60 * 60 * 24 * 10) // 1
 export const FEATURE_FLAGS = {
   // true - original LCW behavior (require password at setup)
   // false - no password required
-  passwordProtect: false
+  passwordProtect: false,
+
+  // true - original LCW behavior (prompt the user to choose a profile when
+  //   more than one exists)
+  // false - this fork's default: always use the default (first) profile and
+  //   never prompt via the Choose Profile screen
+  supportMultipleProfiles: false
 }
 
 // Display date format for VCs (expiration, date issued, etc)

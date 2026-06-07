@@ -14,13 +14,24 @@ import {
 } from './interactionUrl'
 import type { IExchangeInvitation } from './walletRequestApi'
 import { HumanReadableError } from './error'
+import { FEATURE_FLAGS } from '../../app.config'
 
 export class NavigationUtil {
   static selectProfile(
     screenParams?: Omit<ProfileSelectionScreenParams, 'onSelectProfile'>
   ): Promise<ProfileRecordRaw> | ProfileRecordRaw {
     const rawProfileRecords = selectRawProfileRecords(store.getState())
-    if (rawProfileRecords.length === 1) {
+
+    // When multiple-profile support is disabled (this fork's default), always
+    // use the default (first) profile whenever one exists, rather than
+    // prompting via ProfileSelectionScreen. Only fall back to the selection
+    // screen if, unexpectedly, there are no profiles at all.
+    if (!FEATURE_FLAGS.supportMultipleProfiles) {
+      if (rawProfileRecords.length >= 1) {
+        return rawProfileRecords[0]
+      }
+    } else if (rawProfileRecords.length === 1) {
+      // Original LCW behavior: only auto-select when there is exactly one.
       return rawProfileRecords[0]
     }
 
