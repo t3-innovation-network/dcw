@@ -30,6 +30,11 @@
   `react-native-get-random-values` polyfill (`crypto.getRandomValues`), removing
   it as a direct dependency. It remains present transitively via
   `@digitalcredentials/bnid`.
+- Replaced the deprecated `react-native-document-picker` with its maintained
+  successor `@react-native-documents/picker` in `pickAndReadFile`
+  (`app/lib/import.ts`). `pickSingle({ copyTo })` becomes `pick()` plus an
+  explicit `keepLocalCopy()` to obtain the cached local copy on iOS; the Android
+  `content://` copy path is unchanged.
 
 ### Fixed
 

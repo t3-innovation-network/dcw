@@ -63,10 +63,13 @@ jest.mock('expo-sqlite', () => ({
   deleteDatabaseAsync: jest.fn().mockResolvedValue(undefined)
 }))
 
-// Mock react-native-document-picker
-jest.mock('react-native-document-picker', () => ({
-  pickSingle: jest.fn(),
-  isInProgress: jest.fn()
+// Mock @react-native-documents/picker
+jest.mock('@react-native-documents/picker', () => ({
+  pick: jest.fn(),
+  keepLocalCopy: jest.fn(),
+  types: {
+    allFiles: '*/*'
+  }
 }))
 
 // Mock react-native-base64 with proper base64 functionality
