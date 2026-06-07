@@ -204,9 +204,12 @@ class DatabaseAccess {
 
     await RNFS.writeFile(PBKDF2_SALT_PATH, salt, 'utf8')
 
-    // The first call to unlock will create/encrypt the Realm with the pass
+    // The first call to unlock will create/encrypt the Realm with the pass.
+    // We intentionally leave the wallet unlocked: callers initialize and then
+    // immediately use the wallet, and unlock() is expensive (PBKDF2 key
+    // derivation + encrypted Realm open). Locking here would force callers to
+    // pay that cost a second time on the very next unlock().
     await DatabaseAccess.unlock(passphrase)
-    await DatabaseAccess.lock()
   }
 
   private static async encryptionKey(): Promise<Int8Array> {
