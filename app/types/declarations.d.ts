@@ -2,8 +2,6 @@ declare module 'json-canonicalize'
 declare module 'rn-animated-ellipsis'
 declare module 'react-native-html-to-pdf'
 declare module 'react-native-keychain'
-declare module 'react-native-filereader'
-declare module 'react-native-receive-sharing-intent'
 declare module 'validator'
 declare module '@microsoft/msrcrypto'
 

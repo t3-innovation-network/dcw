@@ -83,10 +83,3 @@ export function useShareCredentials(): (
     }
   }
 }
-
-// function verifyMatchingProfiles(credentials: CredentialRecordRaw[]): boolean {
-//   const { profileRecordId } = credentials[0];
-//   return credentials.every((credential) =>
-//     credential.profileRecordId.equals(profileRecordId)
-//   );
-// }

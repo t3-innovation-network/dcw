@@ -30,7 +30,7 @@ Prerequisites:
 
 - [Java](https://www.java.com/en/download/manual.jsp) - **Java 17 or higher**
 - [nvm](https://collabnix.com/how-to-install-and-configure-nvm-on-mac-os/) or [asdf](https://asdf-vm.com/guide/getting-started.html#getting-started)
-- [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable) or [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- [pnpm](https://pnpm.io/installation) - this project uses pnpm (see `packageManager` in `package.json`)
 - [Node.js](https://nodejs.org/en/) - **Version 20.x**
 - [Cocoapods](https://cocoapods.org/) (use brew, not gem, to install)
 - [XCode](https://developer.apple.com/xcode/) - \*\*Version 16
@@ -41,9 +41,9 @@ See [Installing on Linux](install-linux.md) on setting up the project on Linux.
 ### Setup of the LCW App
 
 1. Clone this repository or `git pull`
-2. In root of project, run `npm install` to install the React Native dependencies.
+2. In root of project, run `pnpm install` to install the React Native dependencies.
    - (Optionally, if you use the `asdf` version manager run `asdf install` to install - more info in asdf section below)
-3. Run `npm run prebuild:ios` and `npm run prebuild:android` to set up the `ios` and `android` folders. This step uses [Expo prebuild](https://docs.expo.dev/workflow/prebuild/).
+3. Run `pnpm prebuild:ios` and `pnpm prebuild:android` to set up the `ios` and `android` folders. This step uses [Expo prebuild](https://docs.expo.dev/workflow/prebuild/).
 
 #### _If using asdf_
 
@@ -53,13 +53,13 @@ See [Installing on Linux](install-linux.md) on setting up the project on Linux.
 
 ### Running the App
 
-1. Run `yarn start` in one terminal
-2. In another terminal run `yarn android`
+1. Run `pnpm start` in one terminal
+2. In another terminal run `pnpm android`
 
 - When running on android, open Android Studio and make sure the device you want to run on is selected (whether that is an emulator or a real device).
 - Note: You might need to hit the play button in Android Studio for it to fully register which device to set to be used from the command line.
 
-3. In another terminal yarn `yarn ios`
+3. In another terminal run `pnpm ios`
 
 ## Environment
 
@@ -70,7 +70,7 @@ editor that can hook into the TypeScript language server (VSCode does this with 
 - `semi: false`
 - `singleQuote: true`
 
-Most editors support Prettier integration for automatic formatting on save. You can manually format code by running `npm run format` or check formatting with `npm run lint` in the project root.
+Most editors support Prettier integration for automatic formatting on save. You can manually format code by running `pnpm format` or check formatting with `pnpm lint` in the project root.
 
 ### Code Formatting Setup
 
@@ -105,7 +105,7 @@ This project also uses **environment variables**, which are loaded and used in `
 ├── android ← Auto-generated android build folder, can still be manually edited if needed
 └── ios ← Same as android, except it also uses Cocoapods for dependency management
 └── patches ← Patches created for software maintenance
-└── test ← Where tests are kept, can run `npm run test` and `npm run coverage:open` for coverage stats
+└── test ← Where tests are kept, can run `pnpm test` and `pnpm coverage:open` for coverage stats
 ```
 
 ## Configuration
@@ -157,13 +157,13 @@ export PATH="$PATH:$HOME/.maestro/bin"
 
 ```bash
 # Run lock-unlock-wallet test on iOS
-npm run test:ui:ios
+pnpm test:ui:ios
 
 # Run lock-unlock-wallet test on Android
-npm run test:ui:android
+pnpm test:ui:android
 
 # Run with manual platform selection
-npm run test:ui
+pnpm test:ui
 ```
 
 ### Test Files
