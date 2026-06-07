@@ -1,10 +1,10 @@
 # T3 Digital Credential Wallet Changelog
 
-## Unreleased - TBD
+## 3.0.0 - 2026-06-07
 
 ### Security
 
-- Removed the insecure crypto shims (`crypto-polyfill.js` and the fake
+- Removed crypto shims (`crypto-polyfill.js` and the stub
   `randomBytes`/`createHash`/`pbkdf2Sync` in `shim.js`, plus the `crypto` build
   aliases). App code now uses `@noble/hashes`: PBKDF2-HMAC-SHA512 derives the
   database encryption key (previously a non-cryptographic toy loop) and SHA-256
@@ -147,7 +147,7 @@
 - `AddScreen` now guards against an undefined parsed Wallet API message before
   navigating to the exchange flow.
 
-## 1.0.0
+## 2.2.9
 
 ### Initialize
 
