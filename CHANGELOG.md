@@ -23,6 +23,12 @@
 - `expo export` / iOS (Hermes) builds failing on `import.meta is not supported in
   Hermes` from `@digitalbazaar/credentials-context`, by enabling
   `unstable_transformImportMeta` in babel-preset-expo (`babel.config.js`).
+- `DatabaseAccess.reset()` now clears the persisted key material
+  (`privileged_key_status` / `privileged_key` in SecureStore) and the PBKDF2 salt
+  file, and tolerates already-missing files. Previously these survived a reset
+  (the iOS Keychain persists across reinstalls), leaving a stale `unlocked`
+  status that made the next wallet initialization fail with "Cannot initialize
+  unlocked wallet."
 
 ### Changed
 
