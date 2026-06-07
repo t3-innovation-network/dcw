@@ -4,18 +4,37 @@ import { Linking } from 'react-native'
 import { navigationRef } from '../navigation/navigationRef'
 import { encodeQueryParams } from './encode'
 
-import { LinkConfig } from '../../app.config'
+import { LinkConfig, FEATURE_FLAGS } from '../../app.config'
 import { redirectRequestRoute, redirectInteractionUrl } from './navigationUtil'
 import { isLegacyCredentialRequest, legacyRequestParamsFromUrl } from './decode'
 import { goToCredentialFoyer } from '../screens/AddScreen/AddScreen'
 import { isInteractionUrl } from './interactionUrl'
+import store from '../store'
+import { selectRawProfileRecords } from '../store/slices/profile'
 
 const DEEP_LINK_SCHEMES = LinkConfig.schemes.customProtocol.concat(
   LinkConfig.schemes.universalAppLink
 )
 const DEEP_LINK_PATHS: DeepLinkPaths = {
-  request: (credentialRequestParams) =>
-    deepLinkNavigate('ProfileSelectionScreen', {
+  request: (credentialRequestParams) => {
+    // When multiple-profile support is disabled (this fork's default), skip the
+    // Choose Profile screen and route straight to credential approval using the
+    // default (first) profile. Falling through to ProfileSelectionScreen would
+    // otherwise strand the user on a blank, dead-end screen.
+    if (!FEATURE_FLAGS.supportMultipleProfiles) {
+      const [defaultProfile] = selectRawProfileRecords(store.getState())
+      if (defaultProfile) {
+        return deepLinkNavigate('AcceptCredentialsNavigation', {
+          screen: 'ApproveCredentialsScreen',
+          params: {
+            rawProfileRecord: defaultProfile,
+            credentialRequestParams
+          }
+        })
+      }
+    }
+
+    return deepLinkNavigate('ProfileSelectionScreen', {
       onSelectProfile: (rawProfileRecord) =>
         navigationRef.navigate('AcceptCredentialsNavigation', {
           screen: 'ApproveCredentialsScreen',
@@ -24,7 +43,8 @@ const DEEP_LINK_PATHS: DeepLinkPaths = {
             credentialRequestParams
           }
         })
-    }),
+    })
+  },
   present: (shareRequestParams) =>
     deepLinkNavigate('HomeNavigation', {
       screen: 'ShareNavigation',

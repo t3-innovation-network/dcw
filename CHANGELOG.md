@@ -2,6 +2,17 @@
 
 ## Unreleased - TBD
 
+### Fixed
+
+- Adding a credential (and other "select a profile" flows, including incoming
+  credential-request deep links) no longer redirects to a blank, dead-end
+  **Choose Profile** screen. `NavigationUtil.selectProfile` and the deep-link
+  `request` handler now default to the first profile whenever any profile
+  exists, instead of only when exactly one exists. This is gated behind the new
+  `FEATURE_FLAGS.supportMultipleProfiles` flag (default `false`): when `false`
+  the wallet always uses the default profile and never prompts; set it to `true`
+  to restore the original LCW multiple-profile selection behavior.
+
 ### Changed
 
 - Migrated to **Expo SDK 54** (React Native 0.81, React 19.1), staying on the
