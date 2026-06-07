@@ -43,3 +43,12 @@ global.crypto.subtle = global.crypto.subtle || subtle
 if (typeof btoa === 'undefined') {
   globalThis.btoa = (str) => Buffer.from(str, 'binary').toString('base64')
 }
+
+// Hermes lacks `structuredClone`. The only consumers in this app are JSON-LD
+// document caching (`jsonld-document-loader`, `@interop/jsonld`) and DID document
+// cloning (`did-web-resolver`) -- all plain JSON-safe data -- so a JSON
+// round-trip clone is sufficient. (Node and jest provide `structuredClone`
+// natively, so this only matters at RN runtime.)
+if (typeof structuredClone === 'undefined') {
+  globalThis.structuredClone = (value) => JSON.parse(JSON.stringify(value))
+}
