@@ -15,13 +15,16 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - uses: actions/checkout@v4
+      # Install pnpm before setup-node so its cache can locate the pnpm store.
+      # The pnpm version comes from the "packageManager" field in package.json.
+      - uses: pnpm/action-setup@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm i --legacy-peer-deps
-      - run: npm run lint
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run lint
 
   test-node:
     runs-on: ubuntu-latest
@@ -31,13 +34,14 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: npm i --legacy-peer-deps
-      - run: npm run test-node
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test-node
 
   build:
     needs: [lint, test-node]
@@ -48,13 +52,15 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      - uses: pnpm/action-setup@v4
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
+          cache: 'pnpm'
 
-      - run: npm i --legacy-peer-deps
-      - run: npm run prebuild:android
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run prebuild:android
 
       - run: ./gradlew assembleDebug -Dorg.gradle.logging.level=info
         working-directory: android

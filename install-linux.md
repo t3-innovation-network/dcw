@@ -2,7 +2,7 @@ To setup the development environment for Android on linux (Ubuntu 20.04), follow
 
 ## Requirements :scroll:
 
-Your machine should have [Npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm), [React Native](https://reactnative.dev/docs/environment-setup) installed.
+Your machine should have [Node.js](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm), [pnpm](https://pnpm.io/installation), and [React Native](https://reactnative.dev/docs/environment-setup) installed.
 
 _Note: Preferable versions_
 
@@ -13,11 +13,11 @@ _Note: Preferable versions_
 
 It is recommended to use nvm for managing multiple node version: https://github.com/nvm-sh/nvm
 
-- Check the node and npm version by running following commands.
+- Check the node and pnpm version by running following commands.
 
 ```sh
 node -v
-npm -v
+pnpm -v
 ```
 
 For React Native environment:
@@ -71,14 +71,14 @@ origin  https://github.com/Your_Username/learner-credential-wallet.git (push)
 - Install dependencies
 
 ```
-npm install
+pnpm install
 ```
 
 - Run application in dev environment
 
 ```
-npm start
-npm run android
+pnpm start
+pnpm android
 ```
 
 In the future it would be a good idea to use docker for building the app to isolate the developer's system from possibly malicious code installed through dependencies. This could possibly work: https://github.com/react-native-community/docker-android

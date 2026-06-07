@@ -21,8 +21,8 @@ async function gatherProfileBackupInputs(
   ])
 
   return profiles.map((profile) => {
-    const didRecord = allDidRecords.find(({ _id }) =>
-      _id.equals(profile.didRecordId)
+    const didRecord = allDidRecords.find(
+      ({ _id }) => _id === profile.didRecordId
     )
     if (!didRecord) {
       throw new Error(
@@ -31,7 +31,7 @@ async function gatherProfileBackupInputs(
     }
 
     const credentials = allCredentials
-      .filter(({ profileRecordId }) => profileRecordId.equals(profile._id))
+      .filter(({ profileRecordId }) => profileRecordId === profile._id)
       .map(({ credential }) => credential)
 
     return {
