@@ -168,12 +168,25 @@ class DatabaseAccess {
 
     await DatabaseAccess.disableBiometrics()
 
+    // Remove the database files, the derived-key salt, and any persisted key
+    // material. SecureStore (the Keychain on iOS) survives app reinstalls, so a
+    // reset must explicitly clear it -- otherwise a stale `unlocked` status or
+    // key is left behind and the next initialize fails.
     await Promise.all([
-      RNFS.unlink(`${Realm.defaultPath}.lock`),
-      RNFS.unlink(`${Realm.defaultPath}.note`),
-      RNFS.unlink(`${Realm.defaultPath}.management`),
-      RNFS.unlink(Realm.defaultPath)
+      DatabaseAccess.unlinkIfExists(`${Realm.defaultPath}.lock`),
+      DatabaseAccess.unlinkIfExists(`${Realm.defaultPath}.note`),
+      DatabaseAccess.unlinkIfExists(`${Realm.defaultPath}.management`),
+      DatabaseAccess.unlinkIfExists(Realm.defaultPath),
+      DatabaseAccess.unlinkIfExists(PBKDF2_SALT_PATH),
+      SecureStore.deleteItemAsync(PRIVILEGED_KEY_STATUS_ID),
+      SecureStore.deleteItemAsync(PRIVILEGED_KEY_KID)
     ])
+  }
+
+  private static async unlinkIfExists(path: string): Promise<void> {
+    if (await RNFS.exists(path)) {
+      await RNFS.unlink(path)
+    }
   }
 
   public static async initialize(passphrase: string): Promise<void> {
