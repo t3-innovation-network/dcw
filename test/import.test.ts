@@ -1,8 +1,9 @@
-import DocumentPicker from 'react-native-document-picker'
+import { keepLocalCopy, pick } from '@react-native-documents/picker'
 import * as RNFS from 'react-native-fs'
 
-jest.mock('react-native-document-picker', () => ({
-  pickSingle: jest.fn(),
+jest.mock('@react-native-documents/picker', () => ({
+  pick: jest.fn(),
+  keepLocalCopy: jest.fn(),
   types: {
     allFiles: '*/*'
   }
@@ -108,10 +109,12 @@ describe('Utility Functions', () => {
       // Mock Platform.OS for this test
       const mockPlatform = require('react-native').Platform
       mockPlatform.OS = 'android'
-      ;(DocumentPicker.pickSingle as jest.Mock).mockResolvedValueOnce({
-        uri: 'content://some/file.json',
-        name: 'badge file (1).json'
-      })
+      ;(pick as jest.Mock).mockResolvedValueOnce([
+        {
+          uri: 'content://some/file.json',
+          name: 'badge file (1).json'
+        }
+      ])
       ;(RNFS.readFile as jest.Mock)
         .mockResolvedValueOnce('bm90YXBuZw==') // base64
         .mockResolvedValueOnce('{"android": "content"}')
@@ -128,10 +131,12 @@ describe('Utility Functions', () => {
 
       const fakeUri = 'file://test.json'
 
-      ;(DocumentPicker.pickSingle as jest.Mock).mockResolvedValueOnce({
-        uri: fakeUri,
-        name: 'test.json'
-      })
+      ;(pick as jest.Mock).mockResolvedValueOnce([
+        {
+          uri: fakeUri,
+          name: 'test.json'
+        }
+      ])
       ;(RNFS.readFile as jest.Mock)
         .mockResolvedValueOnce('bm90YXBuZw==') // base64
         .mockResolvedValueOnce('{"android":true}')
@@ -147,11 +152,15 @@ describe('Utility Functions', () => {
 
       const fakeUri = 'file://test.json'
 
-      ;(DocumentPicker.pickSingle as jest.Mock).mockResolvedValueOnce({
-        uri: fakeUri,
-        fileCopyUri: fakeUri,
-        name: 'test.json'
-      })
+      ;(pick as jest.Mock).mockResolvedValueOnce([
+        {
+          uri: fakeUri,
+          name: 'test.json'
+        }
+      ])
+      ;(keepLocalCopy as jest.Mock).mockResolvedValueOnce([
+        { status: 'success', localUri: fakeUri }
+      ])
       ;(RNFS.readFile as jest.Mock)
         .mockResolvedValueOnce('bm90YXBuZw==') // base64
         .mockResolvedValueOnce('{"ios":true}')
@@ -161,13 +170,18 @@ describe('Utility Functions', () => {
     })
 
     it('should pick a file and read it', async () => {
+      // Platform.OS is left as 'ios' from the previous test
       const fakeUri = 'file://test.json'
 
-      ;(DocumentPicker.pickSingle as jest.Mock).mockResolvedValueOnce({
-        uri: fakeUri,
-        fileCopyUri: fakeUri,
-        name: 'test.json'
-      })
+      ;(pick as jest.Mock).mockResolvedValueOnce([
+        {
+          uri: fakeUri,
+          name: 'test.json'
+        }
+      ])
+      ;(keepLocalCopy as jest.Mock).mockResolvedValueOnce([
+        { status: 'success', localUri: fakeUri }
+      ])
       ;(RNFS.readFile as jest.Mock)
         .mockResolvedValueOnce('bm90YXBuZw==') // base64
         .mockResolvedValueOnce('{"test":123}')

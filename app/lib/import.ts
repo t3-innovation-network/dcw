@@ -1,5 +1,5 @@
 import { Buffer } from 'buffer'
-import DocumentPicker from 'react-native-document-picker'
+import { keepLocalCopy, pick, types } from '@react-native-documents/picker'
 import * as RNFS from 'react-native-fs'
 import { Platform } from 'react-native'
 import base64 from 'react-native-base64'
@@ -151,17 +151,23 @@ export async function readFile(
 
 export async function pickAndReadFile(): Promise<string> {
   try {
-    const file = await DocumentPicker.pickSingle({
-      type: DocumentPicker.types.allFiles,
-      copyTo: 'cachesDirectory'
+    const [file] = await pick({
+      type: [types.allFiles]
     })
 
     let path: string | null = null
 
     if (Platform.OS === 'ios') {
-      path = file.fileCopyUri
-      if (!path) throw new Error('No fileCopyUri on iOS')
-      path = decodeURI(path.replace('file://', ''))
+      // `pick` no longer copies the file into app storage, so request a local
+      // copy explicitly (the v9 `copyTo: 'cachesDirectory'` equivalent).
+      const [copy] = await keepLocalCopy({
+        files: [{ uri: file.uri, fileName: file.name ?? 'imported_file' }],
+        destination: 'cachesDirectory'
+      })
+      if (copy.status !== 'success') {
+        throw new Error('Unable to copy selected file on iOS')
+      }
+      path = decodeURI(copy.localUri.replace('file://', ''))
     } else {
       path = file.uri
 
