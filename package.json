@@ -126,7 +126,7 @@
     "react-native-svg": "15.12.1",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-uuid": "^2.0.1",
-    "react-native-vision-camera": "4.7.1",
+    "react-native-vision-camera": "4.7.3",
     "react-native-walkthrough-tooltip": "^1.6.0",
     "react-native-web": "^0.21.2",
     "react-native-worklets-core": "^1.6.0",
