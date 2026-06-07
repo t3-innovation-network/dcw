@@ -150,8 +150,8 @@ export default function HomeScreen({
           accessibilityLabel={`Learn more about the ${appConfig.displayName} at ${appConfig.displayName}`}
           testID="learn-more-link"
         >
-          <Text style={styles.learnMoreLink}>Learn more</Text>
-          about the {appConfig.displayName}
+          <Text style={styles.learnMoreLink}>Learn more</Text> about the{' '}
+          {appConfig.displayName}
         </Text>
       </View>
     )

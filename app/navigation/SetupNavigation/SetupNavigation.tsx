@@ -62,14 +62,24 @@ export default function SetupNavigation(): React.ReactElement {
 function StartStep({ navigation }: StartStepProps) {
   const { styles, mixins } = useDynamicStyles(dynamicStyleSheet)
   const dispatch = useAppDispatch()
+  const [loading, setLoading] = useState(false)
 
   async function _quickSetup() {
-    const generatedPassword = uuidv4()
-    console.log('generatedPassword', generatedPassword)
-    await dispatch(
-      initialize({ passphrase: generatedPassword, enableBiometrics: false })
-    )
-    await dispatch(pollWalletState())
+    setLoading(true)
+    AccessibilityInfo.announceForAccessibility('Creating wallet')
+    try {
+      const generatedPassword = uuidv4()
+      await dispatch(
+        initialize({ passphrase: generatedPassword, enableBiometrics: false })
+      )
+      await dispatch(pollWalletState())
+    } catch (err) {
+      // On failure, re-enable the button so the user can retry.
+      setLoading(false)
+      throw err
+    }
+    // On success, the wallet becomes initialized + unlocked and AppNavigation
+    // swaps SetupNavigation out for the main app, unmounting this screen.
   }
 
   return (
@@ -94,21 +104,30 @@ function StartStep({ navigation }: StartStepProps) {
         Skill Savings {'\n'} Account
       </Text>
       <Text style={styles.paragraph}>{appConfig.launchScreenText}</Text>
-      <View style={mixins.buttonGroup}>
-        <Button
-          buttonStyle={[mixins.button, mixins.buttonPrimary]}
-          containerStyle={mixins.buttonContainer}
-          titleStyle={mixins.buttonTitle}
-          title="Create Your Wallet"
-          onPress={() => {
-            if (FEATURE_FLAGS.passwordProtect) {
-              navigation.navigate('PasswordStep')
-            } else {
-              _quickSetup()
-            }
-          }}
-        />
-      </View>
+      {loading ? (
+        <>
+          <View style={styles.loadingContainer}>
+            <LoadingIndicator loading={loading} />
+          </View>
+          <Text style={styles.paragraph}>Creating your wallet...</Text>
+        </>
+      ) : (
+        <View style={mixins.buttonGroup}>
+          <Button
+            buttonStyle={[mixins.button, mixins.buttonPrimary]}
+            containerStyle={mixins.buttonContainer}
+            titleStyle={mixins.buttonTitle}
+            title="Create Your Wallet"
+            onPress={() => {
+              if (FEATURE_FLAGS.passwordProtect) {
+                navigation.navigate('PasswordStep')
+              } else {
+                _quickSetup()
+              }
+            }}
+          />
+        </View>
+      )}
     </SafeScreenView>
   )
 }

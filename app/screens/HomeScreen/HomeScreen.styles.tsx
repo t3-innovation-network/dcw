@@ -1,4 +1,5 @@
 import { createDynamicStyleSheet } from '../../lib/dynamicStyles'
+import { Color } from '../../styles/colors'
 
 export default createDynamicStyleSheet(({ mixins, theme }) => ({
   container: {
@@ -45,7 +46,7 @@ export default createDynamicStyleSheet(({ mixins, theme }) => ({
     textAlign: 'center'
   },
   learnMoreLink: {
-    color: theme.color.linkColor,
+    color: Color.LightCyan,
     textDecorationLine: 'underline'
   }
 }))
