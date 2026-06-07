@@ -258,9 +258,6 @@ importers:
       tar-stream:
         specifier: ^3.2.0
         version: 3.2.0
-      text-encoding:
-        specifier: ^0.7.0
-        version: 0.7.0
       validator:
         specifier: ^13.11.0
         version: 13.15.35
@@ -283,9 +280,6 @@ importers:
       '@types/tar-stream':
         specifier: ^3.1.4
         version: 3.1.4
-      '@types/text-encoding':
-        specifier: ^0.0.39
-        version: 0.0.39
       '@types/uuid':
         specifier: ^10.0.0
         version: 10.0.0
@@ -1762,9 +1756,6 @@ packages:
 
   '@types/tar-stream@3.1.4':
     resolution: {integrity: sha512-921gW0+g29mCJX0fRvqeHzBlE/XclDaAG0Ousy1LCghsOhvaKacDeRGEVzQP9IPfKn8Vysy7FEXAIxycpc/CMg==}
-
-  '@types/text-encoding@0.0.39':
-    resolution: {integrity: sha512-gRPvgL1aMgP6Pv92Rs310cJvVQ86DSF62E7K30g1FoGmmYWXoNuXT8PV835iAVeiAZkRwr2IW37KuyDn9ljmeA==}
 
   '@types/tough-cookie@4.0.5':
     resolution: {integrity: sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==}
@@ -7725,8 +7716,6 @@ snapshots:
   '@types/tar-stream@3.1.4':
     dependencies:
       '@types/node': 25.9.2
-
-  '@types/text-encoding@0.0.39': {}
 
   '@types/tough-cookie@4.0.5': {}
 
