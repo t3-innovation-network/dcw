@@ -20,6 +20,6 @@ export function createDynamicStyleSheet<
 >(styleObjectsResolver: R): DynamicStyleSheet<S> {
   return (dynamicStyles: DynamicStyles) => {
     const styleObjects = styleObjectsResolver(dynamicStyles)
-    return StyleSheet.create(styleObjects as any) as S
+    return StyleSheet.create<Record<string, StyleObject>>(styleObjects) as S
   }
 }

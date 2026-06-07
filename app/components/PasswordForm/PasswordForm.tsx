@@ -79,7 +79,7 @@ export default function PasswordForm({
         value={password}
         onChangeText={setPassword}
         onBlur={_onInputBlur}
-        inputRef={passwordRef as any}
+        inputRef={passwordRef}
         tvParallaxProperties={undefined}
         onTextInput={() => {}}
         testID="password-input"

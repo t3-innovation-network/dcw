@@ -31,9 +31,7 @@ export function getCredentialName(credential: IVerifiableCredential): string {
   }
 
   if (isPerformanceReviewCredential) {
-    const employeeName = asNonEmptyString(
-      (credentialSubject as any)?.employeeName
-    )
+    const employeeName = asNonEmptyString(credentialSubject?.employeeName)
     return employeeName
       ? `Performance Review: ${employeeName}`
       : 'Performance Review Credential'
@@ -48,18 +46,16 @@ export function getCredentialName(credential: IVerifiableCredential): string {
   }
 
   if (isEmploymentCredential(credential)) {
-    const fullName = asNonEmptyString((credentialSubject as any)?.fullName)
-    const company = asNonEmptyString((credentialSubject as any)?.company)
+    const fullName = asNonEmptyString(credentialSubject?.fullName)
+    const company = asNonEmptyString(credentialSubject?.company)
     if (fullName && company) return `Employment: ${fullName} @ ${company}`
     if (fullName) return `Employment: ${fullName}`
     return 'Employment Credential'
   }
 
   if (isVolunteerCredential(credential)) {
-    const fullName = asNonEmptyString((credentialSubject as any)?.fullName)
-    const volunteerOrg = asNonEmptyString(
-      (credentialSubject as any)?.volunteerOrg
-    )
+    const fullName = asNonEmptyString(credentialSubject?.fullName)
+    const volunteerOrg = asNonEmptyString(credentialSubject?.volunteerOrg)
     if (fullName && volunteerOrg)
       return `Volunteer: ${fullName} @ ${volunteerOrg}`
     if (fullName) return `Volunteer: ${fullName}`

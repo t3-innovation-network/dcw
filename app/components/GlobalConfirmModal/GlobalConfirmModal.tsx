@@ -19,11 +19,11 @@ export type GlobalModalPayload = ConfirmModalProps & {
 export default function GlobalConfirmModal(): React.ReactElement | null {
   const { mixins } = useDynamicStyles()
   const { globalModal } = useSelector(selectWalletState)
+  const globalModalProps: GlobalModalPayload = globalModal ?? {}
   const { body, onConfirm, onCancel, ...confirmModalDisplayProps } =
-    globalModal || {}
+    globalModalProps
 
-  const hasContent =
-    Boolean((confirmModalDisplayProps as any)?.title) || Boolean(body)
+  const hasContent = Boolean(confirmModalDisplayProps.title) || Boolean(body)
   const isModalOpen = globalModal !== null && hasContent
   const isBodyText = typeof body === 'string'
 

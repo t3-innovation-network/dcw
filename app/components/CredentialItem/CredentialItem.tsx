@@ -211,7 +211,7 @@ function CredentialItem({
       <CredentialStatusBadges
         rawCredentialRecord={rawCredentialRecord}
         badgeBackgroundColor={theme.color.backgroundPrimary}
-        precomputedVerification={precomputedVerification as any}
+        precomputedVerification={precomputedVerification}
         precomputedPublic={precomputedPublic}
       />
     )

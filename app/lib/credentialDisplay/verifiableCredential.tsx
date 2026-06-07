@@ -178,7 +178,7 @@ function VerifiableCredentialCard({
         <View style={styles.dataContainer}>
           <Text style={styles.dataLabel}>Recommendations</Text>
           {recommendations.map((rec, idx) => {
-            const recSubject = getSubject(rec.credential) as any
+            const recSubject = getSubject(rec.credential)
             const label =
               typeof recSubject?.name === 'string' &&
               recSubject.name.trim().length > 0
