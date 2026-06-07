@@ -1,5 +1,4 @@
 import { mockCredential, mockCredential2 } from '../app/mock/credential'
-import { ObjectID } from 'bson'
 
 // Mock the credential hash functions
 jest.mock('../app/lib/credentialHash', () => ({
@@ -30,8 +29,8 @@ import { credentialContentHash } from '../app/lib/credentialHash'
 import { getCredentialName } from '../app/lib/credentialName'
 
 describe('Profile Duplicate Detection', () => {
-  const profileId1 = new ObjectID()
-  const profileId2 = new ObjectID()
+  const profileId1 = 'profile-1'
+  const profileId2 = 'profile-2'
 
   beforeEach(() => {
     jest.clearAllMocks()
@@ -49,7 +48,7 @@ describe('Profile Duplicate Detection', () => {
       mockGetAllCredentialRecords.mockResolvedValue(existingCredentials)
 
       const existingHashesInProfile = existingCredentials
-        .filter(({ profileRecordId }) => profileRecordId.equals(profileId1))
+        .filter(({ profileRecordId }) => profileRecordId === profileId1)
         .map(({ credential }) => credentialContentHash(credential))
 
       const isDuplicate = existingHashesInProfile.includes(
@@ -71,7 +70,7 @@ describe('Profile Duplicate Detection', () => {
       mockGetAllCredentialRecords.mockResolvedValue(existingCredentials)
 
       const existingHashesInProfile = existingCredentials
-        .filter(({ profileRecordId }) => profileRecordId.equals(profileId2))
+        .filter(({ profileRecordId }) => profileRecordId === profileId2)
         .map(({ credential }) => credentialContentHash(credential))
 
       const isDuplicate = existingHashesInProfile.includes(
@@ -96,7 +95,7 @@ describe('Profile Duplicate Detection', () => {
       mockGetAllCredentialRecords.mockResolvedValue(existingCredentials)
 
       const existingHashesInProfile = existingCredentials
-        .filter(({ profileRecordId }) => profileRecordId.equals(profileId1))
+        .filter(({ profileRecordId }) => profileRecordId === profileId1)
         .map(({ credential }) => credentialContentHash(credential))
 
       const isDuplicate1 = existingHashesInProfile.includes(
@@ -127,12 +126,12 @@ describe('Profile Duplicate Detection', () => {
 
       // Check for duplicates in profile 1
       const existingHashesInProfile1 = existingCredentials
-        .filter(({ profileRecordId }) => profileRecordId.equals(profileId1))
+        .filter(({ profileRecordId }) => profileRecordId === profileId1)
         .map(({ credential }) => credentialContentHash(credential))
 
       // Check for duplicates in profile 2
       const existingHashesInProfile2 = existingCredentials
-        .filter(({ profileRecordId }) => profileRecordId.equals(profileId2))
+        .filter(({ profileRecordId }) => profileRecordId === profileId2)
         .map(({ credential }) => credentialContentHash(credential))
 
       expect(existingHashesInProfile1).toHaveLength(1)
@@ -200,17 +199,7 @@ describe('Profile Duplicate Detection', () => {
     })
   })
 
-  describe('ObjectID equality checks', () => {
-    it('should correctly compare ObjectIDs', () => {
-      const id1 = new ObjectID()
-      const id2 = new ObjectID()
-      const id1Copy = new ObjectID(id1.toHexString())
-
-      expect(id1.equals(id1)).toBe(true)
-      expect(id1.equals(id2)).toBe(false)
-      expect(id1.equals(id1Copy)).toBe(true)
-    })
-
+  describe('profile ID filtering', () => {
     it('should filter credentials by profile ID correctly', () => {
       const credentials = [
         { profileRecordId: profileId1, credential: mockCredential },
@@ -219,13 +208,13 @@ describe('Profile Duplicate Detection', () => {
       ]
 
       const profile1Credentials = credentials.filter(({ profileRecordId }) =>
-        profileRecordId.equals(profileId1)
+        profileRecordId === profileId1
       )
 
       expect(profile1Credentials).toHaveLength(2)
       expect(
         profile1Credentials.every(({ profileRecordId }) =>
-          profileRecordId.equals(profileId1)
+          profileRecordId === profileId1
         )
       ).toBe(true)
     })

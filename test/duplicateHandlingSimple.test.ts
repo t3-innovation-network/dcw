@@ -4,7 +4,6 @@ import {
   ApprovalMessage
 } from '../app/store/slices/credentialFoyer'
 import { mockCredential, mockCredential2 } from '../app/mock/credential'
-import { ObjectID } from 'bson'
 
 // Mock the credential hash functions
 jest.mock('../app/lib/credentialHash', () => ({
@@ -68,8 +67,8 @@ describe('Duplicate Handling - Core Logic Tests', () => {
     })
 
     it('should handle profile-specific duplicate detection', () => {
-      const profileId1 = new ObjectID()
-      const profileId2 = new ObjectID()
+      const profileId1 = 'profile-1'
+      const profileId2 = 'profile-2'
 
       const allCredentials = [
         { credential: mockCredential, profileRecordId: profileId1 },
@@ -79,7 +78,7 @@ describe('Duplicate Handling - Core Logic Tests', () => {
 
       // Filter by profile
       const profile1Credentials = allCredentials.filter(({ profileRecordId }) =>
-        profileRecordId.equals(profileId1)
+        profileRecordId === profileId1
       )
 
       // Get hashes for profile 1
@@ -96,8 +95,8 @@ describe('Duplicate Handling - Core Logic Tests', () => {
     })
 
     it('should allow same credential in different profiles', () => {
-      const profileId1 = new ObjectID()
-      const profileId2 = new ObjectID()
+      const profileId1 = 'profile-1'
+      const profileId2 = 'profile-2'
 
       const allCredentials = [
         { credential: mockCredential, profileRecordId: profileId1 }
@@ -105,7 +104,7 @@ describe('Duplicate Handling - Core Logic Tests', () => {
 
       // Check if credential exists in profile 2
       const profile2Credentials = allCredentials.filter(({ profileRecordId }) =>
-        profileRecordId.equals(profileId2)
+        profileRecordId === profileId2
       )
 
       const profile2Hashes = profile2Credentials.map(({ credential }) =>

@@ -91,7 +91,5 @@ export async function credentialsFrom(
 export function credentialIdFor(
   rawCredentialRecord: CredentialRecordRaw
 ): string {
-  return (
-    rawCredentialRecord._id.toHexString?.() || String(rawCredentialRecord._id)
-  )
+  return rawCredentialRecord._id
 }

@@ -8,7 +8,6 @@ import {
   ApprovalMessage
 } from '../app/store/slices/credentialFoyer'
 import { mockCredential } from '../app/mock/credential'
-import { ObjectID } from 'bson'
 
 // Ensure ApprovalControls' useSelector(selectRawCredentialRecords) always receives
 // a state shape that contains `credential.rawCredentialRecords` (so `.find` can't crash).
@@ -95,7 +94,7 @@ const createMockStore = () =>
   })
 
 describe('ApprovalControls', () => {
-  const mockProfileRecordId = new ObjectID()
+  const mockProfileRecordId = 'profile-mock'
   let mockStore: any
 
   beforeEach(() => {

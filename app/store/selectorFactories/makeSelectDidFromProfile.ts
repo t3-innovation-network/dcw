@@ -10,8 +10,8 @@ export const makeSelectDidFromProfile = (): Selector<
   createSelector(
     [selectRawDidRecords, selectProps],
     (rawDidRecords, { rawProfileRecord }) => {
-      const rawDidRecord = rawDidRecords.find(({ _id }) =>
-        _id.equals(rawProfileRecord.didRecordId)
+      const rawDidRecord = rawDidRecords.find(
+        ({ _id }) => _id === rawProfileRecord.didRecordId
       )
       return expectValue(rawDidRecord, 'DID could not be selected from profile')
     }

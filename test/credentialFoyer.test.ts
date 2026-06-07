@@ -10,7 +10,6 @@ import credentialFoyerReducer, {
   PendingCredential
 } from '../app/store/slices/credentialFoyer'
 import { mockCredential, mockCredential2 } from '../app/mock/credential'
-import { ObjectID } from 'bson'
 
 // Mock the credential model
 jest.mock('../app/model/credential', () => ({
@@ -38,7 +37,7 @@ const mockGetAllCredentialRecords =
 
 describe('credentialFoyer slice', () => {
   let store: any
-  const mockProfileId = new ObjectID()
+  const mockProfileId = 'profile-mock'
 
   beforeEach(() => {
     store = configureStore({
@@ -92,7 +91,7 @@ describe('credentialFoyer slice', () => {
     })
 
     it('should mark duplicates only within the same profile', async () => {
-      const otherProfileId = new ObjectID()
+      const otherProfileId = 'profile-other'
       mockGetAllCredentialRecords.mockResolvedValue([
         { credential: mockCredential, profileRecordId: otherProfileId } as any
       ])

@@ -8,7 +8,7 @@ export function useProfileCredentials(profileId: string) {
   return useMemo(
     () =>
       allCredentials.filter(
-        ({ profileRecordId }) => profileRecordId.toHexString() === profileId
+        ({ profileRecordId }) => profileRecordId === profileId
       ),
     [allCredentials, profileId]
   )

@@ -1,4 +1,3 @@
-import { ObjectID } from 'bson'
 import {
   ICredentialSubject,
   IVerifiableCredential
@@ -27,11 +26,11 @@ export type CredentialImportReport = {
  * stringified JSON.
  */
 export type CredentialRecordEntry = {
-  readonly _id: ObjectID
+  readonly _id: string
   readonly createdAt: Date
   readonly updatedAt: Date
   readonly rawCredential: string
-  readonly profileRecordId: ObjectID
+  readonly profileRecordId: string
 }
 export type CredentialRecordRaw = CredentialRecordEntry & {
   readonly credential: IVerifiableCredential

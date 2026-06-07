@@ -140,7 +140,7 @@ export default function ManageProfilesScreen({
         contentContainerStyle={styles.contentContainer}
         data={flatListData}
         renderItem={({ item }) => <ProfileItem rawProfileRecord={item} />}
-        keyExtractor={(item) => item._id.toHexString?.() ?? String(item._id)}
+        keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
       />
     </>

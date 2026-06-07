@@ -7,11 +7,10 @@
 - Removed the insecure crypto shims (`crypto-polyfill.js` and the fake
   `randomBytes`/`createHash`/`pbkdf2Sync` in `shim.js`, plus the `crypto` build
   aliases). App code now uses `@noble/hashes`: PBKDF2-HMAC-SHA512 derives the
-  Realm DB encryption key (previously a non-cryptographic toy loop), SHA-256
-  hashes credential content, and a CSPRNG generates record ObjectIds (previously
-  `Math.random()`). The `@interop/*` packages resolve their own `react-native`
-  exports (backed by `@noble/*`) without the alias. Only the load-bearing
-  polyfills remain in `shim.js`: `global.Buffer`, `btoa`, and a real
+  database encryption key (previously a non-cryptographic toy loop) and SHA-256
+  hashes credential content. The `@interop/*` packages resolve their own
+  `react-native` exports (backed by `@noble/*`) without the alias. Only the
+  load-bearing polyfills remain in `shim.js`: `global.Buffer`, `btoa`, and a real
   `expo-crypto`-backed `crypto.subtle.digest` (used by `rdf-canonize` during
   rdfc-2022 canonicalization).
   - **Breaking:** real PBKDF2 changes the derived encryption key, so wallets
@@ -32,6 +31,16 @@
 
 ### Changed
 
+- Replaced Realm with `expo-sqlite` + SQLCipher for the encrypted wallet
+  database. The `realm` and `bson` dependencies are removed; the model layer
+  (`app/model/`) now opens a single SQLite connection keyed with the raw 32-byte
+  hex key via `PRAGMA key`, with the schema defined and versioned (`PRAGMA
+  user_version`) in `app/model/schema.ts`. Record ids are now plain `string`
+  UUIDs throughout the app (generated with `react-native-uuid`), replacing
+  `Realm.BSON.ObjectId` / `bson` `ObjectID` and their `.equals()` /
+  `.toHexString()` call sites. Requires a native rebuild (`expo prebuild`).
+  - **Breaking:** there is no Realm→SQLite data migration. Updating users get a
+    fresh, empty database and must recover via an exported JSON backup or WAS.
 - Wallet and profile backups now export as a content-addressed **tar archive**
   (`Wallet Backup.tar` / `Profile Backup.tar`) instead of a single JSON file.
   Credentials are written once under `credentials/<cid>.json` (CID = JCS-

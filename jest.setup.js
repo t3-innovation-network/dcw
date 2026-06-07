@@ -46,6 +46,23 @@ jest.mock('react-native-fs', () => ({
   CachesDirectoryPath: '/mock/cache/path'
 }))
 
+// Mock expo-sqlite. The model layer is fully jest.mock-ed in component/lib
+// tests, so no SQL is ever executed under jest -- this mock only needs to exist
+// so that importing model files (which import expo-sqlite) resolves cleanly.
+jest.mock('expo-sqlite', () => ({
+  openDatabaseAsync: jest.fn(() =>
+    Promise.resolve({
+      execAsync: jest.fn().mockResolvedValue(undefined),
+      runAsync: jest.fn().mockResolvedValue({ changes: 0, lastInsertRowId: 0 }),
+      getAllAsync: jest.fn().mockResolvedValue([]),
+      getFirstAsync: jest.fn().mockResolvedValue(null),
+      withTransactionAsync: jest.fn((cb) => cb()),
+      closeAsync: jest.fn().mockResolvedValue(undefined)
+    })
+  ),
+  deleteDatabaseAsync: jest.fn().mockResolvedValue(undefined)
+}))
+
 // Mock react-native-document-picker
 jest.mock('react-native-document-picker', () => ({
   pickSingle: jest.fn(),

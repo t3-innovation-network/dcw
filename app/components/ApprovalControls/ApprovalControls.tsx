@@ -20,7 +20,6 @@ import {
 import { Color, ThemeType } from '../../styles'
 import dynamicStyleSheet from './ApprovalControls.styles'
 import { useAccessibilityFocus } from '../../hooks'
-import { ObjectID } from 'bson'
 import { navigationRef } from '../../navigation/navigationRef'
 import { credentialContentHash } from '../../lib/credentialHash'
 
@@ -32,7 +31,7 @@ enum StatusIcon {
 
 type ApprovalControlsProps = {
   pendingCredential: PendingCredential
-  profileRecordId: ObjectID
+  profileRecordId: string
 }
 
 type ApprovalButtonProps = {
@@ -119,7 +118,7 @@ export default function ApprovalControls({
     const pendingHash = credentialContentHash(pendingCredential.credential)
     const recordToDelete = rawCredentialRecords.find(
       ({ credential, profileRecordId: pid }) =>
-        pid.equals(profileRecordId) &&
+        pid === profileRecordId &&
         credentialContentHash(credential) === pendingHash
     )
 

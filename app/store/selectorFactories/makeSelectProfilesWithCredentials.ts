@@ -14,8 +14,7 @@ export const makeSelectProfilesWithCredentials = (): Selector<
       const profilesWithCredentials = rawProfileRecords.map(
         (rawProfileRecord) => {
           const profileCredentials = rawCredentialRecords.filter(
-            ({ profileRecordId }) =>
-              profileRecordId.equals(rawProfileRecord._id)
+            ({ profileRecordId }) => profileRecordId === rawProfileRecord._id
           )
           return {
             ...rawProfileRecord,

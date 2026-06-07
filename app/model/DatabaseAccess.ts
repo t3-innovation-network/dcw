@@ -1,4 +1,4 @@
-import Realm from 'realm'
+import * as SQLite from 'expo-sqlite'
 import * as SecureStore from 'expo-secure-store'
 import * as RNFS from 'react-native-fs'
 import { generateSecureRandom } from 'react-native-securerandom'
@@ -8,23 +8,12 @@ import {
   retrieveFromBiometricKeychain,
   storeInBiometricKeychain
 } from '../lib/biometrics'
-import { runMigrations, schemaVersion } from './migration'
+import { initSchema } from './schema'
 import { pbkdf2 } from '@noble/hashes/pbkdf2.js'
 import { sha512 } from '@noble/hashes/sha2.js'
 import { bytesToHex } from '@noble/hashes/utils.js'
 
-// Models will be loaded dynamically to avoid circular dependencies
-let models: Realm.ObjectClass[] | null = null
-
-async function getModels(): Promise<Realm.ObjectClass[]> {
-  if (models === null) {
-    const { CredentialRecord } = await import('./credential')
-    const { DidRecord } = await import('./did')
-    const { ProfileRecord } = await import('./profile')
-    models = [CredentialRecord, DidRecord, ProfileRecord]
-  }
-  return models
-}
+const DATABASE_NAME = 'edu-wallet.db'
 
 const PRIVILEGED_KEY_KID = 'privileged_key'
 const PRIVILEGED_KEY_STATUS_ID = 'privileged_key_status'
@@ -44,7 +33,7 @@ class DatabaseAccess {
    * to do work on the database, do all of it within the callback to withInstance.
    */
   public static async withInstance<T>(
-    callback: (instance: Realm) => T | Promise<T>
+    callback: (instance: SQLite.SQLiteDatabase) => T | Promise<T>
   ): Promise<T> {
     const database = await DatabaseAccess.instance()
 
@@ -139,8 +128,9 @@ class DatabaseAccess {
   public static async lock(): Promise<void> {
     if (!(await this.isUnlocked())) return
 
-    if (DatabaseAccess.realm !== null) {
-      DatabaseAccess.realm = null
+    if (DatabaseAccess.database !== null) {
+      await DatabaseAccess.database.closeAsync()
+      DatabaseAccess.database = null
     }
 
     await Promise.all([
@@ -151,10 +141,12 @@ class DatabaseAccess {
 
   public static async isInitialized(): Promise<boolean> {
     /**
-     * We can't use `Realm.exists` here because the config is
-     * only available for the unlocked state.
+     * The PBKDF2 salt is written in `initialize()` and removed in `reset()`, so
+     * it tracks the database lifecycle 1:1. Checking for it avoids any knowledge
+     * of expo-sqlite's internal storage location, and works whether or not the
+     * wallet is currently unlocked.
      */
-    return RNFS.exists(Realm.defaultPath)
+    return RNFS.exists(PBKDF2_SALT_PATH)
   }
 
   /**
@@ -168,19 +160,25 @@ class DatabaseAccess {
 
     await DatabaseAccess.disableBiometrics()
 
-    // Remove the database files, the derived-key salt, and any persisted key
+    // Remove the database file, the derived-key salt, and any persisted key
     // material. SecureStore (the Keychain on iOS) survives app reinstalls, so a
     // reset must explicitly clear it -- otherwise a stale `unlocked` status or
     // key is left behind and the next initialize fails.
     await Promise.all([
-      DatabaseAccess.unlinkIfExists(`${Realm.defaultPath}.lock`),
-      DatabaseAccess.unlinkIfExists(`${Realm.defaultPath}.note`),
-      DatabaseAccess.unlinkIfExists(`${Realm.defaultPath}.management`),
-      DatabaseAccess.unlinkIfExists(Realm.defaultPath),
+      DatabaseAccess.deleteDatabaseIfExists(),
       DatabaseAccess.unlinkIfExists(PBKDF2_SALT_PATH),
       SecureStore.deleteItemAsync(PRIVILEGED_KEY_STATUS_ID),
       SecureStore.deleteItemAsync(PRIVILEGED_KEY_KID)
     ])
+  }
+
+  private static async deleteDatabaseIfExists(): Promise<void> {
+    try {
+      await SQLite.deleteDatabaseAsync(DATABASE_NAME)
+    } catch {
+      // deleteDatabaseAsync throws if the database file does not exist; that is
+      // the desired end state, so swallow the error.
+    }
   }
 
   private static async unlinkIfExists(path: string): Promise<void> {
@@ -204,53 +202,59 @@ class DatabaseAccess {
 
     await RNFS.writeFile(PBKDF2_SALT_PATH, salt, 'utf8')
 
-    // The first call to unlock will create/encrypt the Realm with the pass.
+    // The first call to unlock will create/encrypt the database with the pass.
     // We intentionally leave the wallet unlocked: callers initialize and then
     // immediately use the wallet, and unlock() is expensive (PBKDF2 key
-    // derivation + encrypted Realm open). Locking here would force callers to
+    // derivation + encrypted database open). Locking here would force callers to
     // pay that cost a second time on the very next unlock().
     await DatabaseAccess.unlock(passphrase)
   }
 
-  private static async encryptionKey(): Promise<Int8Array> {
+  private static async keyHex(): Promise<string> {
     if (!(await this.isUnlocked())) {
       throw new Error('Wallet is not unlocked.')
     }
 
     const key = await SecureStore.getItemAsync(PRIVILEGED_KEY_KID)
 
-    if (key === null) {
+    if (key === null || key === '') {
       throw new Error('Key not present in keychain.')
     }
 
-    const encoder = new TextEncoder()
-    const encodedBytes = new Int8Array(encoder.encode(key))
-    return encodedBytes.slice(0, 64)
+    // The stored key is already a 64-char hex string (32 bytes), which SQLCipher
+    // accepts directly as a raw key -- no further derivation needed.
+    return key
   }
 
   private static async salt(): Promise<string> {
     return RNFS.readFile(PBKDF2_SALT_PATH, 'utf8')
   }
 
-  private static async config(): Promise<Realm.Configuration> {
-    return {
-      schema: await getModels(),
-      schemaVersion,
-      onMigration: runMigrations,
-      encryptionKey: await DatabaseAccess.encryptionKey()
+  private static database: SQLite.SQLiteDatabase | null = null
+  private static async instance(): Promise<SQLite.SQLiteDatabase> {
+    if (DatabaseAccess.database !== null) {
+      return DatabaseAccess.database
     }
-  }
 
-  private static realm: Realm | null = null
-  private static async instance(): Promise<Realm> {
-    if (DatabaseAccess.realm !== null) {
-      return DatabaseAccess.realm
-    } else {
-      return (DatabaseAccess.realm = await Realm.open(
-        await DatabaseAccess.config()
-      ))
+    const database = await SQLite.openDatabaseAsync(DATABASE_NAME)
+
+    // `PRAGMA key` must be the first statement issued after open. SQLCipher does
+    // not validate the key here; an invalid key surfaces on the first real query
+    // (initSchema below), which lets unlock()/unlockWithBiometrics() detect a
+    // bad passphrase by attempting to open the database.
+    await database.execAsync(
+      `PRAGMA key = "x'${await DatabaseAccess.keyHex()}'"`
+    )
+
+    try {
+      await initSchema(database)
+    } catch (err) {
+      await database.closeAsync()
+      throw err
     }
+
+    return (DatabaseAccess.database = database)
   }
 }
 
-export { models, DatabaseAccess as db }
+export { DatabaseAccess as db }

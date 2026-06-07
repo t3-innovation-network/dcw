@@ -11,8 +11,8 @@ export const makeSelectDidForCredential = (): Selector<
   createSelector(
     [makeSelectProfileFromCredential(), selectRawDidRecords],
     (rawProfileRecord, rawDidRecords) => {
-      const rawDidRecord = rawDidRecords.find(({ _id }) =>
-        _id.equals(rawProfileRecord.didRecordId)
+      const rawDidRecord = rawDidRecords.find(
+        ({ _id }) => _id === rawProfileRecord.didRecordId
       )
       return expectValue(
         rawDidRecord,

@@ -1,85 +1,75 @@
 /**
- * Template for database objects.
+ * Template for database objects (expo-sqlite + SQLCipher).
  * Replace values:
- *   - Entity
- *   - entity
+ *   - Entity / entity
+ *   - entities (table name)
+ *
+ * NOTE: add the table's `CREATE TABLE` statement to `initSchema` in
+ * `./schema.ts` (and bump `SCHEMA_VERSION` if changing an existing schema).
  */
 
-import Realm from 'realm'
-import { generateSecureRandom } from 'react-native-securerandom'
-import { ObjectID } from 'bson'
+import uuid from 'react-native-uuid'
 
-import { db } from './'
+import { db } from './DatabaseAccess'
+
+const ENTITIES_TABLE = 'entities'
 
 export type EntityRecordRaw = {
-  readonly _id: ObjectID
+  readonly _id: string
   readonly createdAt: Date
   readonly updatedAt: Date
 }
 
-export class EntityRecord implements EntityRecordRaw {
-  readonly _id!: ObjectID
-  readonly createdAt!: Date
-  readonly updatedAt!: Date
+/** Shape of a row as stored in / read from the `entities` table. */
+type EntityRow = {
+  _id: string
+  createdAt: string
+  updatedAt: string
+}
 
-  static schema: Realm.ObjectSchema = {
-    name: 'EntityRecord',
-    primaryKey: '_id',
-    properties: {
-      _id: 'objectId',
-      createdAt: 'date',
-      updatedAt: 'date'
-    }
+function rowToRaw(row: EntityRow): EntityRecordRaw {
+  return {
+    _id: row._id,
+    createdAt: new Date(row.createdAt),
+    updatedAt: new Date(row.updatedAt)
   }
+}
 
-  public asRaw(): EntityRecordRaw {
-    return {
-      _id: this._id,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt
-    }
-  }
-
-  public static async addEntityRecord(): Promise<void> {
-    const randomBytes = await generateSecureRandom(12)
-    const _id = new ObjectID(
-      Array.from(randomBytes)
-        .map((b) => b.toString(16).padStart(2, '0'))
-        .join('')
-    )
-    const rawEntityRecord: EntityRecordRaw = {
-      _id,
+export class EntityRecord {
+  public static async addEntityRecord(): Promise<EntityRecordRaw> {
+    const raw: EntityRecordRaw = {
+      _id: uuid.v4() as string,
       createdAt: new Date(),
       updatedAt: new Date()
     }
 
-    await db.withInstance((instance) => {
-      instance.write(() => {
-        instance.create(EntityRecord.schema.name, rawEntityRecord)
-      })
-    })
+    await db.withInstance((instance) =>
+      instance.runAsync(
+        `INSERT INTO ${ENTITIES_TABLE} (_id, createdAt, updatedAt)
+          VALUES (?, ?, ?)`,
+        [raw._id, raw.createdAt.toISOString(), raw.updatedAt.toISOString()]
+      )
+    )
+
+    return raw
   }
 
   public static async getAllEntityRecords(): Promise<EntityRecordRaw[]> {
-    return db.withInstance((instance) => {
-      const results = instance.objects<EntityRecord>(EntityRecord.schema.name)
-      return results.length ? results.map((record) => record.asRaw()) : []
+    return db.withInstance(async (instance) => {
+      const rows = await instance.getAllAsync<EntityRow>(
+        `SELECT * FROM ${ENTITIES_TABLE}`
+      )
+      return rows.map(rowToRaw)
     })
   }
 
-  public static async deleteEntityRecords(
+  public static async deleteEntityRecord(
     rawEntityRecord: EntityRecordRaw
   ): Promise<void> {
-    await db.withInstance((instance) => {
-      const objectId = new ObjectID(rawEntityRecord._id)
-      const entityRecord = instance.objectForPrimaryKey(
-        EntityRecord.schema.name,
-        objectId
-      )
-
-      instance.write(() => {
-        instance.delete(entityRecord)
-      })
-    })
+    await db.withInstance((instance) =>
+      instance.runAsync(`DELETE FROM ${ENTITIES_TABLE} WHERE _id = ?`, [
+        rawEntityRecord._id
+      ])
+    )
   }
 }

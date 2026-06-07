@@ -21,7 +21,7 @@ export async function createPublicLinkFor(
   rawCredentialRecord: CredentialRecordRaw
 ): Promise<string> {
   // Use credentialIdFor() which returns the unique database record ID
-  const id = `${credentialIdFor(rawCredentialRecord)}::${rawCredentialRecord.profileRecordId.toHexString?.() || rawCredentialRecord.profileRecordId}`
+  const id = `${credentialIdFor(rawCredentialRecord)}::${rawCredentialRecord.profileRecordId}`
 
   const wasLink = WAS.enabled
     ? await createWasPublicLinkIfAvailable(rawCredentialRecord)
@@ -157,7 +157,7 @@ export async function unshareCredential(
   rawCredentialRecord: CredentialRecordRaw
 ): Promise<void> {
   // Use credentialIdFor() to match the key used in createPublicLinkFor
-  const vcId = `${credentialIdFor(rawCredentialRecord)}::${rawCredentialRecord.profileRecordId.toHexString?.() || rawCredentialRecord.profileRecordId}`
+  const vcId = `${credentialIdFor(rawCredentialRecord)}::${rawCredentialRecord.profileRecordId}`
 
   try {
     const publicLinks = (await Cache.getInstance().load(
@@ -206,7 +206,7 @@ export async function getPublicViewLink(
   rawCredentialRecord: CredentialRecordRaw
 ): Promise<string | null> {
   // Use credentialIdFor() to match the key used in createPublicLinkFor
-  const id = `${credentialIdFor(rawCredentialRecord)}::${rawCredentialRecord.profileRecordId.toHexString?.() || rawCredentialRecord.profileRecordId}`
+  const id = `${credentialIdFor(rawCredentialRecord)}::${rawCredentialRecord.profileRecordId}`
 
   try {
     const publicLinks = (await Cache.getInstance().load(
