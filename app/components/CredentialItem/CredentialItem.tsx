@@ -1,5 +1,5 @@
-import React, { ComponentProps, useMemo } from 'react'
-import { Image, View, TouchableOpacity } from 'react-native'
+import React, { useMemo } from 'react'
+import { AccessibilityProps, Image, View, TouchableOpacity } from 'react-native'
 import { Text } from 'react-native-elements'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
@@ -61,7 +61,7 @@ function CredentialItem({
   const image = typeof rawImage === 'string' ? { uri: rawImage } : rawImage
 
   const hasBottomElement = bottomElement !== undefined
-  const accessibilityProps: ComponentProps<typeof View> = {
+  const accessibilityProps: AccessibilityProps = {
     accessibilityLabel: `${title} Credential, from ${subtitle}`,
     // For single-select mode, use a radio role instead of checkbox
     accessibilityRole: checkable ? (isRadio ? 'radio' : 'checkbox') : 'button',

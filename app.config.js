@@ -84,7 +84,7 @@ export default {
       buildNumber: BUILD_NUMBER.toString(),
       supportsTablet: true,
       bundleIdentifier: 'org.t3.lcw',
-      deploymentTarget: '13.0',
+      deploymentTarget: '15.1',
       entitlements: {
         'com.apple.security.application-groups': [
           // 'group.edu.mit.eduwallet'
@@ -166,10 +166,10 @@ export default {
               pickFirst: ['**/libcrypto.so']
             },
             newArchEnabled: false,
-            compileSdkVersion: 35,
-            targetSdkVersion: 35,
+            compileSdkVersion: 36,
+            targetSdkVersion: 36,
             minSdkVersion: 29,
-            buildToolsVersion: '34.0.0'
+            buildToolsVersion: '36.0.0'
           }
         }
       ]

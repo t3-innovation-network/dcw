@@ -15,10 +15,6 @@ jest.mock('react-native-fs', () => ({
   TemporaryDirectoryPath: '/tmp'
 }))
 
-jest.mock('react-native-securerandom', () => ({
-  generateSecureRandom: jest.fn()
-}))
-
 jest.mock('react-native-keychain', () => ({
   setInternetCredentials: jest.fn(),
   getInternetCredentials: jest.fn(),
