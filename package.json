@@ -2,6 +2,7 @@
   "private": true,
   "name": "t3-digital-credential-wallet",
   "version": "2.2.6",
+  "packageManager": "pnpm@11.3.0",
   "scripts": {
     "start": "npx expo start --dev-client -c",
     "android": "expo run:android",
@@ -44,7 +45,6 @@
           "react-native-fs",
           "react-native-html-to-pdf",
           "react-native-keyboard-aware-scroll-view",
-          "react-native-receive-sharing-intent",
           "react-native-securerandom",
           "react-native-exit-app"
         ],
@@ -109,7 +109,6 @@
     "react-native-elements": "^3.4.2",
     "react-native-exit-app": "^2.0.0",
     "react-native-file-logger": "^0.4.0",
-    "react-native-filereader": "^1.0.6",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-get-random-values": "^1.8.0",
@@ -120,7 +119,6 @@
     "react-native-outside-press": "^1.1.0",
     "react-native-paper": "^4.12.3",
     "react-native-qrcode-svg": "^6.1.2",
-    "react-native-receive-sharing-intent": "^2.0.0",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-securerandom": "^1.0.0",
@@ -168,21 +166,5 @@
     "typescript": "~5.8.3",
     "url": "^0.11.4",
     "util": "^0.12.5"
-  },
-  "overrides": {
-    "react-redux": {
-      "react": "^19.0.0",
-      "@types/react": "~19.0.10"
-    },
-    "@reduxjs/toolkit": {
-      "react": "^19.0.0",
-      "@types/react": "~19.0.10"
-    },
-    "react-native": {
-      "@types/react": "~19.0.10"
-    },
-    "@react-native/virtualized-lists": {
-      "@types/react": "~19.0.10"
-    }
   }
 }

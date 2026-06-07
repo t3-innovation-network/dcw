@@ -14,22 +14,22 @@ export PATH="$PATH:$HOME/.maestro/bin"
 
 ### iOS
 # Terminal 1: Start app
-npm run ios
+pnpm ios
 
 # Terminal 2: Run test
-npm run test:ui:ios
+pnpm test:ui:ios
 
 ### Android
 # Terminal 1: Start app
-npm run android
+pnpm android
 
 # Terminal 2: Run test
-npm run test:ui:android
+pnpm test:ui:android
 
-### Using npm scripts (recommended)
-npm run test:ui:ios      # Run on iOS
-npm run test:ui:android  # Run on Android
-npm run test:ui          # Run with manual platform selection (uses config.yaml)
+### Using pnpm scripts (recommended)
+pnpm test:ui:ios      # Run on iOS
+pnpm test:ui:android  # Run on Android
+pnpm test:ui          # Run with manual platform selection (uses config.yaml)
 
 ### Direct Maestro commands
 maestro test .maestro/credential-management.yaml --env APP_ID=edu.mit.eduwallet  # iOS
@@ -150,7 +150,7 @@ maestro test .maestro/onboarding.yaml --debug
 ## Troubleshooting
 
 **Test fails to find app:**
-- Ensure app is built and installed: `npm run ios` or `npm run android`
+- Ensure app is built and installed: `pnpm ios` or `pnpm android`
 - Verify correct app ID in `.maestro/config.yaml`
 
 **Maestro command not found:**

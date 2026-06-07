@@ -12,7 +12,6 @@ import { navigationRef } from '../../navigation/navigationRef'
 import { Ed25519VerificationKey } from '@interop/ed25519-verification-key'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
-// import FileReader from 'react-native-filereader'
 import { WAS } from '../../../app.config'
 import { useThemeContext } from '../../hooks'
 import {
