@@ -26,6 +26,13 @@
   accessibility props object from `ComponentProps<typeof View>` to
   `AccessibilityProps`, since RN 0.81 widened `View`'s `onBlur` to allow `null`,
   which is incompatible with `TouchableOpacity` when spread.
+- Android `:react-native-vision-camera:compileDebugKotlin` failure under RN 0.81
+  by bumping `react-native-vision-camera` 4.7.1 to 4.7.3 (the last 4.x release).
+  4.7.1's `CameraViewManager`/`CameraViewModule` used the pre-0.81 Kotlin APIs
+  (`getExportedCustomDirectEventTypeConstants(): MutableMap<...>` and direct
+  `currentActivity`); 4.7.3 uses the 0.81-compatible `Map<...>` return type and
+  `reactApplicationContext.currentActivity`. Stayed on 4.x: vision-camera 5.x is
+  a Nitro-modules rewrite requiring the New Architecture (out of scope here).
 
 > **Note:** Android edge-to-edge is forced on in SDK 54 and cannot be disabled --
 > verify `SafeScreenView` insets on device.

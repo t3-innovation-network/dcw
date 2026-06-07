@@ -111,7 +111,15 @@ These are fragile across SDK bumps; verify, do not assume:
   `structuredClone`. Keep as-is; just re-confirm `expo-crypto`'s API is
   unchanged.
 
-### 6. Optional cleanup: drop `react-native-securerandom` for `react-native-get-random-values`
+### 6. Optional cleanup: drop `react-native-securerandom` for `react-native-get-random-values` -- DONE
+
+> **Status: done.** Both call sites now use `crypto.getRandomValues`, the direct
+> dependency and the `test/import.test.ts` mock are removed. **Caveat:**
+> `react-native-securerandom` could not be fully dropped -- it is still pulled in
+> transitively by `@digitalcredentials/bnid` (via `@interop/did-web-resolver`),
+> so it stays in the `expo.doctor.reactNativeDirectoryCheck.exclude` list and the
+> native module is still autolinked. The cleanup removed our *direct* use of it,
+> not the package itself.
 
 Independent of the SDK bump, but worth doing in the same pass: replace the
 unmaintained `react-native-securerandom` (which is in the `expo-doctor` exclude
