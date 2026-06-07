@@ -1,9 +1,8 @@
-import Realm from 'realm'
-import { randomBytes, bytesToHex } from '@noble/hashes/utils.js'
 import uuid from 'react-native-uuid'
 import { generateSecureRandom } from 'react-native-securerandom'
 
 import { db } from './DatabaseAccess'
+import { CREDENTIALS_TABLE, DIDS_TABLE, PROFILES_TABLE } from './schema'
 
 import { getCredentialName } from '../lib/credentialName'
 import { UnlockedWallet } from '../types/wallet'
@@ -15,12 +14,6 @@ import { DidRecord, DidRecordRaw } from './did'
 import { CredentialRecordRaw } from '../types/credential'
 import { credentialContentHash } from '../lib/credentialHash'
 import { mintDid } from '../lib/did'
-
-const ObjectId = Realm.BSON.ObjectId
-
-function generateProfileObjectIdHex(): string {
-  return bytesToHex(randomBytes(12))
-}
 
 const UNTITLED_PROFILE_NAME = 'Untitled Profile'
 export const INITIAL_PROFILE_NAME = 'Default'
@@ -42,56 +35,47 @@ function isProfileNameDuplicate(
 }
 
 export type ProfileRecordRaw = {
-  readonly _id: Realm.BSON.ObjectId
+  readonly _id: string
   readonly createdAt: Date
   readonly updatedAt: Date
   readonly profileName: string
-  readonly didRecordId: Realm.BSON.ObjectId
+  readonly didRecordId: string
 }
 
 export type ProfileWithCredentialRecords = ProfileRecordRaw & {
   rawCredentialRecords: CredentialRecordRaw[]
 }
 
-export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
-  readonly _id!: Realm.BSON.ObjectId
-  readonly createdAt!: Date
-  readonly updatedAt!: Date
-  readonly profileName!: string
-  readonly didRecordId!: Realm.BSON.ObjectId
+/** Shape of a row as stored in / read from the `profiles` table. */
+type ProfileRow = {
+  _id: string
+  createdAt: string
+  updatedAt: string
+  profileName: string
+  didRecordId: string
+}
 
-  static schema: Realm.ObjectSchema = {
-    name: 'ProfileRecord',
-    primaryKey: '_id',
-    properties: {
-      _id: 'objectId',
-      createdAt: 'date',
-      updatedAt: 'date',
-      profileName: 'string',
-      didRecordId: 'objectId'
-    }
+function rowToRaw(row: ProfileRow): ProfileRecordRaw {
+  return {
+    _id: row._id,
+    createdAt: new Date(row.createdAt),
+    updatedAt: new Date(row.updatedAt),
+    profileName: row.profileName,
+    didRecordId: row.didRecordId
   }
+}
 
-  public asRaw(): ProfileRecordRaw {
-    return {
-      _id: this._id,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-      profileName: this.profileName,
-      didRecordId: this.didRecordId
-    }
-  }
-
+export class ProfileRecord {
   public static rawFrom({
     profileName,
     rawDidRecord
   }: Required<AddProfileRecordParams>): ProfileRecordRaw {
     return {
-      _id: new ObjectId(generateProfileObjectIdHex()),
+      _id: uuid.v4() as string,
       createdAt: new Date(),
       updatedAt: new Date(),
       profileName,
-      didRecordId: new ObjectId(rawDidRecord._id)
+      didRecordId: rawDidRecord._id
     }
   }
 
@@ -118,27 +102,35 @@ export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
       rawDidRecord = await DidRecord.addDidRecord(didPayload)
     }
 
-    const rawProfileRecord = ProfileRecord.rawFrom({
+    const raw = ProfileRecord.rawFrom({
       profileName,
       rawDidRecord
     })
 
-    return db.withInstance((instance) =>
-      instance.write(() => {
-        const created = instance.create<ProfileRecord>(
-          ProfileRecord.schema.name,
-          rawProfileRecord
-        )
-        const raw = created.asRaw()
-        return raw
-      })
+    await db.withInstance((instance) =>
+      instance.runAsync(
+        `INSERT INTO ${PROFILES_TABLE}
+          (_id, createdAt, updatedAt, profileName, didRecordId)
+          VALUES (?, ?, ?, ?, ?)`,
+        [
+          raw._id,
+          raw.createdAt.toISOString(),
+          raw.updatedAt.toISOString(),
+          raw.profileName,
+          raw.didRecordId
+        ]
+      )
     )
+
+    return raw
   }
 
   public static async getAllProfileRecords(): Promise<ProfileRecordRaw[]> {
-    return db.withInstance((instance) => {
-      const results = instance.objects<ProfileRecord>(ProfileRecord.schema.name)
-      return results.length ? results.map((record) => record.asRaw()) : []
+    return db.withInstance(async (instance) => {
+      const rows = await instance.getAllAsync<ProfileRow>(
+        `SELECT * FROM ${PROFILES_TABLE}`
+      )
+      return rows.map(rowToRaw)
     })
   }
 
@@ -149,7 +141,7 @@ export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
     const existingProfiles = await ProfileRecord.getAllProfileRecords()
     const isDuplicate = existingProfiles.some(
       (profile) =>
-        profile._id.toHexString?.() !== rawProfileRecord._id.toHexString?.() &&
+        profile._id !== rawProfileRecord._id &&
         isProfileNameDuplicate(
           profile.profileName,
           rawProfileRecord.profileName
@@ -168,17 +160,26 @@ export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
       updatedAt: new Date()
     }
 
-    return db.withInstance((instance) =>
-      instance.write(() =>
-        instance
-          .create<ProfileRecord>(
-            ProfileRecord.schema.name,
-            updated,
-            Realm.UpdateMode.Modified
-          )
-          .asRaw()
+    await db.withInstance((instance) =>
+      instance.runAsync(
+        `INSERT INTO ${PROFILES_TABLE}
+          (_id, createdAt, updatedAt, profileName, didRecordId)
+          VALUES (?, ?, ?, ?, ?)
+          ON CONFLICT(_id) DO UPDATE SET
+            updatedAt = excluded.updatedAt,
+            profileName = excluded.profileName,
+            didRecordId = excluded.didRecordId`,
+        [
+          updated._id,
+          updated.createdAt.toISOString(),
+          updated.updatedAt.toISOString(),
+          updated.profileName,
+          updated.didRecordId
+        ]
       )
     )
+
+    return updated
   }
 
   public static async deleteProfileRecord(
@@ -191,33 +192,20 @@ export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
       )
     }
 
+    // Cascade: remove the profile, its DID record, and all of its credentials
+    // atomically.
     await db.withInstance(async (instance) => {
-      const profileRecord = instance.objectForPrimaryKey<ProfileRecord>(
-        ProfileRecord.schema.name,
-        new ObjectId(rawProfileRecord._id)
-      )
-      if (profileRecord == null) throw new Error('Profile not found')
-
-      const didRecord = instance.objectForPrimaryKey<DidRecord>(
-        DidRecord.schema.name,
-        new ObjectId(profileRecord.didRecordId)
-      )
-      const credentialRecordIds = (
-        await CredentialRecord.getAllCredentialRecords()
-      ).filter(({ profileRecordId }) =>
-        profileRecordId.equals(rawProfileRecord._id)
-      )
-      const credentialRecords = credentialRecordIds.map(({ _id }) =>
-        instance.objectForPrimaryKey<CredentialRecord>(
-          CredentialRecord.schema.name,
-          new ObjectId(_id)
+      await instance.withTransactionAsync(async () => {
+        await instance.runAsync(
+          `DELETE FROM ${CREDENTIALS_TABLE} WHERE profileRecordId = ?`,
+          [rawProfileRecord._id]
         )
-      )
-
-      instance.write(() => {
-        instance.delete(profileRecord)
-        if (didRecord) instance.delete(didRecord)
-        credentialRecords.forEach((record) => record && instance.delete(record))
+        await instance.runAsync(`DELETE FROM ${DIDS_TABLE} WHERE _id = ?`, [
+          rawProfileRecord.didRecordId
+        ])
+        await instance.runAsync(`DELETE FROM ${PROFILES_TABLE} WHERE _id = ?`, [
+          rawProfileRecord._id
+        ])
       })
     })
   }
@@ -230,15 +218,15 @@ export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
     const allCredentialRecords =
       await CredentialRecord.getAllCredentialRecords()
     const profileCredentialRecords = allCredentialRecords.filter(
-      ({ profileRecordId }) => profileRecordId.equals(rawProfileRecord._id)
+      ({ profileRecordId }) => profileRecordId === rawProfileRecord._id
     )
     const credentials = profileCredentialRecords.map(
       ({ credential }) => credential
     )
 
     const allDidRecords = await DidRecord.getAllDidRecords()
-    const profileDidRecord = allDidRecords.find(({ _id }) =>
-      _id.equals(rawProfileRecord.didRecordId)
+    const profileDidRecord = allDidRecords.find(
+      ({ _id }) => _id === rawProfileRecord.didRecordId
     )
 
     if (profileDidRecord === undefined) {
@@ -309,8 +297,9 @@ export class ProfileRecord extends Realm.Object implements ProfileRecordRaw {
         const existingCredentials =
           await CredentialRecord.getAllCredentialRecords()
         const profileCredentialHashes = existingCredentials
-          .filter(({ profileRecordId: credProfileId }) =>
-            credProfileId.equals(profileRecordId)
+          .filter(
+            ({ profileRecordId: credProfileId }) =>
+              credProfileId === profileRecordId
           )
           .map(({ credential }) => credentialContentHash(credential))
 

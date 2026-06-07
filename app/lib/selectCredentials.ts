@@ -1,4 +1,3 @@
-import { ObjectId } from 'bson'
 import store from '../store'
 import { navigationRef } from '../navigation'
 import {
@@ -55,11 +54,8 @@ export async function selectCredentials(
     (r: CredentialRecordRaw) => r._id
   )
   const credentialFilter = (r: CredentialRecordRaw) => {
-    const matchesId = credentialRecordIds.some((id: ObjectId) =>
-      r._id.equals(id)
-    )
-    const matchesProfile =
-      !profileId || r.profileRecordId.toHexString() === profileId
+    const matchesId = credentialRecordIds.some((id: string) => r._id === id)
+    const matchesProfile = !profileId || r.profileRecordId === profileId
     return matchesId && matchesProfile
   }
 

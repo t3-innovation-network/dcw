@@ -6,7 +6,6 @@ import { CredentialRecord } from '../../model/credential'
 
 import { RootState } from '..'
 import { addCredential } from './credential'
-import { ObjectID } from 'bson'
 import { IVerifiableCredential } from '@interop/data-integrity-core'
 import { credentialContentHash } from '../../lib/credentialHash'
 import { CredentialRecordRaw } from '../../types/credential'
@@ -51,7 +50,7 @@ export type CredentialFoyerState = {
 
 type AcceptPendingCredentialsParams = {
   pendingCredentials: PendingCredential[]
-  profileRecordId: ObjectID
+  profileRecordId: string
 }
 
 const initialState: CredentialFoyerState = {
@@ -96,7 +95,7 @@ const stageCredentials = createAsyncThunk(
 
 type StageForProfileParams = {
   credentials: IVerifiableCredential[]
-  profileRecordId: ObjectID
+  profileRecordId: string
 }
 const stageCredentialsForProfile = createAsyncThunk(
   'credentialFoyer/stageCredentialsForProfile',
@@ -104,7 +103,7 @@ const stageCredentialsForProfile = createAsyncThunk(
     const existingCredentialRecords =
       await CredentialRecord.getAllCredentialRecords()
     const existingHashesInProfile = existingCredentialRecords
-      .filter(({ profileRecordId: pid }) => pid.equals(profileRecordId))
+      .filter(({ profileRecordId: pid }) => pid === profileRecordId)
       .map(({ credential }) => credentialContentHash(credential))
 
     const pendingCredentials = credentials.map((credential) => {

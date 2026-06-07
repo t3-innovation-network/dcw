@@ -1,17 +1,12 @@
-import Realm from 'realm'
-import { randomBytes, bytesToHex } from '@noble/hashes/utils.js'
-const ObjectId = Realm.BSON.ObjectId
-
-function generateObjectIdHex(): string {
-  return bytesToHex(randomBytes(12))
-}
+import uuid from 'react-native-uuid'
 
 import { db } from './DatabaseAccess'
+import { DIDS_TABLE } from './schema'
 import { IDidDocument, IKeyPair } from '@interop/data-integrity-core'
 import { AddDidRecordParams } from '../lib/did'
 
 export type DidRecordRaw = {
-  readonly _id: Realm.BSON.ObjectId
+  readonly _id: string
   readonly createdAt: Date
   readonly updatedAt: Date
   readonly rawDidDocument: string
@@ -19,76 +14,59 @@ export type DidRecordRaw = {
   readonly rawVerificationKey: string
   readonly verificationKey: IKeyPair
 }
-export class DidRecord extends Realm.Object implements DidRecordRaw {
-  readonly _id!: Realm.BSON.ObjectId
-  readonly createdAt!: Date
-  readonly updatedAt!: Date
-  readonly rawDidDocument!: string
-  readonly rawVerificationKey!: string
 
-  get didDocument(): IDidDocument {
-    return JSON.parse(this.rawDidDocument) as IDidDocument
+/** Shape of a row as stored in / read from the `dids` table. */
+type DidRow = {
+  _id: string
+  createdAt: string
+  updatedAt: string
+  rawDidDocument: string
+  rawVerificationKey: string
+}
+
+function rowToRaw(row: DidRow): DidRecordRaw {
+  return {
+    _id: row._id,
+    createdAt: new Date(row.createdAt),
+    updatedAt: new Date(row.updatedAt),
+    rawDidDocument: row.rawDidDocument,
+    didDocument: JSON.parse(row.rawDidDocument) as IDidDocument,
+    rawVerificationKey: row.rawVerificationKey,
+    verificationKey: JSON.parse(row.rawVerificationKey) as IKeyPair
   }
+}
 
-  get verificationKey(): IKeyPair {
-    return JSON.parse(this.rawVerificationKey) as IKeyPair
-  }
-
-  static schema: Realm.ObjectSchema = {
-    name: 'DidRecord',
-    primaryKey: '_id',
-    properties: {
-      _id: 'objectId',
-      createdAt: 'date',
-      updatedAt: 'date',
-      rawDidDocument: 'string',
-      rawVerificationKey: 'string'
-    }
-  }
-
-  asRaw(): DidRecordRaw {
-    return {
-      _id: this._id,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
-      rawDidDocument: this.rawDidDocument,
-      didDocument: this.didDocument,
-      rawVerificationKey: this.rawVerificationKey,
-      verificationKey: this.verificationKey
-    }
-  }
-
-  // removed duplicate generator block; using generateObjectIdHex above
-
+export class DidRecord {
   static async addDidRecord({
     didDocument,
     verificationKey
   }: AddDidRecordParams): Promise<DidRecordRaw> {
-    const _id = new ObjectId(generateObjectIdHex())
-    const createdAt = new Date()
-    const updatedAt = new Date()
-    const rawDidDocument = JSON.stringify(didDocument)
-    const rawVerificationKey = JSON.stringify(verificationKey)
-
-    const rawDidRecordForRealm = {
-      _id,
-      createdAt,
-      updatedAt,
-      rawDidDocument,
-      rawVerificationKey
+    const raw: DidRecordRaw = {
+      _id: uuid.v4() as string,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      rawDidDocument: JSON.stringify(didDocument),
+      didDocument,
+      rawVerificationKey: JSON.stringify(verificationKey),
+      verificationKey
     }
 
     try {
-      return await db.withInstance((instance) =>
-        instance.write(() => {
-          const created = instance.create<DidRecord>(
-            DidRecord.schema.name,
-            rawDidRecordForRealm
-          )
-          const result = created.asRaw()
-          return result
-        })
+      await db.withInstance((instance) =>
+        instance.runAsync(
+          `INSERT INTO ${DIDS_TABLE}
+            (_id, createdAt, updatedAt, rawDidDocument, rawVerificationKey)
+            VALUES (?, ?, ?, ?, ?)`,
+          [
+            raw._id,
+            raw.createdAt.toISOString(),
+            raw.updatedAt.toISOString(),
+            raw.rawDidDocument,
+            raw.rawVerificationKey
+          ]
+        )
       )
+      return raw
     } catch (error) {
       console.error('❌ Error creating DID record:', error)
       throw error
@@ -96,24 +74,19 @@ export class DidRecord extends Realm.Object implements DidRecordRaw {
   }
 
   static getAllDidRecords(): Promise<DidRecordRaw[]> {
-    return db.withInstance((instance) => {
-      const results = instance.objects<DidRecord>(DidRecord.schema.name)
-      return results.length ? results.map((record) => record.asRaw()) : []
+    return db.withInstance(async (instance) => {
+      const rows = await instance.getAllAsync<DidRow>(
+        `SELECT * FROM ${DIDS_TABLE}`
+      )
+      return rows.map(rowToRaw)
     })
   }
 
   static async deleteDidRecord(rawDidRecord: DidRecordRaw): Promise<void> {
-    await db.withInstance((instance) => {
-      const didRecord = instance.objectForPrimaryKey(
-        DidRecord.schema.name,
-        new ObjectId(rawDidRecord._id)
-      )
-
-      instance.write(() => {
-        if (didRecord) {
-          instance.delete(didRecord)
-        }
-      })
-    })
+    await db.withInstance((instance) =>
+      instance.runAsync(`DELETE FROM ${DIDS_TABLE} WHERE _id = ?`, [
+        rawDidRecord._id
+      ])
+    )
   }
 }

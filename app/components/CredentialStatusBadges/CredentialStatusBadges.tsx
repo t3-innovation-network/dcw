@@ -31,9 +31,7 @@ function CredentialStatusBadges({
     : useVerifyCredential(rawCredentialRecord)
 
   // Get credential ID for comparison
-  const credentialId =
-    (rawCredentialRecord as any)?._id?.toHexString?.() ??
-    (rawCredentialRecord as any)?._id
+  const credentialId = rawCredentialRecord?._id
 
   // Reset stable ref when credential changes to prevent stale data when component is reused
   useEffect(() => {
@@ -159,15 +157,7 @@ function CredentialStatusBadges({
 }
 
 export default React.memo(CredentialStatusBadges, (prev, next) => {
-  try {
-    const prevId = (prev.rawCredentialRecord as any)?._id
-    const nextId = (next.rawCredentialRecord as any)?._id
-    const sameRecord =
-      typeof prevId?.equals === 'function'
-        ? prevId.equals(nextId)
-        : prevId === nextId
-    return sameRecord && prev.badgeBackgroundColor === next.badgeBackgroundColor
-  } catch {
-    return false
-  }
+  const sameRecord =
+    prev.rawCredentialRecord?._id === next.rawCredentialRecord?._id
+  return sameRecord && prev.badgeBackgroundColor === next.badgeBackgroundColor
 })

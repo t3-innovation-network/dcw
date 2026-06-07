@@ -3,7 +3,7 @@ const { getDefaultConfig } = require('expo/metro-config')
 
 const config = getDefaultConfig(__dirname)
 
-// Add support for Realm and other native modules
+// Add support for CommonJS modules and bundled .db assets
 config.resolver.sourceExts.push('cjs')
 config.resolver.assetExts.push('db')
 
@@ -33,8 +33,5 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
     platform
   )
 }
-
-// Add support for Realm binary files
-config.resolver.assetExts.push('realm')
 
 module.exports = config

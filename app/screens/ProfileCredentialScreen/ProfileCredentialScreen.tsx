@@ -19,9 +19,7 @@ export default function ProfileCredentialScreen({
 }: ProfileCredentialScreenProps): React.ReactElement {
   const { styles, mixins } = useDynamicStyles(dynamicStyleSheet)
   const { rawProfileRecord } = route.params
-  const profileCredentials = useProfileCredentials(
-    rawProfileRecord._id.toHexString()
-  )
+  const profileCredentials = useProfileCredentials(rawProfileRecord._id)
   const [itemToDelete, setItemToDelete] = useState<CredentialRecordRaw | null>(
     null
   )
@@ -61,7 +59,7 @@ export default function ProfileCredentialScreen({
           contentContainerStyle={mixins.credentialListContainer}
           data={profileCredentials}
           renderItem={renderItem}
-          keyExtractor={(item) => item._id.toHexString()}
+          keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
         />
       )}

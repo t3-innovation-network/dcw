@@ -4,7 +4,6 @@ import {
   ApprovalMessage
 } from '../app/store/slices/credentialFoyer'
 import { mockCredential, mockCredential2 } from '../app/mock/credential'
-import { ObjectID } from 'bson'
 
 // Mock the credential hash functions
 jest.mock('../app/lib/credentialHash', () => ({
@@ -107,8 +106,8 @@ describe('Credential Foyer - Duplicate Handling', () => {
   })
 
   describe('Profile-specific duplicate detection logic', () => {
-    const profileId1 = new ObjectID()
-    const profileId2 = new ObjectID()
+    const profileId1 = 'profile-1'
+    const profileId2 = 'profile-2'
 
     it('should filter credentials by profile ID', () => {
       const allCredentials = [
@@ -118,13 +117,13 @@ describe('Credential Foyer - Duplicate Handling', () => {
       ]
 
       const profile1Credentials = allCredentials.filter(({ profileRecordId }) =>
-        profileRecordId.equals(profileId1)
+        profileRecordId === profileId1
       )
 
       expect(profile1Credentials).toHaveLength(2)
       expect(
         profile1Credentials.every(({ profileRecordId }) =>
-          profileRecordId.equals(profileId1)
+          profileRecordId === profileId1
         )
       ).toBe(true)
     })
@@ -150,26 +149,6 @@ describe('Credential Foyer - Duplicate Handling', () => {
       )
 
       expect(hashes).toHaveLength(0)
-    })
-  })
-
-  describe('ObjectID equality testing', () => {
-    it('should correctly compare ObjectIDs', () => {
-      const id1 = new ObjectID()
-      const id2 = new ObjectID()
-      const id1Copy = new ObjectID(id1.toHexString())
-
-      expect(id1.equals(id1)).toBe(true)
-      expect(id1.equals(id2)).toBe(false)
-      expect(id1.equals(id1Copy)).toBe(true)
-    })
-
-    it('should handle ObjectID string conversion', () => {
-      const id = new ObjectID()
-      const hexString = id.toHexString()
-
-      expect(typeof hexString).toBe('string')
-      expect(hexString).toHaveLength(24)
     })
   })
 

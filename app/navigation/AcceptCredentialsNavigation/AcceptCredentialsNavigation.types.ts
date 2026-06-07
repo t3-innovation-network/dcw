@@ -1,5 +1,4 @@
 import type { StackScreenProps } from '@react-navigation/stack'
-import { ObjectID } from 'bson'
 import { CredentialRequestParams } from '../../lib/credentialRequest'
 import { ProfileRecordRaw } from '../../model'
 import { IssuerInfoScreenParams } from '../../screens'
@@ -11,7 +10,7 @@ export type AcceptCredentialsNavigationParamList = {
   }
   ApproveCredentialScreen: {
     pendingCredentialId: string
-    profileRecordId: ObjectID
+    profileRecordId: string
   }
   IssuerInfoScreen: IssuerInfoScreenParams
 }

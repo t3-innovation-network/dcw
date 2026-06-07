@@ -154,6 +154,7 @@ export default {
       ],
       ['expo-font'],
       ['expo-secure-store'],
+      ['expo-sqlite', { useSQLCipher: true }],
       [
         'expo-build-properties',
         {

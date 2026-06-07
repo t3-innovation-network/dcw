@@ -23,8 +23,8 @@ export const makeSelectProfileForPendingCredentials = (): Selector<
         )
         if (rawDidRecord) {
           const rawProfileRecord =
-            rawProfileRecords.find(({ didRecordId }) =>
-              didRecordId.equals(rawDidRecord._id)
+            rawProfileRecords.find(
+              ({ didRecordId }) => didRecordId === rawDidRecord._id
             ) || null
           return rawProfileRecord
         }
