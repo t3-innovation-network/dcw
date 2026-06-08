@@ -3,7 +3,7 @@ import { Linking, ScrollView, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { FileLogger } from 'react-native-file-logger'
 import { File } from 'expo-file-system'
-import DeviceInfo from 'react-native-device-info'
+import * as Application from 'expo-application'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { NavHeader } from '../../components'
@@ -170,9 +170,9 @@ export default function DeveloperScreen({
 }
 
 async function getLogData(): Promise<string> {
-  const build = DeviceInfo.getBuildNumber()
-  const version = DeviceInfo.getVersion()
-  const bundleId = DeviceInfo.getBundleId()
+  const build = Application.nativeBuildVersion
+  const version = Application.nativeApplicationVersion
+  const bundleId = Application.applicationId
   const logInfo = `Running ${bundleId} v${version}-build${build}`
 
   const [path] = await FileLogger.getLogFilePaths()

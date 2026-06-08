@@ -1,5 +1,25 @@
 # T3 Digital Credential Wallet Changelog
 
+## Unreleased - TBD
+
+### Changed
+
+- Replaced `react-native-device-info` with `expo-application`. The library was
+  only used to read the app's own version, build number, and bundle id (on the
+  **About** screen and in the exported debug log); all three are available from
+  `expo-application` (`nativeApplicationVersion`, `nativeBuildVersion`,
+  `applicationId`), which is part of the Expo SDK and needs no extra native
+  config. Removes another unmaintained third-party native dependency.
+- Bumped `react-native-get-random-values` from `^1.8.0` (`1.11`) to `^2.0.0`.
+  `2.0.0` is a TurboModule rewrite (codegen spec,
+  `TurboModuleRegistry.getEnforcing`, `react-native >=0.81` peer), so the
+  polyfill now runs as a first-class **New Architecture** module instead of
+  through RN 0.81's backward-compat interop layer. This was the
+  highest-priority interop-layer risk in
+  `docs/new-architecture-verification.md` (it backs the PBKDF2 salt and DID
+  seed). The public `crypto.getRandomValues` surface is unchanged; the major
+  bump only drops legacy-arch / pre-0.81 support.
+
 ## 3.1.0 - 2026-06-07
 
 ### Fixed

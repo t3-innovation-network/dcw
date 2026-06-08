@@ -11,7 +11,7 @@ import {
 import { ListItem } from 'react-native-elements'
 import { useSelector } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack'
-import DeviceInfo from 'react-native-device-info'
+import * as Application from 'expo-application'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 import appConfig, { FEATURE_FLAGS, WAS, LinkConfig } from '../../../app.config'
@@ -224,8 +224,8 @@ function Settings({ navigation }: SettingsProps): React.ReactElement {
 
 function About({ navigation }: AboutProps): React.ReactElement {
   const { styles } = useDynamicStyles(dynamicStyleSheet)
-  const version = DeviceInfo.getVersion()
-  const buildNumber = DeviceInfo.getBuildNumber()
+  const version = Application.nativeApplicationVersion
+  const buildNumber = Application.nativeBuildVersion
 
   function goToDeveloperScreen() {
     navigation.navigate('DeveloperScreen')
