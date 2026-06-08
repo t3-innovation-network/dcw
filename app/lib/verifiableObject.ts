@@ -38,6 +38,16 @@ export function extractCredentialsFrom(
 /* Verification expiration = 30 days */
 const VERIFICATION_EXPIRATION = 1000 * 30
 const lruCache = new LruCache({ ttl: VERIFICATION_EXPIRATION })
+
+/**
+ * Clears all memoized verification results, forcing the next verification of
+ * each credential to run fresh. Backs the developer "Clear verification cache"
+ * action.
+ */
+export function clearVerificationCache(): void {
+  lruCache.cache.clear()
+}
+
 export type VerificationResult = {
   timestamp: number | null
   log: ResultLog[]

@@ -1,134 +1,144 @@
 import { Cache, CacheKey } from '../app/lib/cache'
-import Storage from 'react-native-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-jest.mock('react-native-storage')
-jest.mock('@react-native-async-storage/async-storage', () => ({}))
+// In-memory AsyncStorage so the cache is exercised end-to-end (round trips,
+// expiry, prefix-scoped clearing) rather than asserting calls to a library.
+jest.mock('@react-native-async-storage/async-storage', () => {
+  let store: Record<string, string> = {}
+  return {
+    getItem: jest.fn((k: string) => Promise.resolve(store[k] ?? null)),
+    setItem: jest.fn((k: string, v: string) => {
+      store[k] = v
+      return Promise.resolve()
+    }),
+    removeItem: jest.fn((k: string) => {
+      delete store[k]
+      return Promise.resolve()
+    }),
+    getAllKeys: jest.fn(() => Promise.resolve(Object.keys(store))),
+    multiRemove: jest.fn((keys: string[]) => {
+      keys.forEach((k) => delete store[k])
+      return Promise.resolve()
+    }),
+    __reset: () => {
+      store = {}
+    }
+  }
+})
 
 describe('Cache', () => {
-  let mockStorage: jest.Mocked<Storage>
-
   beforeEach(() => {
     jest.clearAllMocks()
+    ;(AsyncStorage as unknown as { __reset: () => void }).__reset()
     // Reset singleton instance
-    ;(Cache as any).instance = undefined
-
-    mockStorage = {
-      load: jest.fn(),
-      save: jest.fn(),
-      remove: jest.fn(),
-      clearMapForKey: jest.fn(),
-      clearMap: jest.fn()
-    } as any
-    ;(Storage as jest.Mock).mockImplementation(() => mockStorage)
+    ;(Cache as unknown as { instance?: Cache }).instance = undefined
   })
 
   describe('getInstance', () => {
     it('should return singleton instance', () => {
-      const cache1 = Cache.getInstance()
-      const cache2 = Cache.getInstance()
-
-      expect(cache1).toBe(cache2)
+      expect(Cache.getInstance()).toBe(Cache.getInstance())
     })
   })
 
-  describe('load', () => {
-    it('should load data from storage', async () => {
-      const testData = { test: 'data' }
-      mockStorage.load.mockResolvedValue(testData)
-
+  describe('store / load', () => {
+    it('round-trips stored data', async () => {
       const cache = Cache.getInstance()
-      const result = await cache.load('testKey', 'testId')
+      await cache.store('testKey', 'testId', { test: 'data' })
 
-      expect(mockStorage.load).toHaveBeenCalledWith({
-        key: 'testKey',
-        id: 'testId'
-      })
-      expect(result).toEqual(testData)
+      expect(await cache.load('testKey', 'testId')).toEqual({ test: 'data' })
     })
 
-    it('should return empty object when load fails', async () => {
-      mockStorage.load.mockRejectedValue(new Error('Not found'))
-
+    it('namespaces entries by key and id under the cache prefix', async () => {
       const cache = Cache.getInstance()
-      const result = await cache.load('testKey', 'testId')
+      await cache.store('testKey', 'testId', { test: 'data' })
 
-      expect(result).toEqual({})
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+        '@dcw-cache:testKey:testId',
+        expect.any(String)
+      )
+    })
+
+    it('returns an empty object for a missing entry', async () => {
+      expect(await Cache.getInstance().load('testKey', 'missing')).toEqual({})
+    })
+
+    it('returns an empty object when the stored value is corrupt', async () => {
+      await AsyncStorage.setItem('@dcw-cache:testKey:bad', 'not json')
+
+      expect(await Cache.getInstance().load('testKey', 'bad')).toEqual({})
     })
   })
 
-  describe('store', () => {
-    it('should store data with default expires', async () => {
-      const testData = { test: 'data' }
-      mockStorage.save.mockResolvedValue(undefined)
-
+  describe('expiry', () => {
+    it('returns expired entries as empty and evicts them', async () => {
       const cache = Cache.getInstance()
-      await cache.store('testKey', 'testId', testData)
+      const nowSpy = jest.spyOn(Date, 'now').mockReturnValue(1000)
 
-      expect(mockStorage.save).toHaveBeenCalledWith({
-        key: 'testKey',
-        id: 'testId',
-        data: testData,
-        expires: null
-      })
+      // Expires 5s after the (mocked) store time.
+      await cache.store('testKey', 'testId', { test: 'data' }, 5000)
+
+      nowSpy.mockReturnValue(1000 + 6000) // advance past expiry
+      expect(await cache.load('testKey', 'testId')).toEqual({})
+      expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
+        '@dcw-cache:testKey:testId'
+      )
+
+      nowSpy.mockRestore()
     })
 
-    it('should store data with custom expires', async () => {
-      const testData = { test: 'data' }
-      const expires = 3600000
-      mockStorage.save.mockResolvedValue(undefined)
-
+    it('keeps entries with a null expiry', async () => {
       const cache = Cache.getInstance()
-      await cache.store('testKey', 'testId', testData, expires)
+      await cache.store('testKey', 'testId', { test: 'data' }, null)
 
-      expect(mockStorage.save).toHaveBeenCalledWith({
-        key: 'testKey',
-        id: 'testId',
-        data: testData,
-        expires
-      })
+      expect(await cache.load('testKey', 'testId')).toEqual({ test: 'data' })
     })
   })
 
   describe('remove', () => {
-    it('should remove data from storage', async () => {
-      mockStorage.remove.mockResolvedValue(undefined)
-
+    it('removes a single entry', async () => {
       const cache = Cache.getInstance()
+      await cache.store('testKey', 'testId', { test: 'data' })
+
       await cache.remove('testKey', 'testId')
 
-      expect(mockStorage.remove).toHaveBeenCalledWith({
-        key: 'testKey',
-        id: 'testId'
-      })
+      expect(await cache.load('testKey', 'testId')).toEqual({})
     })
   })
 
   describe('removeAll', () => {
-    it('should remove all data for key', async () => {
-      mockStorage.clearMapForKey.mockResolvedValue(undefined)
-
+    it('removes every entry under a key but leaves other keys intact', async () => {
       const cache = Cache.getInstance()
+      await cache.store('testKey', 'a', { n: 1 })
+      await cache.store('testKey', 'b', { n: 2 })
+      await cache.store('otherKey', 'c', { n: 3 })
+
       await cache.removeAll('testKey')
 
-      expect(mockStorage.clearMapForKey).toHaveBeenCalledWith('testKey')
+      expect(await cache.load('testKey', 'a')).toEqual({})
+      expect(await cache.load('testKey', 'b')).toEqual({})
+      expect(await cache.load('otherKey', 'c')).toEqual({ n: 3 })
     })
   })
 
   describe('clear', () => {
-    it('should clear all cache data', async () => {
-      mockStorage.clearMap.mockResolvedValue(undefined)
-
+    it('removes all cache entries but not unrelated AsyncStorage keys', async () => {
       const cache = Cache.getInstance()
+      await cache.store('testKey', 'a', { n: 1 })
+      await cache.store('otherKey', 'b', { n: 2 })
+      // A non-cache key the app keeps elsewhere in AsyncStorage.
+      await AsyncStorage.setItem('themeName', 'dark')
+
       await cache.clear()
 
-      expect(mockStorage.clearMap).toHaveBeenCalled()
+      expect(await cache.load('testKey', 'a')).toEqual({})
+      expect(await cache.load('otherKey', 'b')).toEqual({})
+      expect(await AsyncStorage.getItem('themeName')).toBe('dark')
     })
   })
 
   describe('CacheKey enum', () => {
     it('should have expected cache keys', () => {
       expect(CacheKey.PublicLinks).toBe('publiclinks')
-      expect(CacheKey.VerificationResult).toBe('verificationResult')
     })
   })
 })
