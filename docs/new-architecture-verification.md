@@ -38,10 +38,21 @@ What to watch, by how each module participates in the New Architecture.
 
 `react-native-keychain` v10, `react-native-vision-camera` 4.7,
 `react-native-worklets-core`, `react-native-share`,
-`@react-native-clipboard/clipboard`, `@react-native-documents/picker`, plus all
-`expo-*`, `react-native-screens`, `react-native-safe-area-context`,
+`@react-native-clipboard/clipboard`, `@react-native-documents/picker`,
+`react-native-get-random-values` v2, plus all `expo-*`,
+`react-native-screens`, `react-native-safe-area-context`,
 `react-native-gesture-handler`, `react-native-svg`. These ship codegen configs
 and run natively on New Arch.
+
+> `react-native-get-random-values` was bumped from `1.11` to **`2.0.0`**, which
+> is a TurboModule rewrite (codegen spec, `TurboModuleRegistry.getEnforcing`,
+> `react-native >=0.81` peer). It moved out of the interop-layer bucket below --
+> it now runs as a first-class New-Arch module rather than through the
+> backward-compat layer. The polyfill's public surface
+> (`crypto.getRandomValues`) is unchanged; the major bump only drops legacy-arch
+> / pre-0.81 support. Note this also removes the legacy-arch escape hatch *for
+> this module*: under `newArchEnabled: false` its `getEnforcing` lookup would
+> throw, so it can no longer be smoke-tested on the legacy path.
 
 ### Legacy modules via the RN 0.81 interop layer -- smoke-test these
 
@@ -49,12 +60,17 @@ These have native code but the **old** module interface (no TurboModule). RN
 0.81's backward-compat interop layer runs them, so they should work, but they
 are the most likely place for a New-Arch surprise:
 
-- `react-native-get-random-values` 1.11 -- **highest priority.** Backs the
-  PBKDF2 salt (`app/model/DatabaseAccess.ts`) and the DID seed
-  (`app/model/profile.ts`). A silent failure here corrupts key material.
 - `react-native-device-info` 10.14 -- newer majors are full TurboModule if this
   one misbehaves under New Arch.
 - `react-native-file-logger` 0.4.1.
+
+> `react-native-get-random-values` used to head this list as the
+> **highest-priority** interop-layer risk -- it backs the PBKDF2 salt
+> (`app/model/DatabaseAccess.ts`) and the DID seed (`app/model/profile.ts`),
+> where a silent failure corrupts key material. The `2.0.0` TurboModule bump
+> moved it up to the native New-Arch section, so it no longer rides the interop
+> layer. The device smoke test below still exercises it (key material is
+> security-critical regardless of how the module loads).
 
 ### Pure-JS, architecture-agnostic -- not arch blockers, but aging
 
