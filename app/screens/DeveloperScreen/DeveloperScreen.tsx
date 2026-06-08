@@ -13,7 +13,7 @@ import { stageCredentials } from '../../store/slices/credentialFoyer'
 import { credentials } from '../../mock/credential'
 import { bachelorDegree } from '../../mock/BachelorDegree'
 import { navigationRef } from '../../navigation/navigationRef'
-import { Cache, CacheKey } from '../../lib/cache'
+import { clearVerificationCache } from '../../lib/verifiableObject'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
 import { revokedCredential } from '../../mock/revokedCredential'
 import { NavigationUtil } from '../../lib/navigationUtil'
@@ -104,10 +104,6 @@ export default function DeveloperScreen({
 
   async function clearLogs() {
     await FileLogger.deleteLogFiles()
-  }
-
-  async function clearVerificationCache(): Promise<void> {
-    await Cache.getInstance().removeAll(CacheKey.VerificationResult)
   }
 
   function goWas() {

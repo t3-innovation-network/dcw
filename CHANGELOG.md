@@ -4,6 +4,13 @@
 
 ### Fixed
 
+- The developer "Clear verification cache" button now actually clears the
+  verification cache. It previously called
+  `Cache.removeAll(CacheKey.VerificationResult)` against the AsyncStorage cache,
+  but verification results are memoized in an in-memory `LruCache`
+  (`verifiableObject.ts`) and were never written under that key -- so the button
+  was a no-op. It now calls a new `clearVerificationCache()` that clears the
+  `LruCache`. The orphaned `CacheKey.VerificationResult` enum member was removed.
 - Adding a credential (and other "select a profile" flows, including incoming
   credential-request deep links) no longer redirects to a blank, dead-end
   **Choose Profile** screen. `NavigationUtil.selectProfile` and the deep-link
@@ -68,6 +75,24 @@
   `Updates.reloadAsync()` to reload the JS bundle and reinitialize the wallet to
   onboarding. If the reload rejects (e.g. in development builds), the screen
   falls back to the manual "close and re-open" instructions.
+- Replaced the unmaintained `react-native-keyboard-aware-scroll-view` with React
+  Native's built-in `KeyboardAvoidingView` + `ScrollView` in `SafeScreenView`
+  (the universal screen wrapper), removing it as a direct dependency without
+  adding a new native module. Keyboard avoidance is now `behavior="padding"` on
+  iOS and OS window resize on Android; `keyboardShouldPersistTaps="handled"`
+  preserves tap-through behavior. Only `SafeScreenView`'s input-bearing
+  consumers (`LoginScreen`, onboarding in `SetupNavigation`) are affected, and
+  both use simple single-field passphrase forms. With this, the
+  `reactNativeDirectoryCheck.exclude` list is now empty.
+- Replaced the unmaintained `react-native-storage` (last released 2022) with a
+  direct `AsyncStorage` implementation in `app/lib/cache.ts`, removing it as a
+  direct dependency without adding a new one (`AsyncStorage` was already used).
+  The `Cache` class keeps the same public API (`load`/`store`/`remove`/
+  `removeAll`/`clear`, including the optional `expires` duration). Entries are
+  namespaced under a `@dcw-cache:` prefix so `clear()`/`removeAll()` only touch
+  cache keys and leave the app's other AsyncStorage data intact. The on-disk key
+  format changes, so the existing public-links / verification cache is dropped
+  once on upgrade (it is a cache and re-populates on next use).
 - Upgraded `react-native-keychain` from `^8.1.1` to `^10.0.0` and removed the
   `patches/react-native-keychain+8.2.0.patch` patch-package patch: it injected
   `compileOptions { sourceCompatibility/targetCompatibility = 1.8 }` into the
@@ -125,7 +150,7 @@
 ### Fixed
 
 - `expo export` / iOS (Hermes) builds failing on `import.meta is not supported in
-  Hermes` from `@digitalbazaar/credentials-context`, by enabling
+Hermes` from `@digitalbazaar/credentials-context`, by enabling
   `unstable_transformImportMeta` in babel-preset-expo (`babel.config.js`).
 - `DatabaseAccess.reset()` now clears the persisted key material
   (`privileged_key_status` / `privileged_key` in SecureStore) and the PBKDF2 salt
@@ -140,7 +165,7 @@
   database. The `realm` and `bson` dependencies are removed; the model layer
   (`app/model/`) now opens a single SQLite connection keyed with the raw 32-byte
   hex key via `PRAGMA key`, with the schema defined and versioned (`PRAGMA
-  user_version`) in `app/model/schema.ts`. Record ids are now plain `string`
+user_version`) in `app/model/schema.ts`. Record ids are now plain `string`
   UUIDs throughout the app (generated with `react-native-uuid`), replacing
   `Realm.BSON.ObjectId` / `bson` `ObjectID` and their `.equals()` /
   `.toHexString()` call sites. Requires a native rebuild (`expo prebuild`).

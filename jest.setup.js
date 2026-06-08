@@ -103,11 +103,6 @@ jest.mock('react-native-base64', () => ({
   })
 }))
 
-// Mock react-native-securerandom
-jest.mock('react-native-securerandom', () => ({
-  generateSecureRandom: jest.fn(() => Promise.resolve(new Uint8Array(32)))
-}))
-
 // Mock expo-font
 jest.mock('expo-font', () => ({
   loadAsync: jest.fn(() => Promise.resolve()),
@@ -225,9 +220,6 @@ global.mockNativeModules = {
       Promise.resolve({ username: 'test', password: 'test' })
     ),
     resetInternetCredentials: jest.fn(() => Promise.resolve())
-  },
-  RNSecureRandom: {
-    generateSecureRandom: jest.fn(() => Promise.resolve(new Uint8Array(32)))
   }
 }
 

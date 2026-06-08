@@ -1,6 +1,11 @@
 import React from 'react'
-import { Image, View } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  View
+} from 'react-native'
 import {
   SafeAreaView,
   type NativeSafeAreaViewProps
@@ -23,14 +28,25 @@ export default function SafeScreenView({
 
   return (
     <View style={styles.container}>
-      <KeyboardAwareScrollView
-        contentContainerStyle={styles.contentContainer}
+      {/*
+       * Keep the focused input visible above the keyboard. On iOS the
+       * KeyboardAvoidingView pads the scroll container; on Android the OS window
+       * resize (adjustResize) handles it, so no behavior is needed there.
+       */}
+      <KeyboardAvoidingView
         style={styles.scrollView}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
-        <SafeAreaView style={styles.screen} {...rest}>
-          {children}
-        </SafeAreaView>
-      </KeyboardAwareScrollView>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.contentContainer}
+          keyboardShouldPersistTaps="handled"
+        >
+          <SafeAreaView style={styles.screen} {...rest}>
+            {children}
+          </SafeAreaView>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <Image
         source={watermarkImage}
         style={[

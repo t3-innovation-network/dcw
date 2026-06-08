@@ -19,7 +19,6 @@ const packagesToTransformWithBabel = [
   '@testing-library/react-native',
   '@expo/vector-icons',
   'immer',
-  'react-native-securerandom',
   'rn-animated-ellipsis',
   'react-native-outside-press'
 ]
