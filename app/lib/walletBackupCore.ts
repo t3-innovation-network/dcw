@@ -1,18 +1,21 @@
 import { Buffer } from 'buffer'
 import tar from 'tar-stream'
 import uuid from 'react-native-uuid'
+import YAML from 'yaml'
 import {
   IDidDocument,
   IKeyPair,
   IVerifiableCredential
 } from '@interop/data-integrity-core'
 
+import { UBC } from '../../app.config'
 import { ProfileMetadata } from '../types/profile'
 import { UnlockedWallet, WalletContent } from '../types/wallet'
 import { cidFrom } from './cid'
 
 export const PROFILES_DIR = 'profiles'
 export const CREDENTIALS_DIR = 'credentials'
+export const MANIFEST_NAME = 'manifest.yml'
 
 const WALLET_CONTEXTS = [
   'https://www.w3.org/2018/credentials/v1',
@@ -140,6 +143,31 @@ async function gatherTarEntries(
   return entries
 }
 
+/**
+ * UBC v0.1 manifest describing the archive's collections, mirroring the WAS
+ * space-export manifest produced by freewallet. DCW differs in two ways: it has
+ * a `profiles` collection (freewallet has none yet), and it has no `history`
+ * collection (freewallet does). There is also no WAS `space` wrapper -- a DCW
+ * backup is a flat set of collections, not a server-side space.
+ */
+function buildManifest(entries: TarEntry[]): string {
+  const contents: Record<string, unknown> = {
+    [MANIFEST_NAME]: { url: UBC.MANIFEST_URL }
+  }
+
+  for (const collection of [PROFILES_DIR, CREDENTIALS_DIR]) {
+    const resources = entries
+      .filter((entry) => entry.name.startsWith(`${collection}/`))
+      .map((entry) => ({ [entry.name]: { url: UBC.RESOURCE_URL } }))
+
+    if (resources.length === 0) continue
+
+    contents[collection] = { url: UBC.COLLECTION_URL, contents: resources }
+  }
+
+  return YAML.stringify({ 'ubc-version': '0.1', contents })
+}
+
 function packTar(entries: TarEntry[]): Promise<Buffer> {
   return new Promise((resolve, reject) => {
     const pack = tar.pack()
@@ -194,7 +222,11 @@ export async function buildWalletTarFromInputs(
   inputs: ProfileBackupInput[]
 ): Promise<string> {
   const entries = await gatherTarEntries(inputs)
-  const tarBuffer = await packTar(entries)
+  const allEntries: TarEntry[] = [
+    { name: MANIFEST_NAME, data: buildManifest(entries) },
+    ...entries
+  ]
+  const tarBuffer = await packTar(allEntries)
   return tarBuffer.toString('base64')
 }
 
