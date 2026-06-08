@@ -243,6 +243,9 @@ importers:
       validator:
         specifier: ^13.11.0
         version: 13.15.35
+      yaml:
+        specifier: ^2.9.0
+        version: 2.9.0
     devDependencies:
       '@reduxjs/toolkit':
         specifier: ^2.2.7

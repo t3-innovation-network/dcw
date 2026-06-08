@@ -22,6 +22,18 @@ export const WAS = {
     SIGNER_CONTROLLER: 'was_signer_controller'
   }
 }
+
+/** UBC v0.1 manifest spec URLs. */
+export const UBC = {
+  MANIFEST_URL:
+    'https://codeberg.org/fediverse/fep/src/branch/main/fep/6fcd/fep-6fcd.md#manifest-file',
+  SPACE_URL:
+    'https://digitalcredentials.github.io/wallet-attached-storage-spec/#spaces',
+  COLLECTION_URL:
+    'https://digitalcredentials.github.io/wallet-attached-storage-spec/#collection-data-model',
+  RESOURCE_URL:
+    'https://digitalcredentials.github.io/wallet-attached-storage-spec/#resource-data-model'
+}
 export const ZCAP_EXPIRES = new Date(Date.now() + 1000 * 60 * 60 * 24 * 10) // 10 days
 
 // Feature Flags section
