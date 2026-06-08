@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer'
 import { keepLocalCopy, pick, types } from '@react-native-documents/picker'
-import * as RNFS from 'react-native-fs'
+import { File } from 'expo-file-system'
 import { Platform } from 'react-native'
 import base64 from 'react-native-base64'
 
@@ -83,18 +83,16 @@ export async function readFile(
   fileName?: string
 ): Promise<string> {
   try {
-    let path = uri
+    // expo-file-system's File works directly with `file://` and `content://`
+    // URIs, so no path normalization is needed here.
+    const file = new File(uri)
 
-    if (Platform.OS === 'ios' && path.startsWith('file://')) {
-      path = path.replace('file://', '')
-    }
-
-    if (isTarBackup({ path, fileName })) {
-      return RNFS.readFile(path, 'base64')
+    if (isTarBackup({ path: uri, fileName })) {
+      return file.base64()
     }
 
     // Read as base64 first
-    const base64Data = await RNFS.readFile(path, 'base64')
+    const base64Data = await file.base64()
 
     if (isTarBackup({ base64Data })) {
       return base64Data
@@ -140,7 +138,7 @@ export async function readFile(
         return ''
       }
     } else {
-      const fileContent = await RNFS.readFile(path, 'utf8')
+      const fileContent = await file.text()
       return fileContent
     }
   } catch (error) {
@@ -155,7 +153,7 @@ export async function pickAndReadFile(): Promise<string> {
       type: [types.allFiles]
     })
 
-    let path: string | null = null
+    let uri = file.uri
 
     if (Platform.OS === 'ios') {
       // `pick` no longer copies the file into app storage, so request a local
@@ -167,31 +165,14 @@ export async function pickAndReadFile(): Promise<string> {
       if (copy.status !== 'success') {
         throw new Error('Unable to copy selected file on iOS')
       }
-      path = decodeURI(copy.localUri.replace('file://', ''))
-    } else {
-      path = file.uri
-
-      if (path.startsWith('content://')) {
-        // Sanitize filename by removing extra dots to avoid collision
-        const safeFileName = (file.name ?? 'imported_file').replace(
-          /[^a-zA-Z0-9]/g,
-          '_'
-        )
-        const destPath = `${RNFS.TemporaryDirectoryPath}/${safeFileName}`
-
-        await RNFS.copyFile(path, destPath)
-        path = destPath
-      } else {
-        // Decode any encoded URI and remove file:// if present
-        path = decodeURI(path.replace('file://', ''))
-      }
+      uri = copy.localUri
     }
 
-    const exists = await RNFS.exists(path)
+    // On Android `uri` may be a `content://` URI; expo-file-system reads those
+    // directly via SAF, so the previous copy-to-temp step is no longer needed.
+    if (!new File(uri).exists) throw new Error(`File not found at ${uri}`)
 
-    if (!exists) throw new Error(`File not found at ${path}`)
-
-    const content = await readFile(path, file.name ?? undefined)
+    const content = await readFile(uri, file.name ?? undefined)
     return content
   } catch (err) {
     throw new Error('Unable to read selected file.')

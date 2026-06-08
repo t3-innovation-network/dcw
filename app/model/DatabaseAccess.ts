@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite'
 import * as SecureStore from 'expo-secure-store'
-import * as RNFS from 'react-native-fs'
+import { File, Paths } from 'expo-file-system'
 
 import {
   resetBiometricKeychain,
@@ -24,7 +24,14 @@ const ENABLED = 'enabled'
 const DISABLED = 'disabled'
 
 const PBKDF2_ITERATIONS = 10000
-const PBKDF2_SALT_PATH = `${RNFS.DocumentDirectoryPath}/edu-wallet-salt`
+const PBKDF2_SALT_FILENAME = 'edu-wallet-salt'
+
+// The salt lives in the app's document directory (not the keychain): it is not a
+// secret, and keeping it in the sandbox ties its lifecycle to the database file
+// -- both are wiped on uninstall, which is what `isInitialized()` relies on.
+function saltFile(): File {
+  return new File(Paths.document, PBKDF2_SALT_FILENAME)
+}
 
 class DatabaseAccess {
   /**
@@ -145,7 +152,7 @@ class DatabaseAccess {
      * of expo-sqlite's internal storage location, and works whether or not the
      * wallet is currently unlocked.
      */
-    return RNFS.exists(PBKDF2_SALT_PATH)
+    return saltFile().exists
   }
 
   /**
@@ -165,7 +172,7 @@ class DatabaseAccess {
     // key is left behind and the next initialize fails.
     await Promise.all([
       DatabaseAccess.deleteDatabaseIfExists(),
-      DatabaseAccess.unlinkIfExists(PBKDF2_SALT_PATH),
+      DatabaseAccess.deleteSaltIfExists(),
       SecureStore.deleteItemAsync(PRIVILEGED_KEY_STATUS_ID),
       SecureStore.deleteItemAsync(PRIVILEGED_KEY_KID)
     ])
@@ -180,9 +187,10 @@ class DatabaseAccess {
     }
   }
 
-  private static async unlinkIfExists(path: string): Promise<void> {
-    if (await RNFS.exists(path)) {
-      await RNFS.unlink(path)
+  private static async deleteSaltIfExists(): Promise<void> {
+    const file = saltFile()
+    if (file.exists) {
+      file.delete()
     }
   }
 
@@ -195,11 +203,13 @@ class DatabaseAccess {
       throw new Error('Wallet must be in reset state to be initialized')
     }
 
-    const decoder = new TextDecoder()
-    const rawSalt = crypto.getRandomValues(new Uint8Array(64))
-    const salt: string = decoder.decode(rawSalt)
+    // Hex-encode the random bytes rather than decoding them as UTF-8: decoding
+    // arbitrary bytes as UTF-8 is lossy (invalid sequences collapse to U+FFFD),
+    // which silently throws away salt entropy. Existing wallets are unaffected --
+    // their salt file is still read back verbatim in `salt()`.
+    const salt: string = bytesToHex(crypto.getRandomValues(new Uint8Array(64)))
 
-    await RNFS.writeFile(PBKDF2_SALT_PATH, salt, 'utf8')
+    saltFile().write(salt)
 
     // The first call to unlock will create/encrypt the database with the pass.
     // We intentionally leave the wallet unlocked: callers initialize and then
@@ -226,7 +236,7 @@ class DatabaseAccess {
   }
 
   private static async salt(): Promise<string> {
-    return RNFS.readFile(PBKDF2_SALT_PATH, 'utf8')
+    return saltFile().text()
   }
 
   private static database: SQLite.SQLiteDatabase | null = null

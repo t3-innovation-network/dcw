@@ -33,8 +33,20 @@
 - Replaced the deprecated `react-native-document-picker` with its maintained
   successor `@react-native-documents/picker` in `pickAndReadFile`
   (`app/lib/import.ts`). `pickSingle({ copyTo })` becomes `pick()` plus an
-  explicit `keepLocalCopy()` to obtain the cached local copy on iOS; the Android
-  `content://` copy path is unchanged.
+  explicit `keepLocalCopy()` to obtain the cached local copy on iOS. (The
+  Android `content://` copy path was subsequently removed -- see the
+  `expo-file-system` migration below.)
+- Replaced the unmaintained `react-native-fs` with Expo's `expo-file-system`
+  (the new `File` / `Paths` API) across `app/lib/import.ts`,
+  `app/lib/shareData.ts`, `app/model/DatabaseAccess.ts`, and `DeveloperScreen`,
+  removing it as a direct dependency. On Android, `pickAndReadFile` now reads the
+  picked `content://` URI directly (via SAF) instead of first copying it to a
+  temporary file -- the copy existed only because `react-native-fs` could not
+  read `content://`. The PBKDF2 salt is now hex-encoded at generation
+  (`bytesToHex` of 64 random bytes) instead of being UTF-8-decoded from raw
+  bytes, which silently discarded entropy (invalid UTF-8 sequences collapse to
+  `U+FFFD`); existing wallets are unaffected because the salt file is still read
+  back verbatim.
 - Upgraded `react-native-keychain` from `^8.1.1` to `^10.0.0` and removed the
   `patches/react-native-keychain+8.2.0.patch` patch-package patch: it injected
   `compileOptions { sourceCompatibility/targetCompatibility = 1.8 }` into the

@@ -1,5 +1,4 @@
 import { keepLocalCopy, pick } from '@react-native-documents/picker'
-import * as RNFS from 'react-native-fs'
 
 jest.mock('@react-native-documents/picker', () => ({
   pick: jest.fn(),
@@ -9,12 +8,40 @@ jest.mock('@react-native-documents/picker', () => ({
   }
 }))
 
-jest.mock('react-native-fs', () => ({
-  readFile: jest.fn(),
-  exists: jest.fn().mockResolvedValue(true),
-  copyFile: jest.fn().mockResolvedValue(undefined),
-  TemporaryDirectoryPath: '/tmp'
-}))
+// Controllable mock of expo-file-system's File API. `text()`/`base64()`/`exists`
+// are routed through shared jest.fn()s so each test can script the reads.
+const mockText = jest.fn()
+const mockBase64 = jest.fn()
+const mockExists = jest.fn().mockReturnValue(true)
+
+jest.mock('expo-file-system', () => {
+  class File {
+    uri: string
+    constructor(...uris: unknown[]) {
+      this.uri = uris
+        .map((u) =>
+          u && typeof u === 'object' && 'uri' in u ? (u as any).uri : String(u)
+        )
+        .join('/')
+    }
+    get exists() {
+      return mockExists(this.uri)
+    }
+    text() {
+      return mockText(this.uri)
+    }
+    base64() {
+      return mockBase64(this.uri)
+    }
+  }
+  return {
+    File,
+    Paths: {
+      document: { uri: 'file:///mock/document' },
+      cache: { uri: 'file:///mock/cache' }
+    }
+  }
+})
 
 jest.mock('react-native-keychain', () => ({
   setInternetCredentials: jest.fn(),
@@ -80,7 +107,7 @@ describe('Utility Functions', () => {
         'base64'
       )
 
-      ;(RNFS.readFile as jest.Mock).mockResolvedValueOnce(fakeContent)
+      mockBase64.mockResolvedValueOnce(fakeContent)
 
       const result = await readFile('fakepath')
       expect(JSON.parse(result)).toHaveProperty(
@@ -90,9 +117,8 @@ describe('Utility Functions', () => {
     })
 
     it('should return plain content for non-PNG file', async () => {
-      ;(RNFS.readFile as jest.Mock)
-        .mockResolvedValueOnce('bm90YXBuZw==') // base64 of "notapng"
-        .mockResolvedValueOnce('{"key":"value"}') // fallback
+      mockBase64.mockResolvedValueOnce('bm90YXBuZw==') // base64 of "notapng"
+      mockText.mockResolvedValueOnce('{"key":"value"}')
 
       const result = await readFile('file.json')
       expect(JSON.parse(result)).toHaveProperty('key', 'value')
@@ -115,12 +141,12 @@ describe('Utility Functions', () => {
           name: 'badge file (1).json'
         }
       ])
-      ;(RNFS.readFile as jest.Mock)
-        .mockResolvedValueOnce('bm90YXBuZw==') // base64
-        .mockResolvedValueOnce('{"android": "content"}')
+      mockBase64.mockResolvedValueOnce('bm90YXBuZw==') // base64
+      mockText.mockResolvedValueOnce('{"android": "content"}')
 
       const result = await pickAndReadFile()
-      expect(RNFS.copyFile).toHaveBeenCalled()
+      // The content:// URI is read directly via expo-file-system (no temp copy).
+      expect(mockBase64).toHaveBeenCalledWith('content://some/file.json')
       expect(result).toContain('content')
     })
 
@@ -137,9 +163,8 @@ describe('Utility Functions', () => {
           name: 'test.json'
         }
       ])
-      ;(RNFS.readFile as jest.Mock)
-        .mockResolvedValueOnce('bm90YXBuZw==') // base64
-        .mockResolvedValueOnce('{"android":true}')
+      mockBase64.mockResolvedValueOnce('bm90YXBuZw==') // base64
+      mockText.mockResolvedValueOnce('{"android":true}')
 
       const result = await pickAndReadFile()
       expect(result).toContain('true')
@@ -161,9 +186,8 @@ describe('Utility Functions', () => {
       ;(keepLocalCopy as jest.Mock).mockResolvedValueOnce([
         { status: 'success', localUri: fakeUri }
       ])
-      ;(RNFS.readFile as jest.Mock)
-        .mockResolvedValueOnce('bm90YXBuZw==') // base64
-        .mockResolvedValueOnce('{"ios":true}')
+      mockBase64.mockResolvedValueOnce('bm90YXBuZw==') // base64
+      mockText.mockResolvedValueOnce('{"ios":true}')
 
       const result = await pickAndReadFile()
       expect(result).toContain('true')
@@ -182,9 +206,8 @@ describe('Utility Functions', () => {
       ;(keepLocalCopy as jest.Mock).mockResolvedValueOnce([
         { status: 'success', localUri: fakeUri }
       ])
-      ;(RNFS.readFile as jest.Mock)
-        .mockResolvedValueOnce('bm90YXBuZw==') // base64
-        .mockResolvedValueOnce('{"test":123}')
+      mockBase64.mockResolvedValueOnce('bm90YXBuZw==') // base64
+      mockText.mockResolvedValueOnce('{"test":123}')
 
       const result = await pickAndReadFile()
       expect(result).toContain('123')

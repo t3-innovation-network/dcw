@@ -6,7 +6,7 @@ const packagesToTransformWithBabel = [
   'expo-secure-store',
   'expo-modules-core',
   'expo-font',
-  'react-native-fs',
+  'expo-file-system',
   '@digitalcredentials/http-client',
   '@digitalcredentials/vpqr',
   '@digitalcredentials/cborld',

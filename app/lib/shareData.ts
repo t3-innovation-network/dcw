@@ -1,19 +1,19 @@
 import { Platform } from 'react-native'
 import Share from 'react-native-share'
-import * as RNFS from 'react-native-fs'
+import { File, Paths } from 'expo-file-system'
 
 export async function shareData(
   fileName: string,
   data: string,
   type = 'text/plain'
 ): ReturnType<typeof Share.open> {
-  const path = `${RNFS.DocumentDirectoryPath}/${fileName}`
+  const file = new File(Paths.document, fileName)
 
-  if (await RNFS.exists(path)) {
-    await RNFS.unlink(path)
+  if (file.exists) {
+    file.delete()
   }
 
-  await RNFS.writeFile(path, data, 'utf8')
+  file.write(data)
 
   /**
    * On Android, the clipboard share activity only supports strings (copying
@@ -27,7 +27,7 @@ export async function shareData(
    */
   return Share.open({
     title: fileName,
-    url: `file://${path}`,
+    url: file.uri,
     type,
     subject: fileName,
     message: Platform.OS === 'ios' ? undefined : data
@@ -39,17 +39,17 @@ export async function shareBinaryFile(
   base64Data: string,
   mimeType = 'application/octet-stream'
 ) {
-  const path = `${RNFS.DocumentDirectoryPath}/${fileName}`
+  const file = new File(Paths.document, fileName)
 
-  if (await RNFS.exists(path)) {
-    await RNFS.unlink(path)
+  if (file.exists) {
+    file.delete()
   }
 
-  await RNFS.writeFile(path, base64Data, 'base64')
+  file.write(base64Data, { encoding: 'base64' })
 
   return Share.open({
     title: fileName,
-    url: `file://${path}`,
+    url: file.uri,
     type: mimeType
   })
 }
