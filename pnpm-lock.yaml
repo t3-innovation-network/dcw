@@ -117,9 +117,15 @@ importers:
       expo-dev-client:
         specifier: ~6.0.21
         version: 6.0.21(expo@54.0.35(@babel/core@7.29.7)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3))
+      expo-file-system:
+        specifier: ~19.0.23
+        version: 19.0.23(expo@54.0.35(@babel/core@7.29.7)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3))(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
       expo-font:
         specifier: ~14.0.12
         version: 14.0.12(expo@54.0.35(@babel/core@7.29.7)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3))(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+      expo-print:
+        specifier: ~15.0.8
+        version: 15.0.8(expo@54.0.35(@babel/core@7.29.7)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3))(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
       expo-secure-store:
         specifier: ~15.0.8
         version: 15.0.8(expo@54.0.35(@babel/core@7.29.7)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3))
@@ -186,18 +192,12 @@ importers:
       react-native-file-logger:
         specifier: ^0.4.0
         version: 0.4.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
-      react-native-fs:
-        specifier: ^2.20.0
-        version: 2.20.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
       react-native-gesture-handler:
         specifier: ~2.28.0
         version: 2.28.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-get-random-values:
         specifier: ^1.8.0
         version: 1.11.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
-      react-native-html-to-pdf:
-        specifier: ^0.12.0
-        version: 0.12.0
       react-native-keyboard-aware-scroll-view:
         specifier: ^0.9.4
         version: 0.9.5(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
@@ -2173,9 +2173,6 @@ packages:
   bare-url@2.4.5:
     resolution: {integrity: sha512-K+y9xF1tN+CdPu4qWwr0QiK1Al07eFPGYK5M2pDXcmHdMdgC/tT/bpmMe1hrmRHaidKLkXrC+cRNYf3XVDUhSQ==}
 
-  base-64@0.1.0:
-    resolution: {integrity: sha512-Y5gU45svrR5tI2Vt/X9GPd3L0HNIKzGu202EjxrXMpuc2V2CiKgemAbUUsqYmZJvPtCXoUKjNZwBJzsNScUbXA==}
-
   base-x@5.0.1:
     resolution: {integrity: sha512-M7uio8Zt++eg3jPj+rHMfCC+IuygQHHCOU+IYsVtik6FWjuYpVt/+MRKcgsAMHh8mMFAwnB+Bs+mTrFiXjMzKg==}
 
@@ -2967,6 +2964,12 @@ packages:
     resolution: {integrity: sha512-a6IrpAn/Jbmwxi9L+hMmXKpNqnkUpoF7WHOpn02rVLyax2J0gB1vvCVE5rNydplEnt41Q6WxQwvcOjZaIkcSUg==}
     peerDependencies:
       react: '*'
+      react-native: '*'
+
+  expo-print@15.0.8:
+    resolution: {integrity: sha512-4O0Qzm0On5AmJIl9d+BT+ieTipFp658nHI4aX7vKEFPfj3dfQxG6rDJJpca+rrc9c4Ha8ZFYGvxJG5+4lFq2Pw==}
+    peerDependencies:
+      expo: '*'
       react-native: '*'
 
   expo-secure-store@15.0.8:
@@ -4675,15 +4678,6 @@ packages:
   react-native-fit-image@1.5.5:
     resolution: {integrity: sha512-Wl3Vq2DQzxgsWKuW4USfck9zS7YzhvLNPpkwUUCF90bL32e1a0zOVQ3WsJILJOwzmPdHfzZmWasiiAUNBkhNkg==}
 
-  react-native-fs@2.20.0:
-    resolution: {integrity: sha512-VkTBzs7fIDUiy/XajOSNk0XazFE9l+QlMAce7lGuebZcag5CnjszB+u4BdqzwaQOdcYb5wsJIsqq4kxInIRpJQ==}
-    peerDependencies:
-      react-native: '*'
-      react-native-windows: '*'
-    peerDependenciesMeta:
-      react-native-windows:
-        optional: true
-
   react-native-gesture-handler@2.28.0:
     resolution: {integrity: sha512-0msfJ1vRxXKVgTgvL+1ZOoYw3/0z1R+Ked0+udoJhyplC2jbVKIJ8Z1bzWdpQRCV3QcQ87Op0zJVE5DhKK2A0A==}
     peerDependencies:
@@ -4694,9 +4688,6 @@ packages:
     resolution: {integrity: sha512-4BTbDbRmS7iPdhYLRcz3PGFIpFJBwNZg9g42iwa2P6FOv9vZj/xJc678RZXnLNZzd0qd7Q3CCF6Yd+CU2eoXKQ==}
     peerDependencies:
       react-native: '>=0.56'
-
-  react-native-html-to-pdf@0.12.0:
-    resolution: {integrity: sha512-Yb5WO9SfF86s5Yv9PqXQ7fZDr9zZOJ+6jtweT9zFLraPNHWX7pSxe2dSkeg3cGiNrib65ZXGN6ksHymfYLFSSg==}
 
   react-native-iphone-x-helper@1.3.1:
     resolution: {integrity: sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==}
@@ -5516,9 +5507,6 @@ packages:
     resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  utf8@3.0.0:
-    resolution: {integrity: sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==}
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -8251,8 +8239,6 @@ snapshots:
     dependencies:
       bare-path: 3.0.1
 
-  base-64@0.1.0: {}
-
   base-x@5.0.1: {}
 
   base58-universal@2.0.0: {}
@@ -9115,6 +9101,11 @@ snapshots:
     dependencies:
       invariant: 2.2.4
       react: 19.1.0
+      react-native: 0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)
+
+  expo-print@15.0.8(expo@54.0.35(@babel/core@7.29.7)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3))(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)):
+    dependencies:
+      expo: 54.0.35(@babel/core@7.29.7)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)
       react-native: 0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)
 
   expo-secure-store@15.0.8(expo@54.0.35(@babel/core@7.29.7)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)):
@@ -11281,12 +11272,6 @@ snapshots:
     dependencies:
       prop-types: 15.8.1
 
-  react-native-fs@2.20.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)):
-    dependencies:
-      base-64: 0.1.0
-      react-native: 0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)
-      utf8: 3.0.0
-
   react-native-gesture-handler@2.28.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:
       '@egjs/hammerjs': 2.0.17
@@ -11299,8 +11284,6 @@ snapshots:
     dependencies:
       fast-base64-decode: 1.0.0
       react-native: 0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)
-
-  react-native-html-to-pdf@0.12.0: {}
 
   react-native-iphone-x-helper@1.3.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)):
     dependencies:
@@ -12160,8 +12143,6 @@ snapshots:
   use-sync-external-store@1.6.0(react@19.1.0):
     dependencies:
       react: 19.1.0
-
-  utf8@3.0.0: {}
 
   util-deprecate@1.0.2: {}
 

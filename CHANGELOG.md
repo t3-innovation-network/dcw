@@ -47,6 +47,19 @@
   bytes, which silently discarded entropy (invalid UTF-8 sequences collapse to
   `U+FFFD`); existing wallets are unaffected because the salt file is still read
   back verbatim.
+- Replaced the unmaintained `react-native-html-to-pdf` with Expo's `expo-print`
+  in the "Export as PDF" pipeline (`app/lib/svgToPdf.ts`), removing it as a
+  direct dependency. `RNHTMLtoPDF.convert({ html, fileName })` becomes
+  `Print.printToFileAsync({ html })`. Since `expo-print` has no `fileName` option
+  (it writes a random name to the cache directory), the rendered PDF is renamed
+  via `expo-file-system` to `"<credential name> Credential.pdf"` so the share
+  sheet still shows a meaningful name; a nameless credential falls back to
+  `"Credential Credential.pdf"` (previously the literal `"undefined Credential"`).
+  The `PDF` type's `filePath` field became `uri` (a `file://` URI), so
+  `usePublicLink` now shares it directly instead of prefixing `file://`. The
+  JS-side template logic was split into pure, unit-tested helpers
+  (`buildCredentialHtml`, `pdfFileNameFor`); the native HTML-to-PDF rendering
+  itself runs in `expo-print` and remains a device/manual QA concern.
 - Upgraded `react-native-keychain` from `^8.1.1` to `^10.0.0` and removed the
   `patches/react-native-keychain+8.2.0.patch` patch-package patch: it injected
   `compileOptions { sourceCompatibility/targetCompatibility = 1.8 }` into the

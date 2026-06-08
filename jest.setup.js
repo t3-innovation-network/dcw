@@ -29,6 +29,7 @@ jest.mock('expo-file-system', () => {
     write() {}
     delete() {}
     copy() {}
+    move() {}
   }
   return {
     File,
@@ -38,6 +39,19 @@ jest.mock('expo-file-system', () => {
     }
   }
 })
+
+// Mock expo-print so modules that import it (the PDF export pipeline) resolve
+// under jest. `virtual: true` lets the mock register even before `pnpm install`
+// has fetched the package. Tests that exercise PDF generation override this.
+jest.mock(
+  'expo-print',
+  () => ({
+    printToFileAsync: jest.fn(() =>
+      Promise.resolve({ uri: 'file:///mock/print.pdf', numberOfPages: 1 })
+    )
+  }),
+  { virtual: true }
+)
 
 // Mock expo-sqlite. The model layer is fully jest.mock-ed in component/lib
 // tests, so no SQL is ever executed under jest -- this mock only needs to exist

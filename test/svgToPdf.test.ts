@@ -1,12 +1,45 @@
 import { convertSVGtoPDF } from '../app/lib/svgToPdf'
-import RNHTMLtoPDF from 'react-native-html-to-pdf'
+import * as Print from 'expo-print'
 import Handlebars from 'handlebars'
 import { mockCredential } from '../app/mock/credential'
 
-// Mocks
-jest.mock('react-native-html-to-pdf', () => ({
-  convert: jest.fn()
-}))
+// Mocks. `virtual: true` lets this register before `pnpm install` fetches the
+// (not-yet-installed) expo-print package.
+jest.mock(
+  'expo-print',
+  () => ({
+    printToFileAsync: jest.fn()
+  }),
+  { virtual: true }
+)
+
+// Mock expo-file-system's File/Paths so the post-render rename is exercised
+// without touching a real filesystem. `move()` is a no-op; the destination URI
+// is derived deterministically from `Paths.cache` + the generated file name.
+jest.mock('expo-file-system', () => {
+  class File {
+    uri: string
+    constructor(...uris: unknown[]) {
+      this.uri = uris
+        .map((u) =>
+          u && typeof u === 'object' && 'uri' in u ? (u as any).uri : String(u)
+        )
+        .join('/')
+    }
+    get exists() {
+      return false
+    }
+    delete() {}
+    move() {}
+  }
+  return {
+    File,
+    Paths: {
+      document: { uri: 'file:///doc' },
+      cache: { uri: 'file:///cache' }
+    }
+  }
+})
 
 jest.mock('handlebars', () => ({
   compile: jest.fn()
@@ -85,9 +118,10 @@ describe('convertSVGtoPDF', () => {
         return `<html><body>data:image/png;base64, ${data.qr_code}</body></html>`
       })
     ;(Handlebars.compile as jest.Mock).mockImplementation(mockCompiledTemplate)
-
-    const mockPdfResult = { filePath: 'path/to/pdf' }
-    ;(RNHTMLtoPDF.convert as jest.Mock).mockResolvedValueOnce(mockPdfResult)
+    ;(Print.printToFileAsync as jest.Mock).mockResolvedValueOnce({
+      uri: 'file:///cache/print-temp.pdf',
+      numberOfPages: 1
+    })
 
     const result = await convertSVGtoPDF(
       modifiedCredential,
@@ -100,15 +134,14 @@ describe('convertSVGtoPDF', () => {
       modifiedCredential.renderMethod[0].id
     )
 
-    // Ensure RNHTMLtoPDF.convert was called with the correct HTML and options
-    expect(RNHTMLtoPDF.convert).toHaveBeenCalledWith({
-      html: `<html><body>data:image/png;base64, ${qrCodeBase64}</body></html>`,
-      fileName: 'undefined Credential',
-      base64: false
+    // Ensure expo-print rendered the correct HTML
+    expect(Print.printToFileAsync).toHaveBeenCalledWith({
+      html: `<html><body>data:image/png;base64, ${qrCodeBase64}</body></html>`
     })
 
-    // Ensure the result is the expected PDF output
-    expect(result).toEqual(mockPdfResult)
+    // The rendered PDF is renamed to a human-readable cache file. mockCredential
+    // has no `name`, so the fallback "Credential" is used.
+    expect(result).toEqual({ uri: 'file:///cache/Credential Credential.pdf' })
   })
 
   it('should embed the qrCodeBase64 correctly in the template', async () => {
@@ -134,17 +167,16 @@ describe('convertSVGtoPDF', () => {
         return `<html><body>data:image/png;base64, ${data.qr_code}</body></html>`
       })
     ;(Handlebars.compile as jest.Mock).mockImplementation(mockCompiledTemplate)
-
-    const mockPdfResult = { filePath: 'path/to/pdf' }
-    ;(RNHTMLtoPDF.convert as jest.Mock).mockResolvedValueOnce(mockPdfResult)
+    ;(Print.printToFileAsync as jest.Mock).mockResolvedValueOnce({
+      uri: 'file:///cache/print-temp.pdf',
+      numberOfPages: 1
+    })
 
     await convertSVGtoPDF(modifiedCredential, publicLink, qrCodeBase64)
 
-    // Check that the SVG with the correct QR code embedded was passed to RNHTMLtoPDF.convert
-    expect(RNHTMLtoPDF.convert).toHaveBeenCalledWith({
-      html: `<html><body>data:image/png;base64, ${qrCodeBase64}</body></html>`,
-      fileName: 'undefined Credential',
-      base64: false
+    // Check that the HTML with the correct QR code embedded was passed to expo-print
+    expect(Print.printToFileAsync).toHaveBeenCalledWith({
+      html: `<html><body>data:image/png;base64, ${qrCodeBase64}</body></html>`
     })
   })
 })
