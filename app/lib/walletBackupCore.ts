@@ -143,13 +143,6 @@ async function gatherTarEntries(
   return entries
 }
 
-/**
- * UBC v0.1 manifest describing the archive's collections, mirroring the WAS
- * space-export manifest produced by freewallet. DCW differs in two ways: it has
- * a `profiles` collection (freewallet has none yet), and it has no `history`
- * collection (freewallet does). There is also no WAS `space` wrapper -- a DCW
- * backup is a flat set of collections, not a server-side space.
- */
 function buildManifest(entries: TarEntry[]): string {
   const contents: Record<string, unknown> = {
     [MANIFEST_NAME]: { url: UBC.MANIFEST_URL }
