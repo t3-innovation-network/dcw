@@ -53,6 +53,12 @@ jest.mock(
   { virtual: true }
 )
 
+// Mock expo-updates so modules that import it (e.g. RestartScreen's app reload)
+// resolve under jest. Tests that exercise the reload override this.
+jest.mock('expo-updates', () => ({
+  reloadAsync: jest.fn(() => Promise.resolve())
+}))
+
 // Mock expo-sqlite. The model layer is fully jest.mock-ed in component/lib
 // tests, so no SQL is ever executed under jest -- this mock only needs to exist
 // so that importing model files (which import expo-sqlite) resolves cleanly.

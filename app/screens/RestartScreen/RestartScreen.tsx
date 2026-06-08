@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Text, Image } from 'react-native'
 import { Button } from 'react-native-elements'
-import RNExitApp from 'react-native-exit-app'
+import * as Updates from 'expo-updates'
 
 import dynamicStyleSheet from './RestartScreen.styles'
 import { SafeScreenView } from '../../components'
@@ -11,9 +11,19 @@ import { useDynamicStyles } from '../../hooks'
 
 export default function RestartScreen(): React.ReactElement {
   const { styles } = useDynamicStyles(dynamicStyleSheet)
+  const [restartFailed, setRestartFailed] = useState(false)
 
-  function exit() {
-    RNExitApp.exitApp()
+  async function restart() {
+    try {
+      // Reload the JS bundle to restart the app from a clean state. After a
+      // wallet reset, this drops the user back at onboarding.
+      await Updates.reloadAsync()
+    } catch (err) {
+      // reloadAsync rejects in some environments (e.g. development builds). Fall
+      // back to asking the user to relaunch the app manually.
+      console.error('Failed to restart the app:', err)
+      setRestartFailed(true)
+    }
   }
 
   return (
@@ -28,14 +38,16 @@ export default function RestartScreen(): React.ReactElement {
         Restart Application
       </Text>
       <Text style={styles.paragraph}>
-        Please exit the application, then re-open it.
+        {restartFailed
+          ? 'Please close the application, then re-open it.'
+          : 'Your wallet has been reset. Tap below to restart and set up a new wallet.'}
       </Text>
       <Button
         buttonStyle={styles.buttonPrimary}
         containerStyle={styles.buttonPrimaryContainer}
         titleStyle={styles.buttonPrimaryTitle}
-        title="Exit App"
-        onPress={exit}
+        title="Restart Now"
+        onPress={restart}
       />
     </SafeScreenView>
   )
