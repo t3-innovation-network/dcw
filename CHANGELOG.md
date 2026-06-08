@@ -60,6 +60,14 @@
   JS-side template logic was split into pure, unit-tested helpers
   (`buildCredentialHtml`, `pdfFileNameFor`); the native HTML-to-PDF rendering
   itself runs in `expo-print` and remains a device/manual QA concern.
+- Replaced the unmaintained `react-native-exit-app` with `expo-updates` in
+  `RestartScreen` (shown after a wallet reset), removing it as a direct
+  dependency. The screen no longer asks the user to manually quit and reopen
+  (`RNExitApp.exitApp()`, which on iOS relied on an `exit(0)` call that Apple's
+  review guidelines reject); the "Restart Now" button now calls
+  `Updates.reloadAsync()` to reload the JS bundle and reinitialize the wallet to
+  onboarding. If the reload rejects (e.g. in development builds), the screen
+  falls back to the manual "close and re-open" instructions.
 - Upgraded `react-native-keychain` from `^8.1.1` to `^10.0.0` and removed the
   `patches/react-native-keychain+8.2.0.patch` patch-package patch: it injected
   `compileOptions { sourceCompatibility/targetCompatibility = 1.8 }` into the
