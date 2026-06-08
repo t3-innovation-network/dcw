@@ -19,7 +19,9 @@ const packagesToTransformWithBabel = [
   '@testing-library/react-native',
   '@expo/vector-icons',
   'immer',
-  'react-native-outside-press'
+  'react-native-outside-press',
+  '@scure/base', // ESM-only (type: module); used by app/lib/cid.ts
+  'yaml' // RN preset resolves yaml to its ESM browser build; transpile it
 ]
 
 const transformIgnorePatterns = [
