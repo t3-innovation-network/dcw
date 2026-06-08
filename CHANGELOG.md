@@ -1,6 +1,6 @@
 # T3 Digital Credential Wallet Changelog
 
-## Unreleased - TBD
+## 3.1.0 - 2026-06-07
 
 ### Fixed
 
