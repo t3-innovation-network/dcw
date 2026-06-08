@@ -242,13 +242,13 @@ export function usePublicLink({
 
   // Auto open share sheet for PDF once ready
   useEffect(() => {
-    if (pdf && pdf.filePath && openedExportPdfModal) {
+    if (pdf && pdf.uri && openedExportPdfModal) {
       ;(async () => {
         if (presentingNative) return
         setPresentingNative(true)
         try {
           await safelyBeforeNativePresent()
-          await Share.open({ url: `file://${pdf.filePath}` })
+          await Share.open({ url: pdf.uri })
         } catch (err) {
           console.error('Share failed:', err)
         } finally {
