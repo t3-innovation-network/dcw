@@ -27,6 +27,17 @@
   `docs/new-architecture-verification.md` (it backs the PBKDF2 salt and DID
   seed). The public `crypto.getRandomValues` surface is unchanged; the major
   bump only drops legacy-arch / pre-0.81 support.
+- Bumped `react-native-share` from `^10.0.2` (`10.2.1`) to `^12.3.1`. The 10.x
+  podspec hardcoded `s.dependency "RCT-Folly"` (and other obsolete New-Arch
+  pods) in its `RCT_NEW_ARCH_ENABLED` branch, which broke `pod install` under
+  RN 0.81 + the New Architecture: 0.81 no longer registers a standalone
+  `RCT-Folly` pod by default (Folly et al. now ship inside the prebuilt
+  `ReactNativeDependencies` pod), so CocoaPods failed with "Unable to find a
+  specification for `RCT-Folly` depended upon by `RNShare`". The 12.x podspec
+  uses RN's own `install_modules_dependencies(s)` helper, which resolves Folly
+  correctly in both source and prebuilt modes. The JS API (`Share.open`) is
+  unchanged, so the `lib/shareData.ts` and `hooks/usePublicLink.tsx` call sites
+  needed no changes.
 
 ## 3.1.0 - 2026-06-07
 
