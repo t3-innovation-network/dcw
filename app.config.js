@@ -67,6 +67,7 @@ export default {
   launchScreenText:
     'Save for continuing education while you earn, store, and share your workplace and skill credentials.',
   expo: {
+    newArchEnabled: true,
     systemUIAppearance: 'automatic',
     runtimeVersion: VERSION_NUMBER,
     version: VERSION_NUMBER,
@@ -164,14 +165,10 @@ export default {
       [
         'expo-build-properties',
         {
-          ios: {
-            newArchEnabled: false
-          },
           android: {
             packagingOptions: {
               pickFirst: ['**/libcrypto.so']
             },
-            newArchEnabled: false,
             compileSdkVersion: 36,
             targetSdkVersion: 36,
             minSdkVersion: 29,

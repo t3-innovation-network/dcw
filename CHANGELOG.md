@@ -22,11 +22,21 @@
 
 ### Changed
 
-- Migrated to **Expo SDK 54** (React Native 0.81, React 19.1), staying on the
-  **legacy RN architecture** (`newArchEnabled: false`). SDK 54 is the last SDK
-  that supports the legacy architecture; moving to the New Architecture and
-  replacing the remaining unmaintained native modules is a separate future SDK 55
-  effort. `expo install --fix` drove the version bumps for `expo-*` and
+- Enabled the **New Architecture** via the top-level `newArchEnabled: true` in
+  `app.config.js` (the per-platform `ios.newArchEnabled` /
+  `android.newArchEnabled` keys under `expo-build-properties` are deprecated and
+  were removed). This was unblocked by the preceding work to replace the
+  unmaintained native modules that lacked New-Arch support (`react-native-fs`,
+  `react-native-html-to-pdf`, `react-native-exit-app`,
+  `react-native-securerandom`, `react-native-document-picker`,
+  `react-native-keyboard-aware-scroll-view`). Remaining legacy native modules
+  (`react-native-get-random-values`, `react-native-device-info`,
+  `react-native-file-logger`) run via RN 0.81's interop layer. See
+  `docs/new-architecture-verification.md` for the device verification checklist.
+- Migrated to **Expo SDK 54** (React Native 0.81, React 19.1). The migration
+  initially stayed on the **legacy RN architecture** (`newArchEnabled: false`)
+  before the New-Architecture flip above. SDK 54 is the last SDK that supports
+  the legacy architecture. `expo install --fix` drove the version bumps for `expo-*` and
   Expo-managed RN packages; pnpm React / `@types/react` overrides moved to the
   19.1 line.
 - Raised native build floors in `app.config.js` (expo-build-properties): Android
