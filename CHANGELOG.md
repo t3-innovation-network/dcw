@@ -10,6 +10,14 @@
   `expo-application` (`nativeApplicationVersion`, `nativeBuildVersion`,
   `applicationId`), which is part of the Expo SDK and needs no extra native
   config. Removes another unmaintained third-party native dependency.
+- Removed the unmaintained `react-native-base64` dependency. Its only use was
+  `base64.decode()` in `lib/import.ts`, replaced with the already-imported
+  `Buffer.from(str, 'base64')` (the same file already used `Buffer` elsewhere).
+- Replaced the abandoned `rn-animated-ellipsis` package (last published 2022)
+  with a small in-repo `AnimatedEllipsis` component built on React Native's
+  `Animated` API. It is a drop-in replacement (same `style` / `minOpacity` /
+  `animationDelay` props) used by `LoadingIndicatorDots` and
+  `CredentialRequestHandler`.
 - Bumped `react-native-get-random-values` from `^1.8.0` (`1.11`) to `^2.0.0`.
   `2.0.0` is a TurboModule rewrite (codegen spec,
   `TurboModuleRegistry.getEnforcing`, `react-native >=0.81` peer), so the

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAsyncCallback } from 'react-async-hook'
 import { Text, View } from 'react-native'
-import AnimatedEllipsis from 'rn-animated-ellipsis'
+import AnimatedEllipsis from '../AnimatedEllipsis/AnimatedEllipsis'
 
 import ConfirmModal from '../ConfirmModal/ConfirmModal'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
@@ -91,7 +91,6 @@ export default function CredentialRequestHandler({
             style={styles.loadingDots}
             minOpacity={0.4}
             animationDelay={200}
-            useNativeDriver={true}
           />
         </View>
       ) : (

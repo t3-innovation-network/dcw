@@ -2,7 +2,6 @@ import { Buffer } from 'buffer'
 import { keepLocalCopy, pick, types } from '@react-native-documents/picker'
 import { File } from 'expo-file-system'
 import { Platform } from 'react-native'
-import base64 from 'react-native-base64'
 
 import { ProfileRecord } from '../model'
 import { CredentialImportReport } from '../types/credential'
@@ -15,27 +14,21 @@ declare global {
   var base64ToArrayBuffer: ((base64Str: string) => ArrayBuffer) | undefined
 }
 
-// Local polyfill for base64ToArrayBuffer to avoid global dependency issues
-if (typeof global.base64ToArrayBuffer !== 'function') {
-  global.base64ToArrayBuffer = (base64Str: string) => {
-    const decoded = base64.decode(base64Str)
-    const bytes = new Uint8Array(decoded.length)
-    for (let i = 0; i < decoded.length; i++) {
-      bytes[i] = decoded.charCodeAt(i)
-    }
-    return bytes.buffer
-  }
-}
-
 export type ReportDetails = Record<string, string[]>
 
 export function base64ToArrayBuffer(base64Str: string): ArrayBuffer {
-  const decoded = base64.decode(base64Str)
-  const bytes = new Uint8Array(decoded.length)
-  for (let i = 0; i < decoded.length; i++) {
-    bytes[i] = decoded.charCodeAt(i)
-  }
-  return bytes.buffer
+  const bytes = Buffer.from(base64Str, 'base64')
+  // Buffer may be a view into a larger pooled ArrayBuffer; slice to the
+  // exact region this Buffer covers.
+  return bytes.buffer.slice(
+    bytes.byteOffset,
+    bytes.byteOffset + bytes.byteLength
+  )
+}
+
+// Local polyfill for base64ToArrayBuffer to avoid global dependency issues
+if (typeof global.base64ToArrayBuffer !== 'function') {
+  global.base64ToArrayBuffer = base64ToArrayBuffer
 }
 
 // Identify PNG open badges by content

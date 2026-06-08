@@ -85,24 +85,6 @@ jest.mock('@react-native-documents/picker', () => ({
   }
 }))
 
-// Mock react-native-base64 with proper base64 functionality
-jest.mock('react-native-base64', () => ({
-  decode: jest.fn((str) => {
-    try {
-      return Buffer.from(str, 'base64').toString('binary')
-    } catch {
-      return str
-    }
-  }),
-  encode: jest.fn((str) => {
-    try {
-      return Buffer.from(str, 'binary').toString('base64')
-    } catch {
-      return str
-    }
-  })
-}))
-
 // Mock expo-font
 jest.mock('expo-font', () => ({
   loadAsync: jest.fn(() => Promise.resolve()),
@@ -203,13 +185,6 @@ jest.mock('@react-native-clipboard/clipboard', () => ({
 jest.mock('react-native-share', () => ({
   open: jest.fn(() => Promise.resolve())
 }))
-
-// Mock rn-animated-ellipsis
-jest.mock('rn-animated-ellipsis', () => {
-  const React = require('react')
-  return ({ style, ...props }) =>
-    React.createElement('View', { ...props, style })
-})
 
 // Global React Native mock setup
 global.mockNativeModules = {
