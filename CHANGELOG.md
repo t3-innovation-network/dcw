@@ -47,6 +47,13 @@
   the item was written). Also dropped the
   `declare module 'react-native-keychain'` ambient shim from `declarations.d.ts`
   now that the package ships its own TypeScript types.
+- Removed the `patches/react-native-paper+4.12.8.patch` patch-package patch by
+  replacing the multiline "Paste JSON or URL" field in `AddScreen.tsx` with a
+  plain React Native `TextInput`. The patch only fixed paper v4's outlined
+  multiline label/padding math, which AddScreen never relied on (it renders its
+  own label above the box); the bordered look is now reproduced with a simple
+  border style. The other four single-line paper `TextInput`s are unaffected and
+  remain on paper v4. `patches/` is now empty.
 
 ### Fixed
 

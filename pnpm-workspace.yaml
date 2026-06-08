@@ -27,7 +27,6 @@ overrides:
 allowBuilds:
   core-js: false
   esbuild: true
-  postinstall-postinstall: false
   react-native-elements: false
   react-native-storage: false
 minimumReleaseAgeExclude:

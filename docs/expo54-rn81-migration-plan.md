@@ -42,8 +42,7 @@ pnpm overrides, patch filenames).
   the duplicated `react` / `react-dom` / `react-test-renderer` pins in
   `devDependencies` from `19.0.0` to the React version Expo selects (19.1.x).
 - Keep `react-redux`, `@reduxjs/toolkit`, `@testing-library/react-native`,
-  `typescript`, `tsx`, `prettier`, `patch-package` as-is unless `expo-doctor`
-  flags them.
+  `typescript`, `tsx`, `prettier` as-is unless `expo-doctor` flags them.
 - **Do not bump the app `version`** in `package.json` -- only the `expo` / RN /
   React dependency versions.
 
@@ -75,22 +74,13 @@ SDK 54 raises platform floors. In the `expo-build-properties` plugin config:
   (`app/components/SafeScreenView/SafeScreenView.tsx`); verify insets there
   after upgrade.
 
-### 4. Re-validate patch-package patches
+### 4. (No patches to re-validate)
 
-The three patches in `patches/` target packages that are **not** Expo-managed,
-so `expo install --fix` should leave their versions alone and the patches should
-still apply:
-
-- `react-native-document-picker+9.3.1.patch` (Android `GuardedResultAsyncTask`)
-- `react-native-keychain+8.2.0.patch` (`build.gradle` Java 1.8 compat)
-- `react-native-paper+4.12.8.patch` (`TextInputOutlined.tsx` multiline)
-
-After install, confirm the installed versions still match the patch filenames
-and that `postinstall` (`patch-package`) applies cleanly. If a version drifted,
-regenerate the patch against the new version (do **not** silently drop it).
-Watch the document-picker patch most closely: it uses a deprecated RN bridge
-class; if RN 0.81 removed it, regenerate or migrate (swapping the library is out
-of scope here).
+There is no longer a `patches/` directory -- all three former patches
+(document-picker, keychain, paper) have been eliminated, and `patch-package`
+(plus its `postinstall` hook) has been removed, so there is nothing for
+`expo install --fix` to disturb on this front. See `_spec/tech-debt.md` for the
+details of how each patch was retired.
 
 ### 5. Re-check the build/runtime shims after install
 
@@ -185,8 +175,7 @@ machine. Prepare CI/build agents accordingly.
 
 Run in order; each gates the next:
 
-1. `pnpm install` -- clean install, confirm `patch-package` postinstall applies
-   all three patches.
+1. `pnpm install` -- clean install (no `patches/` to apply anymore).
 2. `npx expo install --check` (the `fix-deps` script) -- should report all deps
    on their SDK 54 target versions.
 3. `npx expo-doctor` -- resolve/triage findings; the existing

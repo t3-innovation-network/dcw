@@ -27,7 +27,12 @@ export default createDynamicStyleSheet(({ mixins, theme }) => ({
     flex: 1,
     height: 360,
     minHeight: 360,
-    backgroundColor: theme.color.backgroundPrimary
+    backgroundColor: theme.color.backgroundPrimary,
+    borderWidth: 1,
+    borderColor: theme.color.textSecondary,
+    borderRadius: 4,
+    paddingHorizontal: 14,
+    paddingVertical: 12
   },
   inputContent: {
     color: theme.color.textSecondary,
