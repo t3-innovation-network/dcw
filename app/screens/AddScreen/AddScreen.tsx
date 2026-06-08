@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
-import { AccessibilityInfo, View, Image } from 'react-native'
+import { AccessibilityInfo, View, Image, TextInput } from 'react-native'
 import { Text, Button } from 'react-native-elements'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import ScanQrIcon from '../../assets/icons/scan-QR-icon.png'
 import UploadFileIcon from '../../assets/icons/uploud-icon.png'
 import AddIcon from '../../assets/icons/plus-icon.png'
-import { TextInput } from 'react-native-paper'
 import { IVerifiableCredential } from '@interop/data-integrity-core'
 import { bachelorDegree } from '../../mock/BachelorDegree'
 import { stageCredentials } from '../../store/slices/credentialFoyer'
@@ -292,21 +291,9 @@ export default function AddScreen(): React.ReactElement {
                     { fontFamily: theme.fontFamily.verdana }
                   ]}
                   textAlignVertical="top"
-                  outlineColor={theme.color.textSecondary}
-                  activeOutlineColor={theme.color.textSecondary}
                   selectionColor={theme.color.textPrimary}
                   placeholderTextColor={theme.color.textSecondary}
-                  theme={{
-                    colors: {
-                      placeholder: theme.color.textSecondary,
-                      text: theme.color.textSecondary,
-                      primary: theme.color.brightAccent
-                    }
-                  }}
-                  mode="outlined"
                   keyboardAppearance={theme.keyboardAppearance}
-                  onTextInput={() => {}}
-                  tvParallaxProperties={undefined}
                 />
               </View>
               <Button
