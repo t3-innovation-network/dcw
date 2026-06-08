@@ -41,8 +41,7 @@ describe('biometrics', () => {
         'test-key',
         {
           storage: 'RSA',
-          accessControl: 'BIOMETRY_ANY',
-          authenticationType: 'BIOMETRICS'
+          accessControl: 'BIOMETRY_ANY'
         }
       )
     })

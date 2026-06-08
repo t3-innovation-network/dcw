@@ -35,6 +35,18 @@
   (`app/lib/import.ts`). `pickSingle({ copyTo })` becomes `pick()` plus an
   explicit `keepLocalCopy()` to obtain the cached local copy on iOS; the Android
   `content://` copy path is unchanged.
+- Upgraded `react-native-keychain` from `^8.1.1` to `^10.0.0` and removed the
+  `patches/react-native-keychain+8.2.0.patch` patch-package patch: it injected
+  `compileOptions { sourceCompatibility/targetCompatibility = 1.8 }` into the
+  Android `build.gradle`, which upstream now ships natively (Java 17). Two
+  `biometrics.ts` option fields were dropped to match v10's typed option shapes:
+  `authenticationType` is no longer a `setGenericPassword` option (biometric
+  gating on the stored key is driven by `storage: RSA` +
+  `accessControl: BIOMETRY_ANY`), and `storage` is no longer a
+  `getGenericPassword` option (retrieval auto-detects the storage type used when
+  the item was written). Also dropped the
+  `declare module 'react-native-keychain'` ambient shim from `declarations.d.ts`
+  now that the package ships its own TypeScript types.
 
 ### Fixed
 
