@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Linking, ScrollView, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { FileLogger } from 'react-native-file-logger'
-import * as RNFS from 'react-native-fs'
+import { File } from 'expo-file-system'
 import DeviceInfo from 'react-native-device-info'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -180,7 +180,10 @@ async function getLogData(): Promise<string> {
   const logInfo = `Running ${bundleId} v${version}-build${build}`
 
   const [path] = await FileLogger.getLogFilePaths()
-  const data = await RNFS.readFile(path, 'utf8')
+  // FileLogger returns a bare filesystem path; expo-file-system's File expects a
+  // `file://` URI.
+  const fileUri = path.startsWith('file://') ? path : `file://${path}`
+  const data = await new File(fileUri).text()
   const formattedData = data
     .replace(/\\n/g, '\n')
     .replace(/^(?!> )(.*)/gm, '  $1')

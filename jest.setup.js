@@ -5,46 +5,39 @@ jest.mock('expo-secure-store', () => ({
   isAvailableAsync: jest.fn().mockResolvedValue(true)
 }))
 
-// Also mock react-native-fs with proper jest.fn() support
-const mockReadFile = jest.fn().mockImplementation((path, encoding) => {
-  // Default fallback based on encoding
-  if (encoding === 'base64') {
-    if (path === 'fakepath') {
-      // Create proper PNG data with embedded JSON
-      const pngMagicBytes = '\x89PNG\r\n\x1a\n' // PNG magic bytes
-      const embeddedJson = JSON.stringify({
-        openbadgecredential: { name: 'Test' }
-      })
-      const pngWithEmbeddedData =
-        pngMagicBytes + `randomtextopenbadgecredential${embeddedJson}`
-      return Promise.resolve(
-        Buffer.from(pngWithEmbeddedData, 'binary').toString('base64')
-      )
+// Mock expo-file-system's new File/Paths API so modules that import it resolve
+// under jest. This is a benign default; tests that exercise file IO (e.g.
+// import.test.ts) provide their own controllable mock.
+jest.mock('expo-file-system', () => {
+  class File {
+    constructor(...uris) {
+      this.uri = uris
+        .map((u) =>
+          u && typeof u === 'object' && 'uri' in u ? u.uri : String(u)
+        )
+        .join('/')
     }
-    return Promise.resolve('bm90YXBuZw==') // "notapng" in base64
+    get exists() {
+      return false
+    }
+    text() {
+      return Promise.resolve('')
+    }
+    base64() {
+      return Promise.resolve('')
+    }
+    write() {}
+    delete() {}
+    copy() {}
   }
-
-  if (encoding === 'utf8') {
-    if (path === 'file.json') {
-      return Promise.resolve('{"key":"value"}')
+  return {
+    File,
+    Paths: {
+      document: { uri: 'file:///mock/document' },
+      cache: { uri: 'file:///mock/cache' }
     }
-    if (path.includes('test.json') || path.includes('file://')) {
-      return Promise.resolve('{"content": "true"}')
-    }
-    return Promise.resolve('{"default": "content"}')
   }
-
-  return Promise.resolve('')
 })
-
-jest.mock('react-native-fs', () => ({
-  readFile: mockReadFile,
-  writeFile: jest.fn(),
-  copyFile: jest.fn().mockResolvedValue(true),
-  exists: jest.fn().mockResolvedValue(true),
-  DocumentDirectoryPath: '/mock/document/path',
-  CachesDirectoryPath: '/mock/cache/path'
-}))
 
 // Mock expo-sqlite. The model layer is fully jest.mock-ed in component/lib
 // tests, so no SQL is ever executed under jest -- this mock only needs to exist
