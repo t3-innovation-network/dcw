@@ -31,7 +31,9 @@ export default function HomeNavigation(): React.ReactElement {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        unmountOnBlur: true,
+        // v7 removed `unmountOnBlur`; `popToTopOnBlur` resets each tab's nested
+        // stack to its first screen when the tab loses focus (closest equivalent).
+        popToTopOnBlur: true,
         tabBarStyle: styles.barStyle,
         tabBarActiveTintColor: theme.color.iconActive,
         tabBarInactiveTintColor: theme.color.iconInactive
@@ -83,7 +85,7 @@ export default function HomeNavigation(): React.ReactElement {
           title: 'Settings',
           tabBarIcon: SettingsTabIcon,
           tabBarAccessibilityLabel: `Settings, (4 of 4)${labelSuffix}`,
-          tabBarTestID: 'settings-tab'
+          tabBarButtonTestID: 'settings-tab'
         }}
       />
     </Tab.Navigator>
