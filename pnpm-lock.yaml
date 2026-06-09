@@ -50,16 +50,16 @@ importers:
         version: 3.2.2
       '@interop/did-method-key':
         specifier: ^7.1.0
-        version: 7.1.1
+        version: 7.1.1(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))
       '@interop/did-web-resolver':
         specifier: 6.1.1
         version: 6.1.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
       '@interop/ed25519-signature':
         specifier: ^7.0.1
-        version: 7.0.1(@interop/jsonld-signatures@11.6.7)
+        version: 7.0.1(@interop/jsonld-signatures@11.6.7)(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))
       '@interop/ed25519-verification-key':
         specifier: ^7.0.1
-        version: 7.0.1
+        version: 7.0.2(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))
       '@interop/ezcap':
         specifier: ^7.1.1
         version: 7.1.1(expo-crypto@15.0.9(expo@54.0.35(@babel/core@7.29.7)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)))
@@ -68,13 +68,13 @@ importers:
         version: 4.0.3
       '@interop/security-document-loader':
         specifier: 9.2.2
-        version: 9.2.2(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
+        version: 9.2.2(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
       '@interop/vc':
         specifier: 11.0.2
         version: 11.0.2
       '@interop/verifier-core':
         specifier: ^3.0.1
-        version: 3.1.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
+        version: 3.1.0(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
       '@noble/hashes':
         specifier: ^2.2.0
         version: 2.2.0
@@ -183,9 +183,6 @@ importers:
       react-native-elements:
         specifier: ^3.4.2
         version: 3.4.3(react-native-safe-area-context@5.6.2(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native-vector-icons@10.3.0)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
-      react-native-file-logger:
-        specifier: ^0.4.0
-        version: 0.4.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       react-native-gesture-handler:
         specifier: ~2.28.0
         version: 2.28.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -195,6 +192,9 @@ importers:
       react-native-keychain:
         specifier: ^10.0.0
         version: 10.0.0
+      react-native-logs:
+        specifier: ^5.6.0
+        version: 5.6.0
       react-native-markdown-display:
         specifier: ^7.0.0-alpha.2
         version: 7.0.2(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
@@ -1218,9 +1218,14 @@ packages:
       '@interop/jsonld-signatures':
         optional: true
 
-  '@interop/ed25519-verification-key@7.0.1':
-    resolution: {integrity: sha512-CqCJlNaBMmj3sPqo1291aAObKQlJINjUnTur2aGS6rFBLWtsUQCqPxAiSLn1HythmwuB7x+al6bRnmt7ZCAAEg==}
+  '@interop/ed25519-verification-key@7.0.2':
+    resolution: {integrity: sha512-2x8P2LWuroLjH6wSVGJadWcXc+kETNZZH5s6dd6Vi6Ibvc09f1Dk7cS0JZSaUy07qInWLe/ZspJJWakXkEy8kA==}
     engines: {node: '>=20'}
+    peerDependencies:
+      react-native-get-random-values: '>=1.8.0'
+    peerDependenciesMeta:
+      react-native-get-random-values:
+        optional: true
 
   '@interop/ezcap@7.1.1':
     resolution: {integrity: sha512-WUSimX+bgx4Fa1TIDeqhaeQtZV31XJ14Ve8G7vvm+VhBdORvA8MzMQqzr0aEjVjy0moOCJXDrb7hbuzhNffguA==}
@@ -2367,8 +2372,8 @@ packages:
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
-  cosmiconfig@9.0.1:
-    resolution: {integrity: sha512-hr4ihw+DBqcvrsEDioRO31Z17x71pUYoNe/4h6Z0wB72p7MU7/9gH8Q3s12NFhHPfYBBOV3qyfUxmr/Yn3shnQ==}
+  cosmiconfig@9.0.2:
+    resolution: {integrity: sha512-gtTZxTDau1wL7Y7zifc2dd8jHSK/k6BTx/2Xp/BpdlAdnlYWFVt7qhJqgwi7637yRwRQ3qL4ZidbB4I8tA5VOg==}
     engines: {node: '>=14'}
     peerDependencies:
       typescript: '>=4.9.5'
@@ -4459,12 +4464,6 @@ packages:
       react-native-safe-area-context: '>= 3.0.0'
       react-native-vector-icons: '>7.0.0'
 
-  react-native-file-logger@0.4.1:
-    resolution: {integrity: sha512-UpdMtpQvSgOB4ohid2QxwWFkI92gqKEl2woFbcPEWRbmfrwpTZuNPzNEooMTjmIhFBQPfaOcymCL9gK1naE01g==}
-    peerDependencies:
-      react: '>=16.0.0'
-      react-native: '>=0.60.0'
-
   react-native-fit-image@1.5.5:
     resolution: {integrity: sha512-Wl3Vq2DQzxgsWKuW4USfck9zS7YzhvLNPpkwUUCF90bL32e1a0zOVQ3WsJILJOwzmPdHfzZmWasiiAUNBkhNkg==}
 
@@ -4493,6 +4492,9 @@ packages:
   react-native-keychain@10.0.0:
     resolution: {integrity: sha512-YzPKSAnSzGEJ12IK6CctNLU79T1W15WDrElRQ+1/FsOazGX9ucFPTQwgYe8Dy8jiSEDJKM4wkVa3g4lD2Z+Pnw==}
     engines: {node: '>=16'}
+
+  react-native-logs@5.6.0:
+    resolution: {integrity: sha512-+5A/AlepSGvaT2RE8YpoLOUNxfra8WBqUOM/GBjggCnfH5+RaCDThpKL6QnengAf+Limmoidm9YXPFzQ9cj3bQ==}
 
   react-native-markdown-display@7.0.2:
     resolution: {integrity: sha512-Mn4wotMvMfLAwbX/huMLt202W5DsdpMO/kblk+6eUs55S57VVNni1gzZCh5qpznYLjIQELNh50VIozEfY6fvaQ==}
@@ -6569,12 +6571,14 @@ snapshots:
       '@interop/data-integrity-core': 6.1.2
       '@interop/lru-memoize': 4.0.3
 
-  '@interop/did-method-key@7.1.1':
+  '@interop/did-method-key@7.1.1(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))':
     dependencies:
       '@digitalbazaar/x25519-key-agreement-key-2020': 3.0.1
       '@interop/data-integrity-core': 6.1.2
       '@interop/did-io': 4.0.2
-      '@interop/ed25519-verification-key': 7.0.1
+      '@interop/ed25519-verification-key': 7.0.2(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))
+    transitivePeerDependencies:
+      - react-native-get-random-values
 
   '@interop/did-web-resolver@6.1.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))':
     dependencies:
@@ -6586,24 +6590,28 @@ snapshots:
     transitivePeerDependencies:
       - react-native
 
-  '@interop/ed25519-signature@7.0.1(@interop/jsonld-signatures@11.6.7)':
+  '@interop/ed25519-signature@7.0.1(@interop/jsonld-signatures@11.6.7)(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))':
     dependencies:
       '@interop/data-integrity-core': 6.1.2
       '@interop/data-integrity-proof': 3.2.2
-      '@interop/ed25519-verification-key': 7.0.1
+      '@interop/ed25519-verification-key': 7.0.2(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))
       '@interop/jsonld': 9.0.2
       canonicalize: 2.1.0
       ed25519-signature-2020-context: 1.1.0
       rdf-canonize: 5.0.0
     optionalDependencies:
       '@interop/jsonld-signatures': 11.6.7
+    transitivePeerDependencies:
+      - react-native-get-random-values
 
-  '@interop/ed25519-verification-key@7.0.1':
+  '@interop/ed25519-verification-key@7.0.2(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))':
     dependencies:
       '@interop/data-integrity-core': 6.1.2
       '@noble/ed25519': 3.1.0
       '@noble/hashes': 2.2.0
       '@scure/base': 2.2.0
+    optionalDependencies:
+      react-native-get-random-values: 2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
 
   '@interop/ezcap@7.1.1(expo-crypto@15.0.9(expo@54.0.35(@babel/core@7.29.7)(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)(typescript@5.9.3)))':
     dependencies:
@@ -6657,7 +6665,7 @@ snapshots:
     dependencies:
       lru-cache: 11.5.1
 
-  '@interop/security-document-loader@9.2.2(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))':
+  '@interop/security-document-loader@9.2.2(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))':
     dependencies:
       '@digitalbazaar/data-integrity-context': 2.0.1
       '@digitalbazaar/multikey-context': 2.0.1
@@ -6668,9 +6676,9 @@ snapshots:
       '@digitalcredentials/open-badges-context': 3.0.0
       '@interop/data-integrity-core': 6.1.2
       '@interop/did-io': 4.0.2
-      '@interop/did-method-key': 7.1.1
+      '@interop/did-method-key': 7.1.1(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))
       '@interop/did-web-resolver': 6.1.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
-      '@interop/ed25519-verification-key': 7.0.1
+      '@interop/ed25519-verification-key': 7.0.2(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))
       '@interop/http-client': 1.0.3
       aes-key-wrapping-2019-context: 1.0.3
       credentials-context: 2.0.0
@@ -6682,6 +6690,7 @@ snapshots:
       x25519-key-agreement-2020-context: 1.0.0
     transitivePeerDependencies:
       - react-native
+      - react-native-get-random-values
 
   '@interop/vc-bitstring-status-list@3.0.2':
     dependencies:
@@ -6698,17 +6707,17 @@ snapshots:
       '@interop/jsonld-signatures': 11.6.7
       credentials-context: 2.0.0
 
-  '@interop/verifier-core@3.1.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))':
+  '@interop/verifier-core@3.1.0(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))':
     dependencies:
       '@interop/data-integrity-core': 6.1.2
       '@interop/data-integrity-proof': 3.2.2
       '@interop/did-io': 4.0.2
-      '@interop/did-method-key': 7.1.1
+      '@interop/did-method-key': 7.1.1(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))
       '@interop/did-web-resolver': 6.1.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
-      '@interop/ed25519-signature': 7.0.1(@interop/jsonld-signatures@11.6.7)
-      '@interop/ed25519-verification-key': 7.0.1
+      '@interop/ed25519-signature': 7.0.1(@interop/jsonld-signatures@11.6.7)(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))
+      '@interop/ed25519-verification-key': 7.0.2(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))
       '@interop/jsonld-signatures': 11.6.7
-      '@interop/security-document-loader': 9.2.2(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
+      '@interop/security-document-loader': 9.2.2(react-native-get-random-values@2.0.0(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)))(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))
       '@interop/vc': 11.0.2
       '@interop/vc-bitstring-status-list': 3.0.2
       ajv: 8.20.0
@@ -6717,6 +6726,7 @@ snapshots:
       zod: 3.25.76
     transitivePeerDependencies:
       - react-native
+      - react-native-get-random-values
 
   '@interop/zcap@11.0.1':
     dependencies:
@@ -7005,7 +7015,7 @@ snapshots:
   '@react-native-community/cli-config@20.1.3(typescript@5.9.3)':
     dependencies:
       '@react-native-community/cli-tools': 20.1.3
-      cosmiconfig: 9.0.1(typescript@5.9.3)
+      cosmiconfig: 9.0.2(typescript@5.9.3)
       deepmerge: 4.3.1
       fast-glob: 3.3.3
       joi: 17.13.3
@@ -8125,7 +8135,7 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  cosmiconfig@9.0.1(typescript@5.9.3):
+  cosmiconfig@9.0.2(typescript@5.9.3):
     dependencies:
       env-paths: 2.2.1
       import-fresh: 3.3.1
@@ -10696,11 +10706,6 @@ snapshots:
       - react
       - react-native
 
-  react-native-file-logger@0.4.1(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
-    dependencies:
-      react: 19.1.0
-      react-native: 0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)
-
   react-native-fit-image@1.5.5:
     dependencies:
       prop-types: 15.8.1
@@ -10728,6 +10733,8 @@ snapshots:
       react-native: 0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0)
 
   react-native-keychain@10.0.0: {}
+
+  react-native-logs@5.6.0: {}
 
   react-native-markdown-display@7.0.2(react-native@0.81.5(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.1.17)(react@19.1.0))(react@19.1.0):
     dependencies:

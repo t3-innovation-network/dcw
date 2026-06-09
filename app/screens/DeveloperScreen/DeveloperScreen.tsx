@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Linking, ScrollView, Text, View } from 'react-native'
 import { Button } from 'react-native-elements'
-import { FileLogger } from 'react-native-file-logger'
-import { File } from 'expo-file-system'
 import * as Application from 'expo-application'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
@@ -18,6 +16,7 @@ import { useAppDispatch, useDynamicStyles } from '../../hooks'
 import { revokedCredential } from '../../mock/revokedCredential'
 import { NavigationUtil } from '../../lib/navigationUtil'
 import { shareData } from '../../lib/shareData'
+import { clearLogFile, getLogFile } from '../../init/logger'
 import { WAS } from '../../../app.config'
 
 export default function DeveloperScreen({
@@ -103,7 +102,7 @@ export default function DeveloperScreen({
   }
 
   async function clearLogs() {
-    await FileLogger.deleteLogFiles()
+    clearLogFile()
   }
 
   function goWas() {
@@ -175,11 +174,7 @@ async function getLogData(): Promise<string> {
   const bundleId = Application.applicationId
   const logInfo = `Running ${bundleId} v${version}-build${build}`
 
-  const [path] = await FileLogger.getLogFilePaths()
-  // FileLogger returns a bare filesystem path; expo-file-system's File expects a
-  // `file://` URI.
-  const fileUri = path.startsWith('file://') ? path : `file://${path}`
-  const data = await new File(fileUri).text()
+  const data = await getLogFile().text()
   const formattedData = data
     .replace(/\\n/g, '\n')
     .replace(/^(?!> )(.*)/gm, '  $1')

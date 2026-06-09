@@ -54,15 +54,14 @@ and run natively on New Arch.
 > this module*: under `newArchEnabled: false` its `getEnforcing` lookup would
 > throw, so it can no longer be smoke-tested on the legacy path.
 
-### Legacy modules via the RN 0.81 interop layer -- smoke-test these
+### Legacy modules via the RN 0.81 interop layer -- none remaining
 
-These have native code but the **old** module interface (no TurboModule). RN
-0.81's backward-compat interop layer runs them, so they should work, but they
-are the most likely place for a New-Arch surprise:
-
-- `react-native-device-info` 10.14 -- newer majors are full TurboModule if this
-  one misbehaves under New Arch.
-- `react-native-file-logger` 0.4.1.
+This bucket is now **empty**. Both former occupants are gone:
+`react-native-device-info` was removed, and `react-native-file-logger` (the last
+old-interface native module) was replaced by the pure-JS `react-native-logs`
+(see the Pure-JS section below). No app dependency now relies on the RN 0.81
+backward-compat interop layer -- a real de-risking of the New-Arch flip, since
+this was the most likely place for a runtime surprise.
 
 > `react-native-get-random-values` used to head this list as the
 > **highest-priority** interop-layer risk -- it backs the PBKDF2 salt
@@ -78,6 +77,10 @@ are the most likely place for a New-Arch surprise:
 unmaintained and several majors behind. They cannot block the New-Arch *build*,
 but they are the likeliest React-19 / new-renderer runtime risk. Watch for
 rendering glitches that are easy to misattribute to the architecture flip.
+
+`react-native-logs` (logging) is also pure-JS and -- unlike the two above --
+actively maintained. It replaced `react-native-file-logger` and persists logs
+through `expo-file-system`, so it carries no interop-layer or native-build risk.
 
 ## Verification
 
@@ -121,8 +124,9 @@ Focus on the modules above and on the SDK 54 edge-to-edge change:
 - [ ] **UI rendering** -- spot-check `react-native-paper` v4 and
       `react-native-elements` components (buttons, inputs, dialogs, the bottom
       tabs) for layout / touch glitches under the new renderer.
-- [ ] **Logs** -- `react-native-file-logger` still writes; check for interop
-      bridge warnings in the native console.
+- [ ] **Logs** -- `react-native-logs` still writes to `wallet.log` via
+      `expo-file-system` (check DeveloperScreen "View developer logs"), and
+      `console.*` output still appears in the native console.
 
 ### UI flow
 
@@ -132,7 +136,7 @@ Focus on the modules above and on the SDK 54 edge-to-edge change:
 ## If something breaks
 
 - **A native module fails to build under New Arch:** check for a newer major
-  with TurboModule support (most likely `react-native-device-info`).
+  with TurboModule support.
 - **A module loads but throws at runtime:** it is probably going through the
   interop layer; confirm the package is current and check its New-Arch notes.
 - **Rendering-only glitches:** suspect `react-native-paper` v4 /
