@@ -6,10 +6,10 @@ import {
   Inter_700Bold
 } from '@expo-google-fonts/inter'
 import {
-  SourceSansPro_300Light,
-  SourceSansPro_400Regular,
-  SourceSansPro_700Bold
-} from '@expo-google-fonts/source-sans-pro'
+  SourceSans3_300Light,
+  SourceSans3_400Regular,
+  SourceSans3_700Bold
+} from '@expo-google-fonts/source-sans-3'
 import { RobotoMono_400Regular } from '@expo-google-fonts/roboto-mono'
 
 import {
@@ -85,9 +85,9 @@ function issuerDidFromCredential(credential: {
 function useFontsLoaded() {
   const [fontsLoaded] = useFonts({
     Inter_700Bold,
-    SourceSansPro_300Light,
-    SourceSansPro_400Regular,
-    SourceSansPro_700Bold,
+    SourceSans3_300Light,
+    SourceSans3_400Regular,
+    SourceSans3_700Bold,
     RobotoMono_400Regular
   })
 

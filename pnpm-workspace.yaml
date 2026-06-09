@@ -28,11 +28,8 @@ allowBuilds:
   core-js: false
   esbuild: true
 minimumReleaseAgeExclude:
-  - '@interop/data-integrity-proof@3.2.2'
-  - '@interop/did-web-resolver@6.1.1'
-  - '@interop/security-document-loader@9.2.2'
-  - '@interop/vc@11.0.2'
-  - '@interop/vc-bitstring-status-list@3.0.2'
+  - '@interop/data-integrity-core@6.4.0'
+  - '@interop/ed25519-signature@7.1.0'
   - '@react-navigation/bottom-tabs@7.17.1'
   - '@react-navigation/core@7.19.0'
   - '@react-navigation/elements@2.9.21'

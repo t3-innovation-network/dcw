@@ -4,6 +4,16 @@
 
 ### Changed
 
+- Replaced the deprecated `@expo-google-fonts/source-sans-pro` (`^0.2.3`) with
+  `@expo-google-fonts/source-sans-3` (`^0.4.1`). Google removed the old "Source
+  Sans Pro" font entry, triggering a deprecation warning ("This font has been
+  removed from Google Fonts and will no longer receive updates"). Source Sans 3
+  is the same Adobe typeface renamed at version 3.0, so it is a drop-in
+  replacement -- the only code change was the `SourceSansPro_*` to `SourceSans3_*`
+  font-name prefix in `useAppLoading.ts` and the `FontFamily` enum. Also bumped
+  `@expo-google-fonts/arimo` (`^0.2.3` to `^0.4.3`) and
+  `@expo-google-fonts/roboto-mono` (`^0.2.2` to `^0.4.2`) to their latest
+  versions; both keep identical named exports, so no source changes were needed.
 - Bumped three small utility deps to their latest majors: `query-string`
   `^7.1.0` to `^9.4.0`, `react-native-url-polyfill` `^2.0.0` to `^3.0.0`, and
   `json-canonicalize` `^1.0.4` to `^2.0.0`. No source changes were needed -- the
