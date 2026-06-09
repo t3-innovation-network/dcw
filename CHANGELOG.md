@@ -10,6 +10,17 @@
   `expo-application` (`nativeApplicationVersion`, `nativeBuildVersion`,
   `applicationId`), which is part of the Expo SDK and needs no extra native
   config. Removes another unmaintained third-party native dependency.
+- Replaced `react-native-file-logger` with `react-native-logs`. The former is an
+  old-interface native module (CocoaLumberjack on iOS, Logback on Android) with
+  no TurboModule spec, so under RN 0.81's New Architecture it ran through the
+  backward-compat interop layer. `react-native-logs` is
+  pure JavaScript and persists logs through `expo-file-system` (already a
+  dependency), so it carries no interop-layer or native-build risk. Behavior is
+  preserved: `app/init/logger.ts` wires a `consoleTransport` plus a custom file
+  transport that appends to `wallet.log` in the previous `> <ISO> [LEVEL] <msg>`
+  format, and `patchConsole()` keeps capturing all `console.*` output to the log
+  while still printing it to the native console (Metro / Xcode / Logcat).
+  DeveloperScreen's view / share / clear log actions are unchanged.
 - Removed the unmaintained `react-native-base64` dependency. Its only use was
   `base64.decode()` in `lib/import.ts`, replaced with the already-imported
   `Buffer.from(str, 'base64')` (the same file already used `Buffer` elsewhere).
