@@ -28,37 +28,37 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       '@expo-google-fonts/arimo':
-        specifier: ^0.2.3
-        version: 0.2.3
+        specifier: ^0.4.3
+        version: 0.4.3
       '@expo-google-fonts/inter':
         specifier: ^0.4.2
         version: 0.4.2
       '@expo-google-fonts/roboto-mono':
-        specifier: ^0.2.2
-        version: 0.2.3
-      '@expo-google-fonts/source-sans-pro':
-        specifier: ^0.2.3
-        version: 0.2.3
+        specifier: ^0.4.2
+        version: 0.4.2
+      '@expo-google-fonts/source-sans-3':
+        specifier: ^0.4.1
+        version: 0.4.1
       '@expo/vector-icons':
         specifier: ^15.1.1
         version: 15.1.1(expo-font@55.0.8(expo@55.0.26)(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0))(react@19.2.0))(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0))(react@19.2.0)
       '@interop/data-integrity-core':
-        specifier: ^6.1.2
-        version: 6.1.2
+        specifier: ^6.4.0
+        version: 6.4.0
       '@interop/data-integrity-proof':
         specifier: 3.2.2
         version: 3.2.2
       '@interop/did-method-key':
-        specifier: ^7.1.0
+        specifier: ^7.2.0
         version: 7.2.0(react-native-get-random-values@2.0.0(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0)))
       '@interop/did-web-resolver':
         specifier: 6.1.1
         version: 6.1.1(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0))
       '@interop/ed25519-signature':
-        specifier: ^7.0.1
-        version: 7.0.1(@interop/jsonld-signatures@11.6.7)(react-native-get-random-values@2.0.0(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0)))
+        specifier: ^7.1.0
+        version: 7.1.0(@interop/jsonld-signatures@11.6.7)(react-native-get-random-values@2.0.0(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0)))
       '@interop/ed25519-verification-key':
-        specifier: ^7.0.1
+        specifier: ^7.0.2
         version: 7.0.2(react-native-get-random-values@2.0.0(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0)))
       '@interop/ezcap':
         specifier: ^7.1.1
@@ -73,7 +73,7 @@ importers:
         specifier: 11.0.2
         version: 11.0.2
       '@interop/verifier-core':
-        specifier: ^3.0.1
+        specifier: ^3.1.0
         version: 3.1.0(react-native-get-random-values@2.0.0(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0)))(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0))
       '@noble/hashes':
         specifier: ^2.2.0
@@ -1041,18 +1041,17 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@expo-google-fonts/arimo@0.2.3':
-    resolution: {integrity: sha512-78N2hdCPU3Iu4huKNVD4V1dxjQfQRSS3Xg8VXoXqRwXBgqVPM0X4N3nbkUHC9Nwh+VVQ0h5Ogf9BWsSGzzh6PA==}
+  '@expo-google-fonts/arimo@0.4.3':
+    resolution: {integrity: sha512-kXMUJ303nJgKjJFr8yuiAY9dgIoAoj9HccKkaSw0J63/T4MSdxFejzfDUVLzUz+ohpQWinifV99QOAUQLcGKDg==}
 
   '@expo-google-fonts/inter@0.4.2':
     resolution: {integrity: sha512-syfiImMaDmq7cFi0of+waE2M4uSCyd16zgyWxdPOY7fN2VBmSLKEzkfbZgeOjJq61kSqPBNNtXjggiQiSD6gMQ==}
 
-  '@expo-google-fonts/roboto-mono@0.2.3':
-    resolution: {integrity: sha512-grCGJOG+2aXQqssBAXPQPiUFrgK0BupswJEibUPhTMtFU+qxe8orqI+NQypgkyEYTTi1r/i89YcI11biQZJp+g==}
+  '@expo-google-fonts/roboto-mono@0.4.2':
+    resolution: {integrity: sha512-TkWqMKicHKbWclt3dZuzHgBXE4OZgenz+Bp8XT26/wKcWvUXnzGvS7C140QYCsq+CKZsa+0JTZppq2Wfyx0SCQ==}
 
-  '@expo-google-fonts/source-sans-pro@0.2.3':
-    resolution: {integrity: sha512-/vDE5/vECqJT4Xdi1QiKG6rL8+mdrvqu3OlSe2dMPB7B9BR+cWsu0fSHTqRa1cQY03bXSPSIwOiHG4fy/CHBJg==}
-    deprecated: This font has been removed from Google Fonts and will no longer receive updates.
+  '@expo-google-fonts/source-sans-3@0.4.1':
+    resolution: {integrity: sha512-sxsO4kfxQnVMT6ri/yWiBefkgem6suvc7KWJ4m/kWGTGqxkGouxG7MQsZ8XR6wqasxYZxdWK1gtusMBLSZDiiA==}
 
   '@expo/cli@55.0.32':
     resolution: {integrity: sha512-fq+/yUYBVw5ZudT4igNyJ3WaF17R39iS7EZlrkfHkLI7Y1kmUlivabwKviLoAfepJOKjKODKpViti9EPfmG3SQ==}
@@ -1225,6 +1224,10 @@ packages:
     resolution: {integrity: sha512-koNgRHhQ26JUVdCnjJPloJA18cSUpWwqa3CFuwekoKztOUl6/ZgubFvi9FSGNEuAWq2RJuSVUXgvlRl7XrSHhQ==}
     engines: {node: '>=24.0'}
 
+  '@interop/data-integrity-core@6.4.0':
+    resolution: {integrity: sha512-UXKSCXEc6FangVrfbuY+yL2sH8OccpR54m11zZXMNE4VvkCrYo33Wa8xjt1JkS0RNm1xm1OaxJi7EXpAKpHT0Q==}
+    engines: {node: '>=24.0'}
+
   '@interop/data-integrity-proof@3.2.2':
     resolution: {integrity: sha512-LJ7fbH2GgVmWXsterOovZRD4G17M3xgWGv1cHazbZmRjbfB1ndojhsxd6um1sAJitxXZP2DEZXKlmosUu0ysNw==}
     engines: {node: '>=24.0'}
@@ -1243,6 +1246,15 @@ packages:
 
   '@interop/ed25519-signature@7.0.1':
     resolution: {integrity: sha512-v7s9jFKW81qZ9OTqv4uqrzMcIZvFhHFvuv82Vw0KnsHHk9FzhN3kAzrlQGUN8VXfaCIIoVDdjP3aL8u7p8fjUQ==}
+    engines: {node: '>=24.0'}
+    peerDependencies:
+      '@interop/jsonld-signatures': ^11.6.7
+    peerDependenciesMeta:
+      '@interop/jsonld-signatures':
+        optional: true
+
+  '@interop/ed25519-signature@7.1.0':
+    resolution: {integrity: sha512-S5vM+AhoziY5UR/w6WUB1jAMZZ+CSsIHxa3JN24VVZSKWd518LQ8BA59lTZ4iSvKX7HBrQps3yMR2+sy7dHphQ==}
     engines: {node: '>=24.0'}
     peerDependencies:
       '@interop/jsonld-signatures': ^11.6.7
@@ -6098,13 +6110,13 @@ snapshots:
   '@esbuild/win32-x64@0.28.0':
     optional: true
 
-  '@expo-google-fonts/arimo@0.2.3': {}
+  '@expo-google-fonts/arimo@0.4.3': {}
 
   '@expo-google-fonts/inter@0.4.2': {}
 
-  '@expo-google-fonts/roboto-mono@0.2.3': {}
+  '@expo-google-fonts/roboto-mono@0.4.2': {}
 
-  '@expo-google-fonts/source-sans-pro@0.2.3': {}
+  '@expo-google-fonts/source-sans-3@0.4.1': {}
 
   '@expo/cli@55.0.32(@expo/dom-webview@55.0.6)(expo-constants@55.0.16(expo@55.0.26)(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0)))(expo-font@55.0.8(expo@55.0.26)(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0))(react@19.2.0))(expo@55.0.26)(react-dom@19.2.0(react@19.2.0))(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0))(react@19.2.0)(typescript@5.9.3)':
     dependencies:
@@ -6328,7 +6340,7 @@ snapshots:
       debug: 4.4.3
       getenv: 2.0.0
       glob: 13.0.6
-      hermes-parser: 0.32.0
+      hermes-parser: 0.32.1
       jsc-safe-url: 0.2.4
       lightningcss: 1.32.0
       picomatch: 4.0.4
@@ -6454,6 +6466,8 @@ snapshots:
 
   '@interop/data-integrity-core@6.1.2': {}
 
+  '@interop/data-integrity-core@6.4.0': {}
+
   '@interop/data-integrity-proof@3.2.2':
     dependencies:
       '@interop/data-integrity-core': 6.1.2
@@ -6486,6 +6500,20 @@ snapshots:
       - react-native
 
   '@interop/ed25519-signature@7.0.1(@interop/jsonld-signatures@11.6.7)(react-native-get-random-values@2.0.0(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0)))':
+    dependencies:
+      '@interop/data-integrity-core': 6.1.2
+      '@interop/data-integrity-proof': 3.2.2
+      '@interop/ed25519-verification-key': 7.0.2(react-native-get-random-values@2.0.0(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0)))
+      '@interop/jsonld': 9.0.2
+      canonicalize: 2.1.0
+      ed25519-signature-2020-context: 1.1.0
+      rdf-canonize: 5.0.0
+    optionalDependencies:
+      '@interop/jsonld-signatures': 11.6.7
+    transitivePeerDependencies:
+      - react-native-get-random-values
+
+  '@interop/ed25519-signature@7.1.0(@interop/jsonld-signatures@11.6.7)(react-native-get-random-values@2.0.0(react-native@0.83.6(@babel/core@7.29.7)(@react-native-community/cli@20.1.3(typescript@5.9.3))(@types/react@19.2.17)(react@19.2.0)))':
     dependencies:
       '@interop/data-integrity-core': 6.1.2
       '@interop/data-integrity-proof': 3.2.2
