@@ -4,6 +4,22 @@
 
 ### Changed
 
+- Bumped the `@react-navigation/*` family from v6 to v7: `native`
+  `^6.0.1` to `^7.3.0`, `stack` `^6.0.1` to `^7.10.1`, and `bottom-tabs`
+  `^6.0.7` to `^7.17.1` (the transitive `core`/`elements`/`routers` follow). The
+  entire v6 line is now npm-deprecated ("This version is no longer supported"),
+  so v7 is the only supported path. The wallet uses the dynamic API throughout,
+  which v7 still fully supports, so the screen/navigator definitions are
+  unchanged. Three v7 breaking changes touched this code: `unmountOnBlur` on the
+  bottom tabs was removed in favor of `popToTopOnBlur` (resets each tab's nested
+  stack to its first screen on blur -- the closest equivalent), the
+  `tabBarTestID` option was renamed to `tabBarButtonTestID`, and
+  `NavigationContainer`'s `onReady` now fires only once a navigator is rendered,
+  so `AppNavigation` hides the splash screen explicitly for the locked
+  (`LoginScreen`) and restart (`RestartScreen`) states, which render plain
+  screens with no navigator. Peer deps (`react-native-screens@4.16`,
+  `react-native-safe-area-context@5.6.2`, `react-native-gesture-handler@2.28`,
+  React 19) were already at v7-compatible versions.
 - Migrated `react-native-elements@3.4.3` to its maintained successor
   `@rneui/themed` + `@rneui/base@5.0.0`. The old package was a dead end on this
   stack: `latest` is still 3.4.3, and v3 relies on legacy `defaultProps` on

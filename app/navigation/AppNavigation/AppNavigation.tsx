@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
@@ -36,6 +36,18 @@ export default function AppNavigation(): React.ReactElement | null {
   const loading = useAppLoading()
   const { isUnlocked, isInitialized, needsRestart } =
     useSelector(selectWalletState)
+
+  // In v7, NavigationContainer's `onReady` only fires once a navigator is
+  // rendered. The locked (LoginScreen) and restart (RestartScreen) states render
+  // plain screens with no navigator, so `onReady` never fires there -- hide the
+  // splash explicitly for those cases to avoid hanging on the splash screen.
+  const showsPlainScreen =
+    !loading && (needsRestart || (isInitialized && !isUnlocked))
+  useEffect(() => {
+    if (showsPlainScreen) {
+      SplashScreen.hideAsync()
+    }
+  }, [showsPlainScreen])
 
   function renderScreen(): React.ReactElement | null {
     if (needsRestart) {
