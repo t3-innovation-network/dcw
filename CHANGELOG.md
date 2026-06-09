@@ -4,6 +4,41 @@
 
 ### Changed
 
+- Bumped three small utility deps to their latest majors: `query-string`
+  `^7.1.0` to `^9.4.0`, `react-native-url-polyfill` `^2.0.0` to `^3.0.0`, and
+  `json-canonicalize` `^1.0.4` to `^2.0.0`. No source changes were needed -- the
+  public APIs the wallet uses are unchanged (`query-string`'s default import with
+  `parse`/`parseUrl`, the `react-native-url-polyfill/auto` side-effect import,
+  and `json-canonicalize`'s named `canonicalize` export). Two details: (1)
+  `query-string` v8+ is now pure ESM. The only jest test that loaded it at
+  runtime was `deepLink.test.ts` (the other references to `walletRequestApi`/
+  `decode` are type-only or fully `jest.mock`ed), so rather than add it and its
+  ESM deps to jest's babel-transform allowlist, that one pure-logic test was
+  moved to the Node test runner (`test-node/deepLink.test.ts`), which loads ESM
+  natively. (2) `json-canonicalize` v2 drops `undefined`-valued
+  object properties instead of emitting a literal (invalid-JSON) `undefined`
+  token; output is otherwise byte-identical, and since every call site
+  (`cid.ts`, `credentialHash.ts`, `credentialFoyer.ts`) canonicalizes
+  JSON-origin credential data that can never contain `undefined`, CIDs and dedup
+  hashes for existing credentials are unaffected.
+- Upgraded **Expo SDK 54 to 55** (React Native `0.81.5` to `0.83.6`, React
+  `19.1.0` to `19.2.0`). SDK 55 removes Legacy Architecture support and makes the
+  New Architecture mandatory; the wallet was already on the New Architecture, so
+  no migration was needed there. Expo's `expo install --fix` pinned every
+  SDK-tracked package to its 55.x version (all `expo-*` modules,
+  `react-native-screens@~4.23`, `react-native-gesture-handler@~2.30`,
+  `react-native-svg@15.15.3`, `jest-expo@~55`) and aligned `react-native-web` /
+  `@types/react` to 19.2. Three notable details: the obsolete
+  `newArchEnabled: true` flag was removed from `app.config.js` (the option no
+  longer exists in SDK 55); `react-native-get-random-values` moved from `^2.0.0`
+  to Expo's tested `^1.11.0` (used only as a side-effect polyfill, identical
+  API); and `react-native-vision-camera` was deliberately **kept at 4.7.3**
+  rather than jumping to the v5 Nitro rewrite (breaking camera API), since 4.7.3
+  already supports RN 0.83. The app's `expo-file-system` usage was already on the
+  new `File`/`Paths` API that becomes the default in SDK 55, so no code changes
+  were required. `react-native-securerandom` (a deep transitive dep of
+  `@interop/did-web-resolver`, flagged unmaintained by expo-doctor) was added to
+  the doctor `reactNativeDirectoryCheck.exclude` list.
 - Bumped the `@react-navigation/*` family from v6 to v7: `native`
   `^6.0.1` to `^7.3.0`, `stack` `^6.0.1` to `^7.10.1`, and `bottom-tabs`
   `^6.0.7` to `^7.17.1` (the transitive `core`/`elements`/`routers` follow). The

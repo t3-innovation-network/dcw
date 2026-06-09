@@ -79,7 +79,6 @@ export default {
   launchScreenText:
     'Save for continuing education while you earn, store, and share your workplace and skill credentials.',
   expo: {
-    newArchEnabled: true,
     systemUIAppearance: 'automatic',
     runtimeVersion: VERSION_NUMBER,
     version: VERSION_NUMBER,
