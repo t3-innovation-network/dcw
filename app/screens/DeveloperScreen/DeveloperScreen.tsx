@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Linking, ScrollView, Text, View } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import * as Application from 'expo-application'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 

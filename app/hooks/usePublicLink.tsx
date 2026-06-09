@@ -5,7 +5,7 @@ import {
   Platform,
   TextInput as RNTextInput
 } from 'react-native'
-import { Button, Text } from 'react-native-elements'
+import { Button, Text } from '@rneui/themed'
 import Clipboard from '@react-native-clipboard/clipboard'
 import Share from 'react-native-share'
 

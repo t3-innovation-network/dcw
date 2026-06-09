@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Image, Text, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { Header, type HeaderProps } from 'react-native-elements'
+import { Header, type HeaderProps } from '@rneui/themed'
 
 import { useAccessibilityFocus, useDynamicStyles } from '../../hooks'
 type NavHeaderProps = HeaderProps & {

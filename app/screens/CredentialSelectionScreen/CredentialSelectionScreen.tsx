@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { View, FlatList } from 'react-native'
-import { Text, Button } from 'react-native-elements'
+import { Text, Button } from '@rneui/themed'
 import { useSelector } from 'react-redux'
 
 import CredentialItem from '../../components/CredentialItem/CredentialItem'

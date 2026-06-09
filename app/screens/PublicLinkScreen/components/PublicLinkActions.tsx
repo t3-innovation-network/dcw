@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import { useDynamicStyles } from '../../../hooks'

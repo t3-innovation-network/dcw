@@ -27,7 +27,6 @@ overrides:
 allowBuilds:
   core-js: false
   esbuild: true
-  react-native-elements: false
   react-native-storage: false
 minimumReleaseAgeExclude:
   - '@interop/data-integrity-proof@3.2.2'

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
-import { Text } from 'react-native-elements'
+import { Text } from '@rneui/themed'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 

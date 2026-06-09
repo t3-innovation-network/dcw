@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { AccessibilityInfo, View, Image, TextInput } from 'react-native'
-import { Text, Button } from 'react-native-elements'
+import { Text, Button } from '@rneui/themed'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 import ScanQrIcon from '../../assets/icons/scan-QR-icon.png'
 import UploadFileIcon from '../../assets/icons/uploud-icon.png'

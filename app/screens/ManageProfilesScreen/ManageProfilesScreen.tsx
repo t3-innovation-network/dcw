@@ -1,11 +1,15 @@
 import React, { useMemo, useState } from 'react'
 import { View, FlatList, Text } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import { MaterialIcons } from '@expo/vector-icons'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
-import { TextInput } from 'react-native-paper'
 
-import { ConfirmModal, NavHeader, ProfileItem } from '../../components'
+import {
+  ConfirmModal,
+  NavHeader,
+  OutlinedTextInput,
+  ProfileItem
+} from '../../components'
 import { useSelectorFactory } from '../../hooks/useSelectorFactory'
 import { makeSelectProfilesWithCredentials } from '../../store/selectorFactories/makeSelectProfilesWithCredentials'
 import { createProfile } from '../../store/slices/profile'
@@ -103,7 +107,7 @@ export default function ManageProfilesScreen({
         cancelText="Cancel"
         confirmText="Create Profile"
       >
-        <TextInput
+        <OutlinedTextInput
           value={profileName}
           onChangeText={(text) => {
             setProfileName(text)
@@ -112,21 +116,16 @@ export default function ManageProfilesScreen({
           style={styles.input}
           outlineColor={theme.color.textPrimary}
           selectionColor={theme.color.textPrimary}
-          theme={{
-            colors: {
-              placeholder: profileName
-                ? theme.color.textPrimary
-                : theme.color.inputInactive,
-              text: theme.color.textPrimary,
-              primary: theme.color.brightAccent
-            }
+          colors={{
+            placeholder: profileName
+              ? theme.color.textPrimary
+              : theme.color.inputInactive,
+            text: theme.color.textPrimary,
+            primary: theme.color.brightAccent
           }}
           testID="paste-profile-name-input"
           label="Profile Name"
-          mode="outlined"
           keyboardAppearance={theme.keyboardAppearance}
-          tvParallaxProperties={undefined}
-          onTextInput={() => {}}
         />
         {errorMessage ? (
           <Text style={[styles.errorText, { color: theme.color.error }]}>

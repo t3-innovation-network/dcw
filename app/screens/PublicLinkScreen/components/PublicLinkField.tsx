@@ -1,8 +1,9 @@
 import React from 'react'
 import { View, TextInput as RNTextInput } from 'react-native'
-import { Button } from 'react-native-elements'
-import { TextInput } from 'react-native-paper'
+import { Button } from '@rneui/themed'
 import OutsidePressHandler from 'react-native-outside-press'
+
+import { OutlinedTextInput } from '../../../components'
 
 import { useDynamicStyles } from '../../../hooks'
 import dynamicStyleSheet from '../PublicLinkScreen.styles'
@@ -42,28 +43,22 @@ export default function PublicLinkField({
         onOutsidePress={blurInput}
         disabled={disableOutsidePressHandler}
       >
-        <TextInput
+        <OutlinedTextInput
           ref={inputRef}
           style={{ ...mixins.input, ...styles.linkText }}
           value={publicLink}
           selectionColor={selectionColor}
-          theme={{
-            colors: {
-              placeholder: theme.color.textPrimary,
-              text: theme.color.textPrimary,
-              disabled: theme.color.textPrimary,
-              primary: theme.color.brightAccent
-            }
+          colors={{
+            placeholder: theme.color.textPrimary,
+            text: theme.color.textPrimary,
+            primary: theme.color.brightAccent
           }}
           autoCorrect={false}
           spellCheck={false}
-          mode="outlined"
           onFocus={onFocusInput}
           showSoftInputOnFocus={false}
-          onTextInput={() => {}}
           selection={selection}
           onSelectionChange={(e) => onSelectionChange(e.nativeEvent.selection)}
-          tvParallaxProperties={{}} // <-- add back to satisfy TS types
         />
       </OutsidePressHandler>
 

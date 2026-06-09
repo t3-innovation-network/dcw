@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { AccessibilityProps, Image, View, TouchableOpacity } from 'react-native'
-import { Text } from 'react-native-elements'
+import { Text } from '@rneui/themed'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import dynamicStyleSheet from './CredentialItem.styles'

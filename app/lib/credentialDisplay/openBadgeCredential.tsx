@@ -4,7 +4,7 @@ import { View, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { CredentialNavigationParamList } from '../../navigation/CredentialNavigation/CredentialNavigation.types'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import { mixins } from '../../styles'
 
 import CredentialStatusBadges from '../../components/CredentialStatusBadges/CredentialStatusBadges'

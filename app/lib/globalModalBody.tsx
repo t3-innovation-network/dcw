@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'react-native-elements'
+import { Text } from '@rneui/themed'
 import LoadingIndicatorDots from '../components/LoadingIndicatorDots/LoadingIndicatorDots'
 import { useDynamicStyles } from '../hooks'
 

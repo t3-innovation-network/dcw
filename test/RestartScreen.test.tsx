@@ -33,7 +33,7 @@ jest.mock('../app.config', () => ({
 
 // Render the button's title inside a <Text> within a Pressable so it is both
 // queryable by text and pressable.
-jest.mock('react-native-elements', () => {
+jest.mock('@rneui/themed', () => {
   const mockReact = require('react')
   const { Text, Pressable } = require('react-native')
   return {

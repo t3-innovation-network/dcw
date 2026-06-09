@@ -80,8 +80,6 @@ export default function PasswordForm({
         onChangeText={setPassword}
         onBlur={_onInputBlur}
         inputRef={passwordRef}
-        tvParallaxProperties={undefined}
-        onTextInput={() => {}}
         testID="password-input"
       />
       <PasswordInput
@@ -90,8 +88,6 @@ export default function PasswordForm({
         value={passwordConfirm}
         onChangeText={setPasswordConfirm}
         onBlur={_onInputBlur}
-        tvParallaxProperties={undefined}
-        onTextInput={() => {}}
         testID="confirm-password-input"
       />
       <Text style={styles.helperText}>

@@ -4,6 +4,36 @@
 
 ### Changed
 
+- Migrated `react-native-elements@3.4.3` to its maintained successor
+  `@rneui/themed` + `@rneui/base@5.0.0`. The old package was a dead end on this
+  stack: `latest` is still 3.4.3, and v3 relies on legacy `defaultProps` on
+  function components, which React 19 no longer supports. The project was renamed
+  to the `@rneui` scope, so the import specifier changes from
+  `react-native-elements` to `@rneui/themed` across ~40 files; the `Button`,
+  `Text`, and `Header` APIs are unchanged. This also drops
+  `react-native-vector-icons` from the dependency tree entirely (it was a peer of
+  `react-native-elements`, and after the `react-native-paper` removal its only
+  remaining consumer) -- net `+7 / -113` packages. `@rneui` v5 resolves icon
+  fonts lazily and only warns (rather than crashing) when no vector-icons package
+  is present, so the three spots that used its bundled `Icon` are now rendered
+  with `@expo/vector-icons` (already the wallet's icon library, with fonts
+  configured): the two `ListItem.Chevron`s (in `SettingsNavigation` and
+  `ProfileSelectionScreen`) become a `chevron-right` `MaterialIcons`, and the
+  presentational biometrics `CheckBox` in `SetupNavigation` becomes a
+  `check-box` / `check-box-outline-blank` `MaterialIcons` (its toggle was already
+  handled by the wrapping pressable). No `react-native-vector-icons` migration
+  (scoped `@react-native-vector-icons/*` packages) is needed as a result.
+- Removed the `react-native-paper` dependency. It was a full Material UI
+  framework pulled in solely for its `<TextInput mode="outlined">`, used in four
+  places (`PasswordInput`, the profile rename/create modals, and the public-link
+  field) with no `PaperProvider` and several type-shim props
+  (`tvParallaxProperties`, `onTextInput`). It is replaced by a small in-repo
+  `OutlinedTextInput` component (`app/components/OutlinedTextInput/`) built on
+  React Native's own `TextInput`: an outlined box with a floating label that
+  acts as a placeholder while empty and notches into the top border once focused
+  or filled. The `theme={{ colors }}` prop maps to a typed `colors` prop. (Note:
+  `react-native-vector-icons` stays in the tree -- it is still a peer dependency
+  of `react-native-elements`, not of `react-native-paper`.)
 - Replaced `react-native-device-info` with `expo-application`. The library was
   only used to read the app's own version, build number, and bundle id (on the
   **About** screen and in the exported debug log); all three are available from

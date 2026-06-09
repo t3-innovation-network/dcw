@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState, useRef } from 'react'
-import { Text } from 'react-native-elements'
+import { Text } from '@rneui/themed'
 import { AppState } from 'react-native'
 import { ConfirmModal } from '../../components'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'

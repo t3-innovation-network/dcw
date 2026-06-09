@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, ScrollView } from 'react-native'
-import { Button, Text } from 'react-native-elements'
+import { Button, Text } from '@rneui/themed'
 import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 
 import {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Text, View, Image, AccessibilityInfo } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
-import { Button, CheckBox } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import { createStackNavigator } from '@react-navigation/stack'
 import { useAppDispatch, useDynamicStyles } from '../../hooks'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
@@ -174,13 +174,17 @@ function PasswordStep({ navigation }: PasswordStepProps) {
             <View style={styles.inputSeparator} />
             <TouchableWithoutFeedback onPress={_onPressBiometrics}>
               <View style={styles.biometricsButton}>
-                <CheckBox
-                  checked={enableBiometrics}
-                  checkedColor={theme.color.buttonPrimary}
-                  containerStyle={[
-                    mixins.checkboxContainer,
-                    styles.checkboxContainer
-                  ]}
+                <MaterialIcons
+                  name={
+                    enableBiometrics ? 'check-box' : 'check-box-outline-blank'
+                  }
+                  size={theme.iconSize}
+                  color={
+                    enableBiometrics
+                      ? theme.color.buttonPrimary
+                      : theme.color.iconInactive
+                  }
+                  style={[mixins.checkboxContainer, styles.checkboxContainer]}
                 />
                 <Text style={styles.biometricsButtonText}>
                   Use biometrics to unlock

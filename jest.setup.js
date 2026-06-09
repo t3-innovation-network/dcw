@@ -139,28 +139,14 @@ jest.mock('react-native-outside-press', () => {
   }
 })
 
-// Mock react-native-elements
-jest.mock('react-native-elements', () => {
+// Mock @rneui/themed (React Native Elements)
+jest.mock('@rneui/themed', () => {
   const React = require('react')
   return {
     Button: ({ title, onPress, ...props }) =>
       React.createElement('Button', { ...props, onPress, children: title }),
     Text: ({ children, ...props }) =>
       React.createElement('Text', props, children)
-  }
-})
-
-// Mock react-native-paper
-jest.mock('react-native-paper', () => {
-  const React = require('react')
-  return {
-    TextInput: ({ value, onChangeText, label, ...props }) =>
-      React.createElement('TextInput', {
-        ...props,
-        value,
-        onChangeText,
-        testID: label
-      })
   }
 })
 

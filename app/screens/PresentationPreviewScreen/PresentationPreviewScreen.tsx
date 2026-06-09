@@ -6,7 +6,7 @@ import {
   Platform,
   InteractionManager
 } from 'react-native'
-import { Button, Text } from 'react-native-elements'
+import { Button, Text } from '@rneui/themed'
 
 import {
   CredentialItem,

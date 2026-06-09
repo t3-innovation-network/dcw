@@ -6,14 +6,14 @@ import React, {
   RefObject
 } from 'react'
 import { View, TextInput as RNTextInput, Platform } from 'react-native'
-import { TextInput } from 'react-native-paper'
+import OutlinedTextInput from '../OutlinedTextInput/OutlinedTextInput'
 
 import AccessibleView from '../AccessibleView/AccessibleView'
 import { useDynamicStyles } from '../../hooks'
 
 import dynamicStyleSheet from './PasswordInput.styles'
 
-type TextInputProps = ComponentProps<typeof TextInput>
+type TextInputProps = ComponentProps<typeof OutlinedTextInput>
 
 export type PasswordInputProps = TextInputProps & {
   label: string
@@ -51,7 +51,7 @@ function PasswordInput(
       onPress={() => _inputRef.current?.focus()}
       testID={testID}
     >
-      <TextInput
+      <OutlinedTextInput
         ref={_inputRef}
         style={mixins.input}
         autoComplete="off"
@@ -64,17 +64,14 @@ function PasswordInput(
           highlightError ? theme.color.error : theme.color.textPrimary
         }
         selectionColor={selectionColor}
-        theme={{
-          colors: {
-            placeholder: value
-              ? theme.color.textPrimary
-              : theme.color.inputInactive,
-            text: theme.color.textPrimary,
-            primary: theme.color.brightAccent
-          }
+        colors={{
+          placeholder: value
+            ? theme.color.textPrimary
+            : theme.color.inputInactive,
+          text: theme.color.textPrimary,
+          primary: theme.color.brightAccent
         }}
         label={label}
-        mode="outlined"
         onChangeText={onChangeText}
         keyboardAppearance="dark"
         {...textInputProps}

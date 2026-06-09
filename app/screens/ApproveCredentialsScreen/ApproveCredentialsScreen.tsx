@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { FlatList, View, Text } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 
 import { navigationRef } from '../../navigation/navigationRef'
 import {

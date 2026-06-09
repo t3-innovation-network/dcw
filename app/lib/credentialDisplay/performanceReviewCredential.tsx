@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import type { CredentialCardProps, CredentialDisplayConfig } from '.'

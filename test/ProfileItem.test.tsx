@@ -31,11 +31,12 @@ jest.mock('react-native', () => ({
   Platform: { OS: 'ios', select: jest.fn((obj: any) => obj.ios) }
 }))
 
-jest.mock('react-native-paper', () => {
+jest.mock('../app/components/OutlinedTextInput/OutlinedTextInput', () => {
   const React = require('react')
   const { View } = require('react-native')
   return {
-    TextInput: ({ value, onChangeText, label, testID }: any) =>
+    __esModule: true,
+    default: ({ value, onChangeText, label, testID }: any) =>
       React.createElement(View, {
         testID: testID || label,
         value,
@@ -44,7 +45,7 @@ jest.mock('react-native-paper', () => {
   }
 })
 
-jest.mock('react-native-elements', () => {
+jest.mock('@rneui/themed', () => {
   const React = require('react')
   const { View } = require('react-native')
   return {

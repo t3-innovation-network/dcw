@@ -43,7 +43,7 @@ jest.mock('react-native', () => {
 })
 
 // Make Button interactive so we can fire presses (RN-style)
-jest.mock('react-native-elements', () => {
+jest.mock('@rneui/themed', () => {
   const React = require('react')
   const { View } = require('react-native')
   return {
@@ -55,28 +55,6 @@ jest.mock('react-native-elements', () => {
 jest.mock('@expo/vector-icons', () => ({
   MaterialIcons: 'MaterialIcons'
 }))
-
-// Make TextInput interactive using RN changeText and a manual textInput trigger
-jest.mock('react-native-paper', () => {
-  const React = require('react')
-  const { View } = require('react-native')
-  return {
-    TextInput: ({ value, onChangeText, label, testID, onTextInput }: any) =>
-      React.createElement(
-        React.Fragment,
-        null,
-        React.createElement(View, {
-          testID: testID || label,
-          value,
-          onChangeText
-        }),
-        React.createElement(View, {
-          testID: 'text-input-trigger',
-          onPress: onTextInput
-        })
-      )
-  }
-})
 
 // Mock app dependencies
 jest.mock('../app/hooks', () => ({
@@ -140,7 +118,13 @@ jest.mock('../app/components', () => {
         children
       ),
     NavHeader: ({ title }: any) => React.createElement(Text, null, title),
-    ProfileItem: 'ProfileItem'
+    ProfileItem: 'ProfileItem',
+    OutlinedTextInput: ({ value, onChangeText, label, testID }: any) =>
+      React.createElement(View, {
+        testID: testID || label,
+        value,
+        onChangeText
+      })
   }
 })
 
@@ -276,22 +260,6 @@ describe('ManageProfilesScreen', () => {
     })
 
     expect(mockDispatch).not.toHaveBeenCalled()
-  })
-
-  it('triggers TextInput onTextInput for coverage', async () => {
-    const { getByTestId } = render(
-      <ManageProfilesScreen navigation={mockNavigation} route={mockRoute} />
-    )
-
-    const createButton = getByTestId('create-new-profile-button')
-    await act(async () => {
-      fireEvent.press(createButton)
-    })
-
-    const trigger = getByTestId('text-input-trigger')
-    await act(async () => {
-      fireEvent.press(trigger)
-    })
   })
 
   it('handles empty profile list', () => {

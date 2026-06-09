@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Text } from 'react-native-elements'
+import { Text } from '@rneui/themed'
 import QRCode from 'react-native-qrcode-svg'
 
 import { useDynamicStyles } from '../../../hooks'

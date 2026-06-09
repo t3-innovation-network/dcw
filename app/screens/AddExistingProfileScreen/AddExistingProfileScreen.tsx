@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { View, Text } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 
 import { NavHeader, ImportFileModal } from '../../components'

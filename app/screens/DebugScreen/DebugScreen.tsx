@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View, ScrollView } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 
 import NavHeader from '../../components/NavHeader/NavHeader'
 import dynamicStyleSheet from './DebugScreen.styles'

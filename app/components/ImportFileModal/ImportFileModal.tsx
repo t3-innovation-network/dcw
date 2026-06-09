@@ -6,7 +6,7 @@ import React, {
   useState
 } from 'react'
 import { Text } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import ConfirmModal from '../ConfirmModal/ConfirmModal'
 import LoadingIndicatorDots from '../LoadingIndicatorDots/LoadingIndicatorDots'
 import PasswordInput from '../PasswordInput/PasswordInput'
@@ -132,8 +132,6 @@ function ImportFileModal(
             value={password}
             onChangeText={setPassword}
             style={styles.password}
-            tvParallaxProperties={{}} // Provide appropriate properties if needed
-            onTextInput={() => {}} // Provide a valid function or handler
           />
         </ConfirmModal>
       )

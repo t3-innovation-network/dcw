@@ -1,7 +1,7 @@
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import { mixins } from '../../styles'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'

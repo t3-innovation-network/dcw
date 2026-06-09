@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import LoadingIndicatorDots from '../components/LoadingIndicatorDots/LoadingIndicatorDots'
 import { errorMessageMatches } from '../lib/error'
 import { clearGlobalModal, displayGlobalModal } from '../lib/globalModal'

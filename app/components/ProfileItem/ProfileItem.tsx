@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
-import { TextInput } from 'react-native-paper'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
+
+import OutlinedTextInput from '../OutlinedTextInput/OutlinedTextInput'
 
 import MoreMenuButton from '../MoreMenuButton/MoreMenuButton'
 import MenuItem from '../MenuItem/MenuItem'
@@ -141,7 +142,7 @@ function RenameModal({
       cancelText="Cancel"
       confirmText="Save"
     >
-      <TextInput
+      <OutlinedTextInput
         value={newName}
         onChangeText={(text) => {
           setNewName(text)
@@ -151,20 +152,15 @@ function RenameModal({
         style={styles.input}
         outlineColor={theme.color.textPrimary}
         selectionColor={theme.color.textPrimary}
-        theme={{
-          colors: {
-            placeholder: newName
-              ? theme.color.textPrimary
-              : theme.color.inputInactive,
-            text: theme.color.textPrimary,
-            primary: theme.color.brightAccent
-          }
+        colors={{
+          placeholder: newName
+            ? theme.color.textPrimary
+            : theme.color.inputInactive,
+          text: theme.color.textPrimary,
+          primary: theme.color.brightAccent
         }}
         label="Profile Name"
-        mode="outlined"
         keyboardAppearance="dark"
-        onTextInput={() => {}}
-        tvParallaxProperties={undefined}
       />
       {errorMessage ? (
         <Text style={{ color: theme.color.error }}>{errorMessage}</Text>

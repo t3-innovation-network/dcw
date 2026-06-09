@@ -53,7 +53,7 @@ jest.mock('react-native', () => {
   }
 })
 
-jest.mock('react-native-elements', () => {
+jest.mock('@rneui/themed', () => {
   const mockReact = require('react')
   return {
     Button: ({ title }: any) =>

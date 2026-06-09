@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { ScrollView } from 'react-native'
-import { Text, Button } from 'react-native-elements'
+import { Text, Button } from '@rneui/themed'
 import { MaterialIcons } from '@expo/vector-icons'
 
 import { LoadingIndicatorDots, NavHeader } from '../../components'

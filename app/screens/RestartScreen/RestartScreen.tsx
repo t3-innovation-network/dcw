@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Text, Image } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import * as Updates from 'expo-updates'
 
 import dynamicStyleSheet from './RestartScreen.styles'

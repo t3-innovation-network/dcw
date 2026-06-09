@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Text, Image, AccessibilityInfo, View } from 'react-native'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 import { useSelector } from 'react-redux'
 
 import appConfig from '../../../app.config'
@@ -92,8 +92,6 @@ export default function LoginScreen(): React.ReactElement {
         onChangeText={setPassword}
         onSubmitEditing={_unlockWallet}
         highlightError={isError}
-        tvParallaxProperties={{}} // Provide default or appropriate properties
-        onTextInput={() => {}} // Provide a no-op or appropriate handler
         testID="password-input"
       />
       <ErrorDialog message={errorText} />

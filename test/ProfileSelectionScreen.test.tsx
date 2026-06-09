@@ -35,7 +35,7 @@ jest.mock('react-native', () => {
 })
 
 // Make Button interactive so we can simulate presses (RN-style)
-jest.mock('react-native-elements', () => {
+jest.mock('@rneui/themed', () => {
   const React = require('react')
   const { View } = require('react-native')
   return {

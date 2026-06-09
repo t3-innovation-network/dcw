@@ -10,7 +10,7 @@ type ViewSourceScreenProps = {
   route: { params: ViewSourceScreenParams }
 }
 import { useDynamicStyles } from '../../hooks'
-import { Button } from 'react-native-elements'
+import { Button } from '@rneui/themed'
 
 export default function ViewSourceScreen({
   navigation,

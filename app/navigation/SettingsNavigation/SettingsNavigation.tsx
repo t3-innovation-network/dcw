@@ -8,7 +8,7 @@ import {
   View,
   Text
 } from 'react-native'
-import { ListItem } from 'react-native-elements'
+import { MaterialIcons } from '@expo/vector-icons'
 import { useSelector } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack'
 import * as Application from 'expo-application'
@@ -63,8 +63,9 @@ function SettingsItem({
 }: SettingsItemProps): React.ReactElement {
   const { styles, theme } = useDynamicStyles(dynamicStyleSheet)
   const _rightComponent = rightComponent || (
-    <ListItem.Chevron
-      hasTVPreferredFocus={undefined}
+    <MaterialIcons
+      name="chevron-right"
+      size={theme.iconSize}
       color={theme.color.textSecondary}
     />
   )

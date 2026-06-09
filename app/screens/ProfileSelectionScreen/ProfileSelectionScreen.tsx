@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { FlatList, Text, View } from 'react-native'
-import { Button, ListItem } from 'react-native-elements'
+import { Button } from '@rneui/themed'
+import { MaterialIcons } from '@expo/vector-icons'
 
 import dynamicStyleSheet from './ProfileSelectionScreen.styles'
 import {
@@ -81,8 +82,9 @@ function ProfileButton({ rawProfileRecord, onPress }: ProfileButtonProps) {
       iconRight
       onPress={onPress}
       icon={
-        <ListItem.Chevron
-          hasTVPreferredFocus={undefined}
+        <MaterialIcons
+          name="chevron-right"
+          size={theme.iconSize}
           color={theme.color.textSecondary}
         />
       }
