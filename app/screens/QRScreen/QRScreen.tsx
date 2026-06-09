@@ -169,7 +169,7 @@ export default function QRScreen({ navigation, route }: QRScreenProps) {
 
 const stylez = StyleSheet.create({
   rectangleContainer: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     top: 50,
     alignItems: 'center',
     justifyContent: 'center'

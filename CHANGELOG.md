@@ -4,6 +4,37 @@
 
 ### Changed
 
+- Upgraded **Expo SDK 55 to 56** (React Native `0.83.6` to `0.85.3`, React
+  `19.2.0` to `19.2.3`). A routine cadence bump on the (already mandatory) New
+  Architecture: every `expo-*` module went to its 56.x line, along with
+  `react-native-screens@4.25.2`, `react-native-safe-area-context@~5.7.0`,
+  `react-native-gesture-handler@~2.31.1`, `react-native-svg@15.15.4`, and
+  `jest-expo@~56`. One RN 0.85 breaking change touched app code: RN 0.85 removed
+  `StyleSheet.absoluteFillObject` (only `absoluteFill` remains, and it is now the
+  frozen plain object that `absoluteFillObject` used to be), so the three
+  `...StyleSheet.absoluteFillObject` spreads in `QRScreen.tsx`,
+  `ConfirmModal.style.ts`, and `OutlinedTextInput.styles.ts` became
+  `...StyleSheet.absoluteFill` (byte-identical result). The lockfile
+  re-resolution surfaced one more `@interop` package that needed an override pin
+  -- `@interop/data-integrity-core` was splitting into `6.4.0` (direct) and
+  `6.1.2` (transitive `^6.1.0` refs) under `minimumReleaseAge`, causing
+  duplicate-class type errors; pinning it to `6.4.0` in `pnpm-workspace.yaml`
+  (it was already in `minimumReleaseAgeExclude`) collapsed it to a single copy.
+  Deliberate holds carried over from SDK 55: `react-native-vision-camera` stays
+  at **4.7.3** (v5 is a breaking Nitro rewrite; the app only uses the code
+  scanner) and `react-native-get-random-values` stays at `^2.0.0` (SDK 56 tested
+  `~1.11.0`; identical side-effect polyfill); `typescript` was also held at
+  `~5.9.3` (SDK 56 recommends the `~6.0.3` major). Both held packages are listed
+  in `expo.install.exclude` so expo-doctor passes 21/21. See
+  [`docs/expo56-rn85-migration-plan.md`](docs/expo56-rn85-migration-plan.md).
+- Removed the `react-native-worklets-core` dependency. It was only a wildcard
+  peer of `react-native-vision-camera` (required for JS frame processors, which
+  the wallet does not use -- the QR screen uses VisionCamera's native code
+  scanner) and was imported by no app code. VisionCamera declares it
+  `optional: true`, but pnpm's `autoInstallPeers` pulls optional peers in anyway,
+  so it is listed under `peerDependencyRules.ignoreMissing` in
+  `pnpm-workspace.yaml` to keep it out of the dependency tree.
+
 - Replaced the deprecated `@expo-google-fonts/source-sans-pro` (`^0.2.3`) with
   `@expo-google-fonts/source-sans-3` (`^0.4.1`). Google removed the old "Source
   Sans Pro" font entry, triggering a deprecation warning ("This font has been

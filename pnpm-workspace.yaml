@@ -4,13 +4,20 @@ nodeLinker: hoisted
 autoInstallPeers: true
 # Some transitive deps still declare react >=16 peers, satisfied by react 19.
 strictPeerDependencies: false
+# react-native-vision-camera declares react-native-worklets-core as an OPTIONAL
+# peer (needed only for JS frame processors, which this app does not use -- it
+# uses the native code scanner). pnpm's autoInstallPeers would otherwise pull it
+# in anyway, so ignore it explicitly to keep it out of the tree.
+peerDependencyRules:
+  ignoreMissing:
+    - react-native-worklets-core
 
 # Moved here from package.json: pnpm v11 no longer reads the "pnpm" field.
 # Aligns @types/react (and react) across deps that declare older peer ranges.
 overrides:
-  react-redux>react: ^19.2.0
+  react-redux>react: ^19.2.3
   react-redux>@types/react: ~19.2.17
-  '@reduxjs/toolkit>react': ^19.2.0
+  '@reduxjs/toolkit>react': ^19.2.3
   '@reduxjs/toolkit>@types/react': ~19.2.17
   react-native>@types/react: ~19.2.17
   '@react-native/virtualized-lists>@types/react': ~19.2.17
@@ -18,8 +25,9 @@ overrides:
   # Without this, transitive `^x.y.1` refs keep the older release while the app's
   # direct deps pull the newer one, producing duplicate-class type errors (e.g.
   # separate `_cryptosuite` declarations) and dual runtime instances.
+  '@interop/data-integrity-core': 6.4.0
   '@interop/data-integrity-proof': 3.2.2
-  '@interop/did-web-resolver': 6.1.1
+  '@interop/did-web-resolver': 6.2.0
   '@interop/security-document-loader': 9.2.2
   '@interop/vc': 11.0.2
   '@interop/vc-bitstring-status-list': 3.0.2
@@ -27,9 +35,12 @@ overrides:
 allowBuilds:
   core-js: false
   esbuild: true
+  msgpackr-extract: false
 minimumReleaseAgeExclude:
+  - '@interop/bnid@6.0.1'
   - '@interop/data-integrity-core@6.4.0'
-  - '@interop/ed25519-signature@7.1.0'
+  - '@interop/did-io@4.0.3'
+  - '@interop/did-web-resolver@6.2.0'
   - '@react-navigation/bottom-tabs@7.17.1'
   - '@react-navigation/core@7.19.0'
   - '@react-navigation/elements@2.9.21'
