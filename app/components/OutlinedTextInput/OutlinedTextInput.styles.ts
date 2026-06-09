@@ -17,7 +17,7 @@ export default createDynamicStyleSheet(({ theme }) => ({
     fontFamily: theme.fontFamily.verdana
   },
   placeholderWrap: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     justifyContent: 'center',
     paddingHorizontal: 4
   },
