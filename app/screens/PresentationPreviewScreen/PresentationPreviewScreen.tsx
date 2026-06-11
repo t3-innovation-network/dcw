@@ -16,13 +16,12 @@ import {
 import dynamicStyleSheet from './PresentationPreviewScreen.styles'
 import type { PresentationPreviewScreenProps } from '../../navigation'
 import type { CredentialRecordRaw } from '../../model'
-import { useDynamicStyles, useVerifyCredential } from '../../hooks'
+import { useDynamicStyles } from '../../hooks'
 import { useShareCredentials } from '../../hooks/useShareCredentials'
 import { PublicLinkScreenMode } from '../PublicLinkScreen/PublicLinkScreen'
 import { displayGlobalModal, clearGlobalModal } from '../../lib/globalModal'
 import { createPublicLinkFor, getPublicViewLink } from '../../lib/publicLink'
 import { LinkConfig } from '../../../app.config'
-import { verificationResultFor } from '../../lib/verifiableObject'
 
 type RenderItemProps = {
   item: CredentialRecordRaw

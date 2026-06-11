@@ -20,8 +20,6 @@ import {
   selectRawCredentialRecords
 } from '../../store/slices/credential'
 import { getCredentialName } from '../../lib/credentialName'
-import { verificationResultFor } from '../../lib/verifiableObject'
-import { displayGlobalModal } from '../../lib/globalModal'
 import { Color } from '../../styles'
 
 type RenderItemProps = {

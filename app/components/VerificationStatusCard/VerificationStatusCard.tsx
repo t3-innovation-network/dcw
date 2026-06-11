@@ -20,8 +20,6 @@ type StatusItemProps = {
 }
 import dynamicStyleSheet from './VerificationStatusCard.styles'
 import { useDynamicStyles } from '../../hooks'
-//import { DidRegistryContext } from '../../init/registries';
-//import { issuerInRegistries } from '../../lib/issuerInRegistries';
 import { getExpirationDate } from '../../lib/credentialValidityPeriod'
 
 enum LogId {

@@ -185,33 +185,6 @@ jest.mock('../app.config', () => ({
   }
 }))
 
-jest.mock('../app/lib/verifiableObject', () => ({
-  verificationResultFor: jest.fn(() =>
-    Promise.resolve({
-      verified: true,
-      log: [
-        { id: 'valid_signature', valid: true },
-        { id: 'expiration', valid: true },
-        { id: 'registered_issuer', valid: true },
-        { id: 'revocation_status', valid: true }
-      ],
-      timestamp: Date.now()
-    })
-  )
-}))
-
-// credentialVerificationStatus module removed - all credentials can now be shared
-
-jest.mock('../app/lib/globalModal', () => ({
-  displayGlobalModal: jest.fn(() => Promise.resolve(true))
-}))
-
-// Mock useContext to return a mock registry
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
-  useContext: jest.fn(() => ({}))
-}))
-
 import HomeScreen from '../app/screens/HomeScreen/HomeScreen'
 
 describe('HomeScreen', () => {
