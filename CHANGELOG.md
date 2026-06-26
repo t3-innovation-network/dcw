@@ -176,6 +176,11 @@
 
 ### Fixed
 
+- Verification results are now cached for the intended duration. The
+  `verifiableObject.ts` `LruCache` TTL was computed as `1000 * 30` with a comment
+  claiming "30 days", but that is actually 30 **seconds**, so results were barely
+  cached. The TTL is now a deliberate, correctly-computed 15 minutes
+  (`15 * 60 * 1000`) to avoid duplicate UI verification work.
 - The developer "Clear verification cache" button now actually clears the
   verification cache. It previously called
   `Cache.removeAll(CacheKey.VerificationResult)` against the AsyncStorage cache,

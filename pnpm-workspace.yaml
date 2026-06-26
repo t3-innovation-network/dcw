@@ -25,25 +25,25 @@ overrides:
   # Without this, transitive `^x.y.1` refs keep the older release while the app's
   # direct deps pull the newer one, producing duplicate-class type errors (e.g.
   # separate `_cryptosuite` declarations) and dual runtime instances.
-  '@interop/data-integrity-core': 6.4.0
-  '@interop/data-integrity-proof': 3.2.2
-  '@interop/did-web-resolver': 6.2.0
-  '@interop/security-document-loader': 9.2.2
-  '@interop/vc': 11.0.2
-  '@interop/vc-bitstring-status-list': 3.0.2
+  '@interop/data-integrity-core': 8.1.0
+  '@interop/data-integrity-proof': 3.4.0
+  '@interop/did-web-resolver': 6.2.2
+  '@interop/security-document-loader': 9.4.0
+  '@interop/vc': 11.0.4
+  '@interop/vc-bitstring-status-list': 3.0.3
+  # TEMPORARY -- remove once @interop/ed25519-signature and @interop/ecdsa-signature
+  # ship the dynamic-import fix (their jcs canonize.ts now does `await import('canonicalize')`)
+  # and are bumped above. Until then: those forks pull canonicalize ^3.0.0, whose exports map
+  # declares only `import`/`types` -- no `default`/`require`. The test-node runner resolves
+  # *static* imports through tsx's CJS path (honors default/require/node, not import), so a
+  # static import throws ERR_PACKAGE_PATH_NOT_EXPORTED. 2.1.0 ships a CJS `main` (tsx-resolvable),
+  # emits byte-identical JCS output, and dedupes with the copy @interop/jsonld already pins.
+  # See [[interop-exports-testnode]].
+  canonicalize: 2.1.0
 
 allowBuilds:
   core-js: false
   esbuild: true
   msgpackr-extract: false
 minimumReleaseAgeExclude:
-  - '@interop/bnid@6.0.1'
-  - '@interop/data-integrity-core@6.4.0'
-  - '@interop/did-io@4.0.3'
-  - '@interop/did-web-resolver@6.2.0'
-  - '@react-navigation/bottom-tabs@7.17.1'
-  - '@react-navigation/core@7.19.0'
-  - '@react-navigation/elements@2.9.21'
-  - '@react-navigation/native@7.3.0'
-  - '@react-navigation/routers@7.5.6'
-  - '@react-navigation/stack@7.10.1'
+  - '@interop/ezcap@7.3.0'
